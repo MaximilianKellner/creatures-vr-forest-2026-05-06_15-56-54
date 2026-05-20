@@ -60,13 +60,13 @@
         "*.asset": "yaml",
         "*.meta": "yaml",
         "*.prefab": "yaml",
-        "*.unity": "yaml",
+        "*.unity": "yaml"
     },
     "explorer.fileNesting.enabled": true,
     "explorer.fileNesting.patterns": {
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "creatures-vr-forest.slnx",
+    "dotnet.defaultSolution": "creatures-vr-forest-2026-05-06_15-56-54.slnx",
     "dotnet.enableWorkspaceBasedDevelopment": false
 }
