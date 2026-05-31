@@ -176,7 +176,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4bb8f74f8170091449aedafe306d5d40, type: 3}
---- !u!1001 &377310158
+--- !u!1001 &293333478
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -186,15 +186,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: ea56466ea7adc3044bbf88ba6f4d6cf1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -13.54
+      value: -13.82
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ea56466ea7adc3044bbf88ba6f4d6cf1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.2
+      value: 2.11
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ea56466ea7adc3044bbf88ba6f4d6cf1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 107.05
+      value: 107.272064
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ea56466ea7adc3044bbf88ba6f4d6cf1, type: 3}
       propertyPath: m_LocalRotation.w
@@ -226,7 +226,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ea56466ea7adc3044bbf88ba6f4d6cf1, type: 3}
       propertyPath: m_Name
-      value: tree1
+      value: tree1 (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -872,7 +872,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 1308df68a95b5db458c9a4385474c800, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: ece1917fc89764e4591fd1cab03eb129, type: 2}
+      objectReference: {fileID: 2100000, guid: f9933fc29f4d40848b871756215a35a3, type: 2}
     - target: {fileID: 919132149155446097, guid: 1308df68a95b5db458c9a4385474c800, type: 3}
       propertyPath: m_Name
       value: creature-world-v03-unwrapped-full
@@ -892,6 +892,6 @@ SceneRoots:
   - {fileID: 449839397}
   - {fileID: 203426587}
   - {fileID: 1686024836}
-  - {fileID: 377310158}
   - {fileID: 1573558424}
   - {fileID: 1531960856}
+  - {fileID: 293333478}
