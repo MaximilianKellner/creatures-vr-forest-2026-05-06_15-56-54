@@ -13,6 +13,10 @@ public abstract class Prey : MonoBehaviour
     [SerializeField] private int damage;
     [SerializeField] private int healAmount;
 
+    [Header("Upgrade Settings")]
+    [SerializeField] private PreyGivesUpgrade givesUpgrade = PreyGivesUpgrade.None;
+    [SerializeField] private int upgradeLevel = 1;
+
     private bool isCaptured;
     private Transform followTarget;
     private Transform player;
@@ -32,6 +36,9 @@ public abstract class Prey : MonoBehaviour
         {
             healAmount = 0;
         }
+
+        if (upgradeLevel < 1)
+            upgradeLevel = 1;
     }
 
     protected virtual void Update()
@@ -80,7 +87,9 @@ public abstract class Prey : MonoBehaviour
 
         if (Vector3.Distance(transform.position, player.position) < 0.5f)
         {
-            PlayerHealth health = player.GetComponentInParent<PlayerHealth>() ?? player.GetComponentInChildren<PlayerHealth>();
+            PlayerHealth health =
+                player.GetComponentInParent<PlayerHealth>() ??
+                player.GetComponentInChildren<PlayerHealth>();
 
             if (health != null)
             {
@@ -92,6 +101,15 @@ public abstract class Prey : MonoBehaviour
                 {
                     health.Heal(healAmount);
                 }
+            }
+
+            UpgradeSystem upgradeSystem =
+                player.GetComponentInParent<UpgradeSystem>() ??
+                player.GetComponentInChildren<UpgradeSystem>();
+
+            if (upgradeSystem != null)
+            {
+                upgradeSystem.UnlockUpgrade(givesUpgrade, upgradeLevel);
             }
 
             Destroy(gameObject);
