@@ -50,4 +50,12 @@ public class PlayerHealth : MonoBehaviour
         Time.timeScale = 0f;
         Debug.Log("GAME OVER");
     }
+    public void Kill()
+    {
+        if (currentHealth <= 0) return;
+
+        currentHealth = 0;
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
+        Die();
+    }
 }
