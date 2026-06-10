@@ -19,6 +19,10 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement")]
     [SerializeField] Camera playerCamera;
     [SerializeField] float walkSpeed = 6f, runSpeed = 12f, jumpPower = 7f, gravity = 10f;
+
+    [Header("Upgrade Settings")]
+    [SerializeField] float speedBonusPerLevel = 0.2f;
+    [SerializeField] float jumpBonusPerLevel = 0.2f;
     
     [Header("Look & Crouch")]
     [SerializeField] float lookSpeed = 2f, lookXLimit = 45f;
@@ -27,11 +31,17 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 moveDirection;
     private float rotationX;
     private CharacterController characterController;
+    private UpgradeSystem upgradeSystem;
     private bool canMove = true;
 
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
+
+        upgradeSystem =
+            GetComponentInParent<UpgradeSystem>() ??
+            GetComponentInChildren<UpgradeSystem>();
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -52,7 +62,29 @@ public class PlayerMovement : MonoBehaviour
         // 1. Ducken & Geschwindigkeit bestimmen
         bool isCrouching = keyboard.cKey.isPressed && canMove;
         characterController.height = isCrouching ? crouchHeight : defaultHeight;
-        float speed = isCrouching ? crouchSpeed : (keyboard.leftShiftKey.isPressed ? runSpeed : walkSpeed);
+
+        float currentWalkSpeed = walkSpeed;
+        float currentRunSpeed = runSpeed;
+        float currentJumpPower = jumpPower;
+
+        if (upgradeSystem != null)
+        {
+            int speedLevel = upgradeSystem.GetUpgradeLevel(PreyGivesUpgrade.FasterRun);
+            int jumpLevel = upgradeSystem.GetUpgradeLevel(PreyGivesUpgrade.HigherJump);
+
+            currentWalkSpeed *= 1f + speedLevel * speedBonusPerLevel;
+            currentRunSpeed *= 1f + speedLevel * speedBonusPerLevel;
+            currentJumpPower *= 1f + jumpLevel * jumpBonusPerLevel;
+        }
+
+        bool hasSprint = upgradeSystem != null &&
+                 upgradeSystem.HasUpgrade(PreyGivesUpgrade.Sprint);
+
+        bool wantsToSprint = keyboard.leftShiftKey.isPressed && hasSprint;
+
+        float speed = isCrouching
+            ? crouchSpeed
+            : (wantsToSprint ? currentRunSpeed : currentWalkSpeed);
 
         // 2. Richtung auslesen (WASD / Pfeiltasten)
         float moveVertical = (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed ? 1f : 0f) - (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed ? 1f : 0f);
@@ -63,7 +95,7 @@ public class PlayerMovement : MonoBehaviour
         moveDirection = canMove ? (transform.forward * moveVertical + transform.right * moveHorizontal) * speed : Vector3.zero;
         
         // 4. Springen & Gravitation
-        moveDirection.y = (keyboard.spaceKey.isPressed && canMove && characterController.isGrounded) ? jumpPower : lastY;
+        moveDirection.y = (keyboard.spaceKey.isPressed && canMove && characterController.isGrounded) ? currentJumpPower : lastY;
         if (!characterController.isGrounded) moveDirection.y -= gravity * Time.deltaTime;
 
         // 5. Ausführen
