@@ -1,6 +1,7 @@
 public enum PreyGivesUpgrade
 {
     None,
+    Vision,
 
     NightVision,
 

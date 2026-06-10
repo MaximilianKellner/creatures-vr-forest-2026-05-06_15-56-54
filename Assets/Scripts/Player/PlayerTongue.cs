@@ -104,6 +104,10 @@ public class PlayerTongue : MonoBehaviour
         lineRenderer.positionCount = 0;
         lineRenderer.enabled = false;
 
+        if (hitPrey != null)
+        {
+            hitPrey.AllowEat();
+        }
         isBusy = false;
     }
 }

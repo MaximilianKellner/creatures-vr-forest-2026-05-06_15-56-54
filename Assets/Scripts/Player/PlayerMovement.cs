@@ -33,6 +33,7 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController characterController;
     private UpgradeSystem upgradeSystem;
     private bool canMove = true;
+    private bool canLook = true;
 
     private void Start()
     {
@@ -104,16 +105,24 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleLook()
     {
-        if (!canMove) return;
+        if (!canLook) return;
 
-        // Maus-Delta auslesen und skalieren (Maus Bewegungsgeschwindigkeit)
         Vector2 mouseDelta = Mouse.current.delta.ReadValue() * 0.1f * lookSpeed;
-        
-        // Vertikale Rotation (Kamera hoch/runter) cappen
+
         rotationX = Mathf.Clamp(rotationX - mouseDelta.y, -lookXLimit, lookXLimit);
         playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-        
-        // Horizontale Rotation (Spieler links/rechts)
+
         transform.rotation *= Quaternion.Euler(0, mouseDelta.x, 0);
     }
+    public void SetMovementEnabled(bool enabled)
+    {
+        canMove = enabled;
+    }
+
+    public void SetLookEnabled(bool enabled)
+    {
+        canLook = enabled;
+    }
+    public bool CanMove => canMove;
+    public bool CanLook => canLook;
 }
