@@ -295,6 +295,8 @@ GameObject:
   - component: {fileID: 506880262833144602}
   - component: {fileID: 3832237899210524204}
   - component: {fileID: 4912719440939054673}
+  - component: {fileID: 646243655710726396}
+  - component: {fileID: 8348897109103787272}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -363,6 +365,8 @@ MonoBehaviour:
   runSpeed: 12
   jumpPower: 7
   gravity: 10
+  speedBonusPerLevel: 0.2
+  jumpBonusPerLevel: 0.2
   lookSpeed: 2
   lookXLimit: 45
   defaultHeight: 2
@@ -403,6 +407,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
   maxHealth: 100
   currentHealth: 100
+--- !u!114 &646243655710726396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7016127780127911447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6777b11659b034d4c89d60ffe3d7c4af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeSystem
+--- !u!114 &8348897109103787272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7016127780127911447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29de3cafa9c57df4e856e971e5b49912, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CreatureSenses
+  nightVisionVolume: {fileID: 0}
 --- !u!1 &7124845941672037646
 GameObject:
   m_ObjectHideFlags: 0
@@ -449,7 +478,7 @@ LineRenderer:
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 0
-  m_LightProbeUsage: 0
+  m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
@@ -461,7 +490,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 4c6e07e1aab94b445b7e955e0a510a79, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -532,7 +561,7 @@ LineRenderer:
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_ColorSpace: -1
+      m_ColorSpace: 0
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
