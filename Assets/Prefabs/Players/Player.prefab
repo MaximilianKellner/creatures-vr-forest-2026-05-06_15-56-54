@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 404181333172595768}
   - component: {fileID: 3676168279832432204}
   - component: {fileID: 2251593089107350863}
-  m_Layer: 0
-  m_Name: Player Character
+  m_Layer: 6
+  m_Name: PlayerBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126,7 +126,7 @@ GameObject:
   - component: {fileID: 285351513551149103}
   - component: {fileID: 5358678848508013037}
   - component: {fileID: 4849736674117895913}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -260,8 +260,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8149135861238078282}
-  m_Layer: 0
-  m_Name: TongueTip
+  m_Layer: 6
+  m_Name: PlayerTongueTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -297,7 +297,7 @@ GameObject:
   - component: {fileID: 4912719440939054673}
   - component: {fileID: 646243655710726396}
   - component: {fileID: 8348897109103787272}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -428,7 +428,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7016127780127911447}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29de3cafa9c57df4e856e971e5b49912, type: 3}
+  m_Script: {fileID: 11500000, guid: 27bf988b309b683a8b5396e8f3e769f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreatureSenses
   nightVisionVolume: {fileID: 0}
@@ -442,8 +442,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1641182771834886966}
   - component: {fileID: 3004991234666553384}
-  m_Layer: 0
-  m_Name: TongueOrigin
+  m_Layer: 6
+  m_Name: PlayerTongueOrigin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -513,9 +513,7 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 0.20309567}
+  m_Positions: []
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1

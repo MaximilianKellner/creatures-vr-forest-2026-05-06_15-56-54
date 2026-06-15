@@ -161,6 +161,14 @@ public abstract class Prey : MonoBehaviour
         {
             upgradeSystem.UnlockUpgrade(givesUpgrade, upgradeLevel);
         }
+        
+        MissionTarget missionTarget = GetComponent<MissionTarget>();
+
+        if (missionTarget != null)
+        {
+            MissionManager.ReportTargetCollected(missionTarget.TargetId);
+        }
+        
         Destroy(gameObject);
     }
 }
