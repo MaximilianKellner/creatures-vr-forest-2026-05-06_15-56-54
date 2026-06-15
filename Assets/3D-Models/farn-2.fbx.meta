@@ -1,9 +1,19 @@
 fileFormatVersion: 2
-guid: 92e0ccafc69611f4ba1055859db2b3be
+guid: d071146009a7b354ebedb38c75e865aa
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gemini_Farn
+    second: {fileID: 2100000, guid: 6b9545b7be073ad4b984ee6a32f6c6bb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gemini_Farn-2
+    second: {fileID: 2100000, guid: cc5696fd22ab0184ba48032284d6e0ec, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

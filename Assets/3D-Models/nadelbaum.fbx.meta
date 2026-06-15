@@ -1,9 +1,19 @@
 fileFormatVersion: 2
-guid: 4416641d1cc0f6e4bb1859a199ba72ed
+guid: 7745db8fe6ea2f0498c144ef31566d12
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Baum.euro
+    second: {fileID: 2100000, guid: 4bdaa7ccf88277a43a8033fabb990677, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Gemini_fichte
+    second: {fileID: 2100000, guid: c43bca8eee96f21468c9fece28584da5, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
