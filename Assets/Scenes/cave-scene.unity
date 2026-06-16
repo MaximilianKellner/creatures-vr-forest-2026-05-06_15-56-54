@@ -209,6 +209,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9502843}
   m_Mesh: {fileID: 8514450214155909700, guid: 92e0ccafc69611f4ba1055859db2b3be, type: 3}
+--- !u!1 &10316544 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8101503825897858836, guid: 3e87782b585a11b4284c44888aad6446, type: 3}
+  m_PrefabInstance: {fileID: 307429790}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &13296993
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,6 +394,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 15262409}
   m_Mesh: {fileID: 8514450214155909700, guid: 92e0ccafc69611f4ba1055859db2b3be, type: 3}
+--- !u!1 &19643990 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -2045257923548263128, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+  m_PrefabInstance: {fileID: 1573558424}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &19643994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19643990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3aee4c847a4a35b338b04b6f5f4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UltrasoundTarget
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &23901058
 GameObject:
   m_ObjectHideFlags: 0
@@ -2714,7 +2737,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4584356337258173597, guid: 4bb8f74f8170091449aedafe306d5d40, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2033150778}
   m_SourcePrefab: {fileID: 100100000, guid: 4bb8f74f8170091449aedafe306d5d40, type: 3}
 --- !u!1 &113680609
 GameObject:
@@ -8372,10 +8398,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: tree1 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ea56466ea7adc3044bbf88ba6f4d6cf1, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ea56466ea7adc3044bbf88ba6f4d6cf1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 773384338}
   m_SourcePrefab: {fileID: 100100000, guid: ea56466ea7adc3044bbf88ba6f4d6cf1, type: 3}
 --- !u!4 &293333479 stripped
 Transform:
@@ -8704,6 +8737,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fly special 2
       objectReference: {fileID: 0}
+    - target: {fileID: 8101503825897858836, guid: 3e87782b585a11b4284c44888aad6446, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8877302441190947088, guid: 3e87782b585a11b4284c44888aad6446, type: 3}
       propertyPath: givesUpgrade
       value: 2
@@ -8711,13 +8748,29 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8101503825897858836, guid: 3e87782b585a11b4284c44888aad6446, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 307429796}
   m_SourcePrefab: {fileID: 100100000, guid: 3e87782b585a11b4284c44888aad6446, type: 3}
 --- !u!4 &307429791 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7977766577769436691, guid: 3e87782b585a11b4284c44888aad6446, type: 3}
   m_PrefabInstance: {fileID: 307429790}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &307429796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 10316544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3aee4c847a4a35b338b04b6f5f4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UltrasoundTarget
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &308742767
 GameObject:
   m_ObjectHideFlags: 0
@@ -9665,6 +9718,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 338856624}
   m_Mesh: {fileID: 8514450214155909700, guid: 92e0ccafc69611f4ba1055859db2b3be, type: 3}
+--- !u!1 &338881924 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8101503825897858836, guid: bf8ac53578cfcba4cbba92a9deae6231, type: 3}
+  m_PrefabInstance: {fileID: 1979868646}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &341477472
 GameObject:
   m_ObjectHideFlags: 0
@@ -14132,10 +14190,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fly Poised
       objectReference: {fileID: 0}
+    - target: {fileID: 8101503825897858836, guid: 2eced75390b331b49a9ef8b71e79c60c, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8101503825897858836, guid: 2eced75390b331b49a9ef8b71e79c60c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1173813697}
   m_SourcePrefab: {fileID: 100100000, guid: 2eced75390b331b49a9ef8b71e79c60c, type: 3}
 --- !u!4 &494648268 stripped
 Transform:
@@ -16302,6 +16367,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 595822112}
   m_Mesh: {fileID: 8514450214155909700, guid: 92e0ccafc69611f4ba1055859db2b3be, type: 3}
+--- !u!1 &599151403 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6977446370728200439, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+  m_PrefabInstance: {fileID: 1531960856}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &599151407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 599151403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3aee4c847a4a35b338b04b6f5f4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UltrasoundTarget
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &601343142
 GameObject:
   m_ObjectHideFlags: 0
@@ -20349,6 +20432,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 716653705}
   m_Mesh: {fileID: 8514450214155909700, guid: 92e0ccafc69611f4ba1055859db2b3be, type: 3}
+--- !u!1 &718722304 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -208595431880416365, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+  m_PrefabInstance: {fileID: 1531960856}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &718722308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 718722304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3aee4c847a4a35b338b04b6f5f4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UltrasoundTarget
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &720678327
 GameObject:
   m_ObjectHideFlags: 0
@@ -20941,6 +21042,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fly 2
       objectReference: {fileID: 0}
+    - target: {fileID: 8101503825897858836, guid: bf8ac53578cfcba4cbba92a9deae6231, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8877302441190947088, guid: bf8ac53578cfcba4cbba92a9deae6231, type: 3}
       propertyPath: damage
       value: 0
@@ -20948,7 +21053,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8101503825897858836, guid: bf8ac53578cfcba4cbba92a9deae6231, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 915646833}
   m_SourcePrefab: {fileID: 100100000, guid: bf8ac53578cfcba4cbba92a9deae6231, type: 3}
 --- !u!4 &736500290 stripped
 Transform:
@@ -22065,6 +22173,55 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 762440164}
   m_Mesh: {fileID: 8514450214155909700, guid: 92e0ccafc69611f4ba1055859db2b3be, type: 3}
+--- !u!1 &763091525
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 763091527}
+  - component: {fileID: 763091526}
+  m_Layer: 0
+  m_Name: Global Volume US
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &763091526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763091525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.Volume
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 0
+  sharedProfile: {fileID: 11400000, guid: 1e06fe95091a67d6194143851318af88, type: 2}
+--- !u!4 &763091527
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 763091525}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.3036077, y: 1.2337004, z: -0.7866378}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &768405420
 GameObject:
   m_ObjectHideFlags: 0
@@ -22335,6 +22492,29 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 772796535}
   m_Mesh: {fileID: 8514450214155909700, guid: 92e0ccafc69611f4ba1055859db2b3be, type: 3}
+--- !u!1 &773384335 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ea56466ea7adc3044bbf88ba6f4d6cf1, type: 3}
+  m_PrefabInstance: {fileID: 293333478}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &773384338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 773384335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3aee4c847a4a35b338b04b6f5f4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UltrasoundTarget
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!1 &777540124 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8101503825897858836, guid: 2eced75390b331b49a9ef8b71e79c60c, type: 3}
+  m_PrefabInstance: {fileID: 1498519027}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &779084159
 GameObject:
   m_ObjectHideFlags: 0
@@ -27144,6 +27324,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 915095467}
   m_Mesh: {fileID: 8514450214155909700, guid: 92e0ccafc69611f4ba1055859db2b3be, type: 3}
+--- !u!1 &915646828 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8101503825897858836, guid: bf8ac53578cfcba4cbba92a9deae6231, type: 3}
+  m_PrefabInstance: {fileID: 736500289}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &915646833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 915646828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3aee4c847a4a35b338b04b6f5f4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UltrasoundTarget
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &919894982
 GameObject:
   m_ObjectHideFlags: 0
@@ -28361,6 +28559,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 982485441}
   m_Mesh: {fileID: 8514450214155909700, guid: 92e0ccafc69611f4ba1055859db2b3be, type: 3}
+--- !u!1 &987154547 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 281855664364225751, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+  m_PrefabInstance: {fileID: 1531960856}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &987154551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 987154547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3aee4c847a4a35b338b04b6f5f4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UltrasoundTarget
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &989089637
 GameObject:
   m_ObjectHideFlags: 0
@@ -33013,6 +33229,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1133561751}
   m_Mesh: {fileID: 8514450214155909700, guid: 92e0ccafc69611f4ba1055859db2b3be, type: 3}
+--- !u!1 &1135925630 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -208595431880416365, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+  m_PrefabInstance: {fileID: 1573558424}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1135925634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135925630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3aee4c847a4a35b338b04b6f5f4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UltrasoundTarget
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1141738526
 GameObject:
   m_ObjectHideFlags: 0
@@ -33643,6 +33877,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1164605914}
   m_Mesh: {fileID: 8514450214155909700, guid: 92e0ccafc69611f4ba1055859db2b3be, type: 3}
+--- !u!1 &1173813692 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8101503825897858836, guid: 2eced75390b331b49a9ef8b71e79c60c, type: 3}
+  m_PrefabInstance: {fileID: 494648267}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1173813697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173813692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3aee4c847a4a35b338b04b6f5f4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UltrasoundTarget
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1177889331
 GameObject:
   m_ObjectHideFlags: 0
@@ -35173,6 +35425,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1225122150}
   m_Mesh: {fileID: 8514450214155909700, guid: 92e0ccafc69611f4ba1055859db2b3be, type: 3}
+--- !u!1 &1231506976 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8101503825897858836, guid: 3e87782b585a11b4284c44888aad6446, type: 3}
+  m_PrefabInstance: {fileID: 2058065502}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1236130007
 GameObject:
   m_ObjectHideFlags: 0
@@ -35263,6 +35520,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1236130007}
   m_Mesh: {fileID: 8514450214155909700, guid: 92e0ccafc69611f4ba1055859db2b3be, type: 3}
+--- !u!1 &1241746242 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -2045257923548263128, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+  m_PrefabInstance: {fileID: 1531960856}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1241746246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241746242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3aee4c847a4a35b338b04b6f5f4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UltrasoundTarget
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1263612876
 GameObject:
   m_ObjectHideFlags: 0
@@ -38277,7 +38552,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d4244be507a5c5448b3ebf2638001de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PauseManager
-  pauseMenu: {fileID: 180280353}
+  pauseMenu: {fileID: 0}
 --- !u!1 &1367847671
 GameObject:
   m_ObjectHideFlags: 0
@@ -40653,6 +40928,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1435768573}
   m_Mesh: {fileID: 8514450214155909700, guid: 92e0ccafc69611f4ba1055859db2b3be, type: 3}
+--- !u!1 &1435899500 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 281855664364225751, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+  m_PrefabInstance: {fileID: 1573558424}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1435899504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1435899500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3aee4c847a4a35b338b04b6f5f4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UltrasoundTarget
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1440083037
 GameObject:
   m_ObjectHideFlags: 0
@@ -42225,16 +42518,36 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fly Poised 2
       objectReference: {fileID: 0}
+    - target: {fileID: 8101503825897858836, guid: 2eced75390b331b49a9ef8b71e79c60c, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8101503825897858836, guid: 2eced75390b331b49a9ef8b71e79c60c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1498519033}
   m_SourcePrefab: {fileID: 100100000, guid: 2eced75390b331b49a9ef8b71e79c60c, type: 3}
 --- !u!4 &1498519028 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7977766577769436691, guid: 2eced75390b331b49a9ef8b71e79c60c, type: 3}
   m_PrefabInstance: {fileID: 1498519027}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1498519033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 777540124}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3aee4c847a4a35b338b04b6f5f4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UltrasoundTarget
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1501143546
 GameObject:
   m_ObjectHideFlags: 0
@@ -43194,7 +43507,19 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: -7160182930604389130, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: -208595431880416365, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 718722308}
+    - targetCorrespondingSourceObject: {fileID: 281855664364225751, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 987154551}
+    - targetCorrespondingSourceObject: {fileID: -2045257923548263128, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1241746246}
+    - targetCorrespondingSourceObject: {fileID: 6977446370728200439, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 599151407}
   m_SourcePrefab: {fileID: 100100000, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
 --- !u!4 &1531960857 stripped
 Transform:
@@ -43651,6 +43976,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1540440818}
   m_Mesh: {fileID: 8514450214155909700, guid: 92e0ccafc69611f4ba1055859db2b3be, type: 3}
+--- !u!1 &1547873845 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -7160182930604389130, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+  m_PrefabInstance: {fileID: 1573558424}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1547873849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547873845}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3aee4c847a4a35b338b04b6f5f4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UltrasoundTarget
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1551155757
 GameObject:
   m_ObjectHideFlags: 0
@@ -44204,7 +44547,8 @@ GameObject:
   - component: {fileID: 1565384879}
   - component: {fileID: 1565384878}
   - component: {fileID: 1565384877}
-  m_Layer: 0
+  - component: {fileID: 1565384882}
+  m_Layer: 8
   m_Name: DeathZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44317,6 +44661,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1565384882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1565384876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3aee4c847a4a35b338b04b6f5f4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UltrasoundTarget
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1565701172
 GameObject:
   m_ObjectHideFlags: 0
@@ -44553,6 +44910,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 8.8
       objectReference: {fileID: 0}
+    - target: {fileID: -7160182930604389130, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: -3274006528333456403, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
       propertyPath: m_LocalScale.x
       value: 4
@@ -44593,6 +44954,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.y
       value: -77.44
       objectReference: {fileID: 0}
+    - target: {fileID: -2045257923548263128, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: -1554615907254867986, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.28
@@ -44620,6 +44985,14 @@ PrefabInstance:
     - target: {fileID: -208595431880416365, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
       propertyPath: m_Name
       value: Baum
+      objectReference: {fileID: 0}
+    - target: {fileID: -208595431880416365, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 281855664364225751, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 508474063054522366, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
       propertyPath: m_LocalPosition.x
@@ -44682,7 +45055,28 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1464158874}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: -7160182930604389130, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1547873849}
+    - targetCorrespondingSourceObject: {fileID: -208595431880416365, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1135925634}
+    - targetCorrespondingSourceObject: {fileID: 281855664364225751, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1435899504}
+    - targetCorrespondingSourceObject: {fileID: -2045257923548263128, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 19643994}
+    - targetCorrespondingSourceObject: {fileID: 6977446370728200439, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2099011263}
+    - targetCorrespondingSourceObject: {fileID: -1438366461132366823, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1635707205}
+    - targetCorrespondingSourceObject: {fileID: -7350756997583522567, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1843868130}
   m_SourcePrefab: {fileID: 100100000, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
 --- !u!4 &1573558425 stripped
 Transform:
@@ -46538,6 +46932,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1635115711}
   m_Mesh: {fileID: 8514450214155909700, guid: 92e0ccafc69611f4ba1055859db2b3be, type: 3}
+--- !u!1 &1635707201 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -1438366461132366823, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+  m_PrefabInstance: {fileID: 1573558424}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1635707205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1635707201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3aee4c847a4a35b338b04b6f5f4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UltrasoundTarget
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1636937641
 GameObject:
   m_ObjectHideFlags: 0
@@ -47321,12 +47733,28 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1308df68a95b5db458c9a4385474c800, type: 3}
       insertIndex: -1
       addedObject: {fileID: 462450034}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1308df68a95b5db458c9a4385474c800, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1686024840}
   m_SourcePrefab: {fileID: 100100000, guid: 1308df68a95b5db458c9a4385474c800, type: 3}
 --- !u!4 &1686024837 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 1308df68a95b5db458c9a4385474c800, type: 3}
   m_PrefabInstance: {fileID: 1686024836}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1686024840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 462450030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f945a4eaeee748e9916f3936b6788b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CaveEchoSurface
+  highlightColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
 --- !u!1 &1686756890
 GameObject:
   m_ObjectHideFlags: 0
@@ -47777,6 +48205,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1703192766}
   m_Mesh: {fileID: 8514450214155909700, guid: 92e0ccafc69611f4ba1055859db2b3be, type: 3}
+--- !u!1 &1703354855 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8101503825897858836, guid: 3e87782b585a11b4284c44888aad6446, type: 3}
+  m_PrefabInstance: {fileID: 2024268543}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1707109953
 GameObject:
   m_ObjectHideFlags: 0
@@ -52150,6 +52583,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1843346503}
   m_Mesh: {fileID: 8514450214155909700, guid: 92e0ccafc69611f4ba1055859db2b3be, type: 3}
+--- !u!1 &1843868126 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -7350756997583522567, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+  m_PrefabInstance: {fileID: 1573558424}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1843868130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843868126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3aee4c847a4a35b338b04b6f5f4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UltrasoundTarget
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1844770283
 GameObject:
   m_ObjectHideFlags: 0
@@ -54491,6 +54942,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1910835610}
   m_Mesh: {fileID: 8514450214155909700, guid: 92e0ccafc69611f4ba1055859db2b3be, type: 3}
+--- !u!1 &1913445795 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8101503825897858836, guid: 2eced75390b331b49a9ef8b71e79c60c, type: 3}
+  m_PrefabInstance: {fileID: 2022986421}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1918152662
 GameObject:
   m_ObjectHideFlags: 0
@@ -56029,6 +56485,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1410996481}
     m_Modifications:
+    - target: {fileID: 6423974531885568308, guid: bf8ac53578cfcba4cbba92a9deae6231, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6423974531885568308, guid: bf8ac53578cfcba4cbba92a9deae6231, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1b9daebd10217746bbbfda9ab5760416, type: 2}
+    - target: {fileID: 6423974531885568308, guid: bf8ac53578cfcba4cbba92a9deae6231, type: 3}
+      propertyPath: 'm_Materials.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1b9daebd10217746bbbfda9ab5760416, type: 2}
     - target: {fileID: 7977766577769436691, guid: bf8ac53578cfcba4cbba92a9deae6231, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.1687987
@@ -56073,6 +56541,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fly
       objectReference: {fileID: 0}
+    - target: {fileID: 8101503825897858836, guid: bf8ac53578cfcba4cbba92a9deae6231, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8877302441190947088, guid: bf8ac53578cfcba4cbba92a9deae6231, type: 3}
       propertyPath: givesUpgrade
       value: 0
@@ -56080,13 +56552,29 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8101503825897858836, guid: bf8ac53578cfcba4cbba92a9deae6231, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1979868652}
   m_SourcePrefab: {fileID: 100100000, guid: bf8ac53578cfcba4cbba92a9deae6231, type: 3}
 --- !u!4 &1979868647 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7977766577769436691, guid: bf8ac53578cfcba4cbba92a9deae6231, type: 3}
   m_PrefabInstance: {fileID: 1979868646}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1979868652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 338881924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3aee4c847a4a35b338b04b6f5f4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UltrasoundTarget
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1984430837
 GameObject:
   m_ObjectHideFlags: 0
@@ -57853,16 +58341,36 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fly Poised 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8101503825897858836, guid: 2eced75390b331b49a9ef8b71e79c60c, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8101503825897858836, guid: 2eced75390b331b49a9ef8b71e79c60c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2022986427}
   m_SourcePrefab: {fileID: 100100000, guid: 2eced75390b331b49a9ef8b71e79c60c, type: 3}
 --- !u!4 &2022986422 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7977766577769436691, guid: 2eced75390b331b49a9ef8b71e79c60c, type: 3}
   m_PrefabInstance: {fileID: 2022986421}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2022986427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1913445795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3aee4c847a4a35b338b04b6f5f4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UltrasoundTarget
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &2023655669
 GameObject:
   m_ObjectHideFlags: 0
@@ -58005,6 +58513,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fly special 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8101503825897858836, guid: 3e87782b585a11b4284c44888aad6446, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8877302441190947088, guid: 3e87782b585a11b4284c44888aad6446, type: 3}
       propertyPath: givesUpgrade
       value: 3
@@ -58012,13 +58524,29 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8101503825897858836, guid: 3e87782b585a11b4284c44888aad6446, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2024268549}
   m_SourcePrefab: {fileID: 100100000, guid: 3e87782b585a11b4284c44888aad6446, type: 3}
 --- !u!4 &2024268544 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7977766577769436691, guid: 3e87782b585a11b4284c44888aad6446, type: 3}
   m_PrefabInstance: {fileID: 2024268543}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2024268549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1703354855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3aee4c847a4a35b338b04b6f5f4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UltrasoundTarget
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &2028528789
 GameObject:
   m_ObjectHideFlags: 0
@@ -58289,6 +58817,30 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2031243278}
   m_Mesh: {fileID: 8514450214155909700, guid: 92e0ccafc69611f4ba1055859db2b3be, type: 3}
+--- !u!1 &2033150773 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4584356337258173597, guid: 4bb8f74f8170091449aedafe306d5d40, type: 3}
+  m_PrefabInstance: {fileID: 105681832}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2033150778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2033150773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb6d8899a90b5496d9e3c0f28147d86a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UltrasoundSense
+  radius: 20
+  detectableLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  highlightMaterial: {fileID: 2100000, guid: 1b9daebd10217746bbbfda9ab5760416, type: 2}
+  highlightTime: 1.5
+  seismicVolume: {fileID: 763091526}
 --- !u!1 &2046794109
 GameObject:
   m_ObjectHideFlags: 0
@@ -58793,6 +59345,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Fly special
       objectReference: {fileID: 0}
+    - target: {fileID: 8101503825897858836, guid: 3e87782b585a11b4284c44888aad6446, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 8877302441190947088, guid: 3e87782b585a11b4284c44888aad6446, type: 3}
       propertyPath: givesUpgrade
       value: 1
@@ -58800,13 +59356,29 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8101503825897858836, guid: 3e87782b585a11b4284c44888aad6446, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2058065508}
   m_SourcePrefab: {fileID: 100100000, guid: 3e87782b585a11b4284c44888aad6446, type: 3}
 --- !u!4 &2058065503 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7977766577769436691, guid: 3e87782b585a11b4284c44888aad6446, type: 3}
   m_PrefabInstance: {fileID: 2058065502}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2058065508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1231506976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3aee4c847a4a35b338b04b6f5f4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UltrasoundTarget
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &2062046929
 GameObject:
   m_ObjectHideFlags: 0
@@ -59617,6 +60189,24 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2094075811}
   m_Mesh: {fileID: 8514450214155909700, guid: 92e0ccafc69611f4ba1055859db2b3be, type: 3}
+--- !u!1 &2099011259 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6977446370728200439, guid: 4416641d1cc0f6e4bb1859a199ba72ed, type: 3}
+  m_PrefabInstance: {fileID: 1573558424}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2099011263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099011259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ac3aee4c847a4a35b338b04b6f5f4ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UltrasoundTarget
+  highlightColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &2106159721
 GameObject:
   m_ObjectHideFlags: 0
@@ -117113,3 +117703,4 @@ SceneRoots:
   - {fileID: 821857935}
   - {fileID: 1565384881}
   - {fileID: 3402577391939493496}
+  - {fileID: 763091527}
