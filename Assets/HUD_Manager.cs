@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using System.Collections; // Wichtig für den Timer (IEnumerator)
+using System.Collections;
 
 public class HUDManager : MonoBehaviour
 {
@@ -16,28 +16,61 @@ public class HUDManager : MonoBehaviour
     public GameObject nightVisionButtonObject; 
 
     [Header("Benachrichtigungen")]
-    public TextMeshProUGUI notificationText; // Hier kommt dein neuer Text rein
+    public TextMeshProUGUI notificationText;
+
+    private bool nachtsichtIstAktiv = false;
 
     void Start()
+{
+    // Das sorgt dafür, dass der Button beim Start rigoros deaktiviert wird
+    if (nightVisionButtonObject != null)
     {
         nightVisionButtonObject.SetActive(false);
-        notificationText.gameObject.SetActive(false); // Text ist am Anfang aus
+    }
+    
+    if (notificationText != null)
+    {
+        notificationText.gameObject.SetActive(false);
+    }
+}
+
+    // Die Update-Methode bleibt leer, damit das alte Input-System keine Fehler wirft!
+    void Update()
+    {
+        // Hier drin fragen wir nichts mehr ab
     }
 
-    // Diese Funktion wird aufgerufen, um die Nachtsicht freizuschalten
+    // DIESE Funktion ist die perfekte Schnittstelle für deine Kollegen und das VR-System!
+    public void TriggerNachtsichtLogik()
+    {
+        // Wir zwingen den Button aktiv zu werden, falls er noch unsichtbar war
+        nightVisionButtonObject.SetActive(true); 
+
+        nachtsichtIstAktiv = !nachtsichtIstAktiv;
+
+        if (nachtsichtIstAktiv)
+        {
+            AktiviereSinn("Nachtsicht");
+            Debug.Log("Nachtsicht-Effekt eingeschaltet!");
+        }
+        else
+        {
+            nightVisionOutline.enabled = false;
+            Debug.Log("Nachtsicht-Effekt ausgeschaltet!");
+        }
+    }
+
     public void SchalteNachtsichtFrei()
     {
         nightVisionButtonObject.SetActive(true);
-        // Startet den 2-Sekunden-Timer für den Text
         StartCoroutine(ZeigeNotificationFuerZeit());
     }
 
-    // Das ist der Timer (Coroutine)
     private IEnumerator ZeigeNotificationFuerZeit()
     {
-        notificationText.gameObject.SetActive(true);  // Text einblenden
-        yield return new WaitForSeconds(2.0f);        // Exakt 2 Sekunden warten
-        notificationText.gameObject.SetActive(false); // Text wieder ausblenden
+        notificationText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(2.0f);
+        notificationText.gameObject.SetActive(false);
     }
 
     public void FledermausGejagt()

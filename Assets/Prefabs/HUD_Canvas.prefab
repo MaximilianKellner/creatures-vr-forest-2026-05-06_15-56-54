@@ -257,6 +257,8 @@ MonoBehaviour:
   missionText: {fileID: 7198837435900585919}
   nightVisionOutline: {fileID: 5601301588154853102}
   sonarOutline: {fileID: 6589157340688532603}
+  nightVisionButtonObject: {fileID: 6600042387288617610}
+  notificationText: {fileID: 0}
 --- !u!1 &3107267931797434156
 GameObject:
   m_ObjectHideFlags: 0
