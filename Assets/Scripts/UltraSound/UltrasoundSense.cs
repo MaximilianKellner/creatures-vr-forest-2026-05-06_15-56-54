@@ -1,122 +1,135 @@
-using UnityEngine;
 using System.Collections;
-using UnityEngine.Rendering;
-using UnityEngine.InputSystem;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
 public class UltrasoundSense : MonoBehaviour
 {
-    public float radius = 20000f;
-    public LayerMask detectableLayer;
+    public float radius = 50000000f;
     public Material highlightMaterial;
     public float highlightTime = 1.5f;
     public Volume seismicVolume;
-    private Dictionary<Renderer, Material[]> originalMaterials = new Dictionary<Renderer, Material[]>();
 
     private bool isActive = false;
 
-    void Update()
+    private Dictionary<Renderer, Material[]> originalMaterials =
+        new Dictionary<Renderer, Material[]>();
+
+    private void Update()
     {
         if (Keyboard.current.qKey.wasPressedThisFrame && !isActive)
         {
-            ActivateUltrasound();
+            StartCoroutine(UltrasoundRoutine());
         }
     }
 
-    public void ActivateUltrasound()
+    private IEnumerator UltrasoundRoutine()
     {
         isActive = true;
 
-        seismicVolume.weight = 1;
+        if (seismicVolume != null)
+            seismicVolume.weight = 1;
 
-        Collider[] hits = Physics.OverlapSphere(
-            transform.position,
-            radius,
-            detectableLayer);
+        float timer = 0f;
 
-        Debug.Log("Treffer: " + hits.Length);
-
-        foreach (Collider hit in hits)
+        while (timer < highlightTime)
         {
-            Debug.Log("Gefundener Collider: " + hit.name);
+            UpdateTargets();
+
+            timer += Time.deltaTime;
+            yield return null;
         }
 
-        foreach (Collider hit in hits)
-        {
-            UltrasoundTarget target =
-                hit.GetComponentInParent<UltrasoundTarget>();
+        ResetAllTargets();
 
-            CaveEchoSurface cave =
-                hit.GetComponentInParent<CaveEchoSurface>();
+        if (seismicVolume != null)
+            seismicVolume.weight = 0;
 
-            if (target != null)
-            {
-                Debug.Log("Target gefunden: " + target.name);
-
-                Renderer[] renderers =
-                    target.GetComponentsInChildren<Renderer>();
-
-                foreach (Renderer r in renderers)
-                {
-                    StartCoroutine(HighlightTarget(r));
-                }
-            }
-
-            if (cave != null)
-            {
-                Renderer[] renderers =
-                    cave.GetComponentsInChildren<Renderer>();
-
-                foreach (Renderer r in renderers)
-                {
-                    StartCoroutine(HighlightCave(r));
-                }
-            }
-        }
-        
-        StartCoroutine(DisableVision());
-
+        isActive = false;
     }
 
-    IEnumerator HighlightTarget(Renderer renderer)
+    private void UpdateTargets()
     {
-        Material[] originalMaterials = renderer.sharedMaterials;
+        HashSet<Renderer> currentlyVisible = new HashSet<Renderer>();
 
-        Material[] newMaterials = new Material[originalMaterials.Length];
+        foreach (UltrasoundTarget target in UltrasoundTarget.All)
+        {
+            if (target == null)
+                continue;
+
+            float distance = Vector3.Distance(transform.position, target.transform.position);
+
+            if (distance > radius)
+                continue;
+
+            Renderer[] renderers = target.GetComponentsInChildren<Renderer>();
+
+            foreach (Renderer r in renderers)
+            {
+                currentlyVisible.Add(r);
+
+                if (!originalMaterials.ContainsKey(r))
+                {
+                    originalMaterials[r] = r.sharedMaterials;
+                }
+
+                float brightness = 1f - Mathf.Clamp01(distance / radius);
+                brightness = Mathf.Lerp(0.05f, 1f, brightness);
+
+                ApplyHighlight(r, brightness);
+            }
+        }
+
+        List<Renderer> toReset = new List<Renderer>();
+
+        foreach (Renderer r in originalMaterials.Keys)
+        {
+            if (!currentlyVisible.Contains(r))
+            {
+                toReset.Add(r);
+            }
+        }
+
+        foreach (Renderer r in toReset)
+        {
+            ResetRenderer(r);
+        }
+    }
+
+    private void ApplyHighlight(Renderer renderer, float brightness)
+    {
+        Material[] original = originalMaterials[renderer];
+        Material[] newMaterials = new Material[original.Length];
+
+        Color color = new Color(brightness, brightness, brightness, 1f);
 
         for (int i = 0; i < newMaterials.Length; i++)
         {
-            newMaterials[i] = highlightMaterial;
+            Material mat = new Material(highlightMaterial);
+            mat.color = color;
+            newMaterials[i] = mat;
         }
 
         renderer.sharedMaterials = newMaterials;
-
-        yield return new WaitForSeconds(highlightTime);
-
-        renderer.sharedMaterials = originalMaterials;
     }
 
-    IEnumerator HighlightCave(Renderer renderer)
+    private void ResetRenderer(Renderer renderer)
     {
-        MaterialPropertyBlock block = new MaterialPropertyBlock();
+        if (!originalMaterials.ContainsKey(renderer))
+            return;
 
-        renderer.GetPropertyBlock(block);
-
-        block.SetColor("_BaseColor", new Color(0.15f, 0.15f, 0.15f, 1f));
-        block.SetColor("_Color", new Color(0.15f, 0.15f, 0.15f, 1f));
-
-        renderer.SetPropertyBlock(block);
-
-        yield return new WaitForSeconds(highlightTime);
-
-        renderer.SetPropertyBlock(null);
+        renderer.sharedMaterials = originalMaterials[renderer];
+        originalMaterials.Remove(renderer);
     }
 
-    IEnumerator DisableVision()
+    private void ResetAllTargets()
     {
-        yield return new WaitForSeconds(highlightTime);
+        List<Renderer> renderers = new List<Renderer>(originalMaterials.Keys);
 
-        seismicVolume.weight = 0;
-        isActive = false;
+        foreach (Renderer r in renderers)
+        {
+            ResetRenderer(r);
+        }
     }
 }
