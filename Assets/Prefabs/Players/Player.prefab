@@ -297,6 +297,9 @@ GameObject:
   - component: {fileID: 4912719440939054673}
   - component: {fileID: 646243655710726396}
   - component: {fileID: 8348897109103787272}
+  - component: {fileID: -7761265728051693892}
+  - component: {fileID: 5547600307460113117}
+  - component: {fileID: 7462253000959589376}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -392,7 +395,8 @@ MonoBehaviour:
   maxDistance: 10
   collisionMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 128
+  tongueSpeedBonus: 10
 --- !u!114 &4912719440939054673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -432,6 +436,80 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CreatureSenses
   nightVisionVolume: {fileID: 0}
+--- !u!114 &-7761265728051693892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7016127780127911447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9debeb5f35c20740a769c9228ceb138, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EcholocationSense
+  needsUpgrade: 1
+  key: 16
+  playerPosition: {fileID: 6410833532625853128}
+  sonarRadius: 25
+  sonarVisibleTime: 2.5
+  cooldown: 3
+  sonarMask:
+    serializedVersion: 2
+    m_Bits: 128
+  wavePrefab: {fileID: 1976304677214206193, guid: 40ca38b44aa1edf499d9c462ac74f4a3, type: 3}
+  waveDuration: 2.5
+  waveHeightOffset: 0.05
+  sonarVolume: {fileID: 0}
+  volumeFadeSpeed: 5
+  sonarSound: {fileID: 0}
+--- !u!114 &5547600307460113117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7016127780127911447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e17715686b62c44c8c1195819d990ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScentSense
+  needsUpgrade: 1
+  key: 21
+  playerPosition: {fileID: 6410833532625853128}
+  linePrefab: {fileID: 9019469839676368443, guid: 106ae4114bc5e6844a8f0a20ac0f1f74, type: 3}
+  searchRadius: 40
+  preyMask:
+    serializedVersion: 2
+    m_Bits: 128
+  pathHeightOffset: 0.08
+  navMeshSampleDistance: 10
+  activeTime: 5
+  cooldown: 5
+  fadeOutTime: 1.2
+  lineWidth: 0.35
+  normalMaterial: {fileID: 2100000, guid: 11b24e553524f20469b0c3323ec36889, type: 2}
+  upgradeMaterial: {fileID: 2100000, guid: 2cede75aa0c6b694aacaa2fab3ac4a08, type: 2}
+  poisonMaterial: {fileID: 2100000, guid: 7aceb05c331424d4a99307ec6d4df5a5, type: 2}
+--- !u!114 &7462253000959589376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7016127780127911447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dc582c6ad040b94487455c16759ff2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HearingSense
+  needsUpgrade: 1
+  key: 22
+  audioMixer: {fileID: 24100000, guid: 633d6def73a7f5e41b2c7bbade668118, type: 2}
+  volumeParameter: WorldVolume
+  normalVolume: -18
+  hearingVolume: 0
 --- !u!1 &7124845941672037646
 GameObject:
   m_ObjectHideFlags: 0
