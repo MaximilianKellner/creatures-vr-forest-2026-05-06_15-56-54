@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 404181333172595768}
   - component: {fileID: 3676168279832432204}
   - component: {fileID: 2251593089107350863}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: EnemyBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123,7 +123,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8149135861238078282}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: EnemyTongueTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,7 +156,9 @@ GameObject:
   - component: {fileID: 6410833532625853128}
   - component: {fileID: 7895280212644067606}
   - component: {fileID: 3632527358959265807}
-  m_Layer: 0
+  - component: {fileID: 8471566367410625358}
+  - component: {fileID: 9198004306909404339}
+  m_Layer: 7
   m_Name: EnemyPlayer
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -232,6 +234,35 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &8471566367410625358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7016127780127911447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3dd52ea6708f3a4cb9c400b0ab057ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SonarTarget
+  renderers:
+  - {fileID: 3676168279832432204}
+  sonarMaterial: {fileID: -876546973899608171, guid: 68370a7996e0d24429d7aaf1e69b7619, type: 3}
+--- !u!114 &9198004306909404339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7016127780127911447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d7aea6d4e7d8c441aed99e19c5bc1ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScentTarget
+  scentType: 2
+  canBeTracked: 1
 --- !u!1 &7124845941672037646
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,7 +273,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1641182771834886966}
   - component: {fileID: 3004991234666553384}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: EnemyTongueOrigin
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -238,6 +238,8 @@ GameObject:
   - component: {fileID: 982868732477622406}
   - component: {fileID: 1544038072499057131}
   - component: {fileID: 1594419052160202014}
+  - component: {fileID: 2464401784330808357}
+  - component: {fileID: 6143788646487068394}
   m_Layer: 0
   m_Name: crab
   m_TagString: Untagged
@@ -358,11 +360,12 @@ MonoBehaviour:
   healAmount: 20
   givesUpgrade: 0
   upgradeLevel: 1
+  eatDistance: 1.2
   wanderRadius: 5
   wanderInterval: 3
   fleeDistance: 5
   fleeRadius: 4
-  player: {fileID: 6410833532625853128, guid: 4bb8f74f8170091449aedafe306d5d40, type: 3}
+  playerTarget: {fileID: 0}
 --- !u!65 &1594419052160202014
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -384,3 +387,32 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2464401784330808357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8101503825897858836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3dd52ea6708f3a4cb9c400b0ab057ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SonarTarget
+  renderers:
+  - {fileID: 6423974531885568308}
+  sonarMaterial: {fileID: -876546973899608171, guid: 68370a7996e0d24429d7aaf1e69b7619, type: 3}
+--- !u!114 &6143788646487068394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8101503825897858836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d7aea6d4e7d8c441aed99e19c5bc1ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScentTarget
+  scentType: 0
+  canBeTracked: 1

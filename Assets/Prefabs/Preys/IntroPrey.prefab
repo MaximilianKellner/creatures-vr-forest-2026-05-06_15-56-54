@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6423974531885568308}
   - component: {fileID: 1001843295390110867}
   - component: {fileID: 3854728758634077764}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: IntroPrey
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,3 +130,4 @@ MonoBehaviour:
   healAmount: 20
   givesUpgrade: 1
   upgradeLevel: 1
+  eatDistance: 1.2
