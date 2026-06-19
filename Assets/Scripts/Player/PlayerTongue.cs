@@ -15,16 +15,26 @@ public class PlayerTongue : MonoBehaviour
     [SerializeField] private float maxDistance = 20f;
     [SerializeField] private LayerMask collisionMask;
 
+    [Header("Upgrade")]
+    [SerializeField] private float tongueSpeedBonus = 10f;
+
+    private UpgradeSystem upgradeSystem;
     private bool isBusy;
 
     private void Awake()
     {
         lineRenderer.enabled = false;
+
+        upgradeSystem =
+            GetComponentInParent<UpgradeSystem>() ??
+            GetComponentInChildren<UpgradeSystem>();
     }
 
     private void Update()
     {
-        if (!isBusy && Mouse.current.leftButton.wasPressedThisFrame)
+        if (!isBusy &&
+            Mouse.current != null &&
+            Mouse.current.leftButton.wasPressedThisFrame)
         {
             TryShoot();
         }
@@ -46,20 +56,31 @@ public class PlayerTongue : MonoBehaviour
         lineRenderer.enabled = true;
         lineRenderer.positionCount = 2;
 
+        float currentSpeed = GetTongueSpeed();
+
         float t = 0f;
-        float distance = Vector3.Distance(tongueOrigin.position, targetPos);
+        float distance = Vector3.Distance(
+            tongueOrigin.position,
+            targetPos
+        );
 
         Prey hitPrey = null;
         bool hitObstacle = false;
 
+        // Zunge ausfahren
         while (t < 1f)
         {
-            t += Time.deltaTime * speed / distance;
+            t += Time.deltaTime * currentSpeed / distance;
 
             Vector3 start = tongueOrigin.position;
             Vector3 pos = Vector3.Lerp(start, targetPos, t);
 
-            if (Physics.Raycast(start, (pos - start).normalized, out RaycastHit hit, Vector3.Distance(start, pos), collisionMask))
+            if (Physics.Raycast(
+                start,
+                (pos - start).normalized,
+                out RaycastHit hit,
+                Vector3.Distance(start, pos),
+                collisionMask))
             {
                 if (hit.collider.TryGetComponent(out Prey prey))
                 {
@@ -79,18 +100,18 @@ public class PlayerTongue : MonoBehaviour
             yield return null;
         }
 
-        //  Wenn Beute getroffen wird
+        // Beute an Zunge befestigen
         if (!hitObstacle && hitPrey != null)
         {
-            hitPrey.AttachToTongue(tongueTip); //Dann heftet es an der Zunge
+            hitPrey.AttachToTongue(tongueTip);
         }
 
-        // zurückziehen
+        // Zunge zurückziehen
         float backT = 1f;
 
         while (backT > 0f)
         {
-            backT -= Time.deltaTime * speed / distance;
+            backT -= Time.deltaTime * currentSpeed / distance;
 
             Vector3 start = tongueOrigin.position;
             Vector3 pos = Vector3.Lerp(start, targetPos, backT);
@@ -104,6 +125,24 @@ public class PlayerTongue : MonoBehaviour
         lineRenderer.positionCount = 0;
         lineRenderer.enabled = false;
 
+        if (hitPrey != null)
+        {
+            hitPrey.AllowEat();
+        }
+
         isBusy = false;
+    }
+
+    private float GetTongueSpeed()
+    {
+        float currentSpeed = speed;
+
+        if (upgradeSystem != null &&
+            upgradeSystem.HasUpgrade(PreyGivesUpgrade.TongueSpeed))
+        {
+            currentSpeed += tongueSpeedBonus;
+        }
+
+        return currentSpeed;
     }
 }
