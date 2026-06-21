@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using UnityEngine.UI; // WICHTIG: Erlaubt uns die Steuerung des UI-Cooldown-Kreises
 
 public class ScentSense : MonoBehaviour
 {
@@ -35,6 +36,9 @@ public class ScentSense : MonoBehaviour
     [SerializeField] private Material upgradeMaterial;
     [SerializeField] private Material poisonMaterial;
 
+    [Header("UI Feedback")] // Hier fügst du den weißen Cooldown-Kreis für den Geruchssinn ein
+    [SerializeField] private Image cooldownOverlay;
+
     private UpgradeSystem upgradeSystem;
     private bool isOnCooldown;
     private readonly List<LineRenderer> activeLines = new List<LineRenderer>();
@@ -47,6 +51,10 @@ public class ScentSense : MonoBehaviour
 
         if (playerPosition == null)
             playerPosition = transform;
+
+        // Sicherstellen, dass der weiße Kreis am Anfang unsichtbar ist
+        if (cooldownOverlay != null) 
+            cooldownOverlay.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -58,7 +66,8 @@ public class ScentSense : MonoBehaviour
             TryUseScentSense();
     }
 
-    private void TryUseScentSense()
+    // Auf PUBLIC gesetzt, damit auch ein UI-Button diese Funktion auslösen kann
+    public void TryUseScentSense()
     {
         if (isOnCooldown)
         {
@@ -85,6 +94,7 @@ public class ScentSense : MonoBehaviour
 
         float timer = 0f;
 
+        // Fährten animieren und anzeigen während der aktiven Zeit
         while (timer < activeTime)
         {
             timer += Time.deltaTime;
@@ -95,11 +105,38 @@ public class ScentSense : MonoBehaviour
             yield return null;
         }
 
+        // Fährten sanft verblassen lassen
         yield return StartCoroutine(FadeOutLines());
 
+        // Alle Linien-Reste komplett löschen
         ClearLines();
 
-        yield return new WaitForSeconds(cooldown);
+        // --- AB HIER STARTET DER COOLDOWN ---
+        // Weißen Kreis sichtbar machen und voll ausfüllen
+        if (cooldownOverlay != null)
+        {
+            cooldownOverlay.gameObject.SetActive(true);
+            cooldownOverlay.fillAmount = 1f;
+        }
+
+        // Der Kreis läuft flüssig jede Frame als Uhr ab
+        float cooldownTimer = cooldown;
+        while (cooldownTimer > 0)
+        {
+            cooldownTimer -= Time.deltaTime; // Zieht die vergangene Zeit ab
+            
+            if (cooldownOverlay != null)
+            {
+                // Berechnet den Kreis-Fortschritt (zwischen 1.0 und 0.0)
+                cooldownOverlay.fillAmount = cooldownTimer / cooldown;
+            }
+            
+            yield return null; // Wartet bis zum nächsten Frame
+        }
+
+        // Cooldown vorbei: Kreis wieder unsichtbar machen
+        if (cooldownOverlay != null) 
+            cooldownOverlay.gameObject.SetActive(false);
 
         isOnCooldown = false;
 

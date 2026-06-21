@@ -2,10 +2,12 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
+using UnityEngine.UI; // WICHTIG: Ermöglicht die Steuerung des UI-Bildes
 
 public class SonarSense : MonoBehaviour
 {
     [Header("Upgrade")]
+    [Tooltip("Auf false stellen, um den Sonar-Sinn direkt ohne Beute-Upgrade zu testen!")]
     [SerializeField] private bool needsUpgrade = true;
 
     [Header("Input")]
@@ -31,6 +33,10 @@ public class SonarSense : MonoBehaviour
     [Header("Sound Optional")]
     [SerializeField] private AudioSource sonarSound;
 
+    [Header("UI Feedback")]
+    [Tooltip("Ziehe hier das Cooldown_overlay für den Sonar-Button hinein")]
+    [SerializeField] private Image cooldownOverlay;
+
     private UpgradeSystem upgradeSystem;
     private bool isOnCooldown;
     private Coroutine volumeRoutine;
@@ -46,6 +52,10 @@ public class SonarSense : MonoBehaviour
 
         if (sonarVolume != null)
             sonarVolume.weight = 0f;
+
+        // Sicherstellen, dass das Cooldown-Bild am Anfang unsichtbar ist
+        if (cooldownOverlay != null) 
+            cooldownOverlay.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -57,14 +67,17 @@ public class SonarSense : MonoBehaviour
             TryUseSonar();
     }
 
-    private void TryUseSonar()
+    // AUF PUBLIC GEÄNDERT: Damit der UI-Button diese Funktion direkt auslösen kann
+    public void TryUseSonar()
     {
         if (isOnCooldown)
+        {
+            Debug.Log("Ultraschall ist noch im Cooldown.");
             return;
+        }
 
         if (needsUpgrade &&
-            (upgradeSystem == null ||
-             !upgradeSystem.HasUpgrade(PreyGivesUpgrade.SonarSense)))
+            (upgradeSystem == null || !upgradeSystem.HasUpgrade(PreyGivesUpgrade.SonarSense)))
         {
             Debug.Log("Ultraschall noch nicht freigeschaltet.");
             return;
@@ -84,9 +97,34 @@ public class SonarSense : MonoBehaviour
         RevealTargets();
         StartVolumeEffect();
 
-        yield return new WaitForSeconds(cooldown);
+        // --- AB HIER STARTET DER VISUELLE COOLDOWN ---
+        // Overlay sichtbar machen und voll ausfüllen
+        if (cooldownOverlay != null)
+        {
+            cooldownOverlay.gameObject.SetActive(true);
+            cooldownOverlay.fillAmount = 1f;
+        }
+
+        // Der Kreis läuft flüssig jede Frame als Uhr ab (über die gesamte Cooldown-Dauer)
+        float cooldownTimer = cooldown;
+        while (cooldownTimer > 0)
+        {
+            cooldownTimer -= Time.deltaTime;
+            
+            if (cooldownOverlay != null)
+            {
+                cooldownOverlay.fillAmount = cooldownTimer / cooldown;
+            }
+            
+            yield return null; // Wartet bis zum nächsten Frame
+        }
+
+        // Cooldown vorbei: Kreis wieder unsichtbar machen
+        if (cooldownOverlay != null) 
+            cooldownOverlay.gameObject.SetActive(false);
 
         isOnCooldown = false;
+        Debug.Log("Ultraschall wieder bereit.");
     }
 
     private void SpawnWave()

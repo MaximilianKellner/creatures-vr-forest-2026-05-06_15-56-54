@@ -7,6 +7,9 @@ public class TutorialManager : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private CanvasGroup tutorialCanvasGroup;
     [SerializeField] private TMP_Text tutorialText;
+    
+    // NEU: Zuweisung des UI-Fensters, um die Skalierung (Breite) zu verändern
+    [SerializeField] private RectTransform tutorialWindowRect;
 
     [Header("Animation")]
     [SerializeField] private float fadeDuration = 0.4f;
@@ -19,6 +22,14 @@ public class TutorialManager : MonoBehaviour
         {
             tutorialCanvasGroup.alpha = 0f;
             tutorialCanvasGroup.gameObject.SetActive(false);
+        }
+
+        // NEU: Zu Beginn das Fenster komplett von rechts nach links zusammenschieben
+        if (tutorialWindowRect != null)
+        {
+            Vector3 scale = tutorialWindowRect.localScale;
+            scale.x = 0f;
+            tutorialWindowRect.localScale = scale;
         }
     }
 
@@ -64,7 +75,8 @@ public class TutorialManager : MonoBehaviour
         tutorialCanvasGroup.gameObject.SetActive(true);
         tutorialText.text = message;
 
-        yield return FadeTo(1f);
+        // NEU: Faded auf Alpha 1 und klappt die Skalierung auf X = 1 auf
+        yield return AnimateWindow(1f, 1f);
 
         currentTutorialRoutine = null;
     }
@@ -77,11 +89,13 @@ public class TutorialManager : MonoBehaviour
         tutorialCanvasGroup.gameObject.SetActive(true);
         tutorialText.text = message;
 
-        yield return FadeTo(1f);
+        // NEU: Aufklappen und Einblenden
+        yield return AnimateWindow(1f, 1f);
 
         yield return new WaitForSeconds(duration);
 
-        yield return FadeTo(0f);
+        // NEU: Zuklappen und Ausblenden
+        yield return AnimateWindow(0f, 0f);
 
         tutorialCanvasGroup.gameObject.SetActive(false);
         currentTutorialRoutine = null;
@@ -92,30 +106,46 @@ public class TutorialManager : MonoBehaviour
         if (tutorialCanvasGroup == null)
             yield break;
 
-        yield return FadeTo(0f);
+        // NEU: Zuklappen und Ausblenden
+        yield return AnimateWindow(0f, 0f);
 
         tutorialCanvasGroup.gameObject.SetActive(false);
         currentTutorialRoutine = null;
     }
 
-    private IEnumerator FadeTo(float targetAlpha)
+    // NEU: Diese Methode ersetzt das alte FadeTo und steuert Alpha + Scale gleichzeitig
+    private IEnumerator AnimateWindow(float targetAlpha, float targetScaleX)
     {
         float startAlpha = tutorialCanvasGroup.alpha;
+        float startScaleX = tutorialWindowRect != null ? tutorialWindowRect.localScale.x : 0f;
         float timer = 0f;
 
         while (timer < fadeDuration)
         {
             timer += Time.deltaTime;
+            float progress = timer / fadeDuration;
 
-            tutorialCanvasGroup.alpha = Mathf.Lerp(
-                startAlpha,
-                targetAlpha,
-                timer / fadeDuration
-            );
+            // Transparenz faden
+            tutorialCanvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, progress);
+
+            // X-Skalierung verändern
+            if (tutorialWindowRect != null)
+            {
+                Vector3 currentScale = tutorialWindowRect.localScale;
+                currentScale.x = Mathf.Lerp(startScaleX, targetScaleX, progress);
+                tutorialWindowRect.localScale = currentScale;
+            }
 
             yield return null;
         }
 
+        // Exakte Endwerte setzen
         tutorialCanvasGroup.alpha = targetAlpha;
+        if (tutorialWindowRect != null)
+        {
+            Vector3 finalScale = tutorialWindowRect.localScale;
+            finalScale.x = targetScaleX;
+            tutorialWindowRect.localScale = finalScale;
+        }
     }
 }

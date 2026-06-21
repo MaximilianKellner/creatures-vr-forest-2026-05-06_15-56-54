@@ -479,7 +479,8 @@ MonoBehaviour:
   key: 21
   playerPosition: {fileID: 6410833532625853128}
   linePrefab: {fileID: 9019469839676368443, guid: 106ae4114bc5e6844a8f0a20ac0f1f74, type: 3}
-  searchRadius: 40
+  scentCooldownOverlay: {fileID: 0}
+  searchRadius: -0.3
   preyMask:
     serializedVersion: 2
     m_Bits: 128
@@ -510,6 +511,8 @@ MonoBehaviour:
   volumeParameter: WorldVolume
   normalVolume: -18
   hearingVolume: 0
+  hearingDuration: 5
+  cooldown: 10
 --- !u!1 &7124845941672037646
 GameObject:
   m_ObjectHideFlags: 0
