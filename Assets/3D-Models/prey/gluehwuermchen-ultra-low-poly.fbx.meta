@@ -1,34 +1,9 @@
 fileFormatVersion: 2
-guid: 1308df68a95b5db458c9a4385474c800
+guid: 48195110313c0da4e85e20a3abc7a6a4
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Wasser
-    second: {fileID: 2100000, guid: a7a6feb0c5943d24191cc0eaa940cc94, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: moss
-    second: {fileID: 2100000, guid: 32237201a8d4fcf45b9c0e8ac0e3005f, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: rock
-    second: {fileID: 2100000, guid: c3bc56c3494e1d34099cc89243545f33, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: stalaktit
-    second: {fileID: 2100000, guid: 7ceb14ace6ac9cf4388a2222d733c126, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: wasserfall
-    second: {fileID: 2100000, guid: 05ab3785848749e4983c97075a11c46c, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0

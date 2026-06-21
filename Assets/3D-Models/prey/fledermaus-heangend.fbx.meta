@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 1308df68a95b5db458c9a4385474c800
+guid: 18e762d5912a4064a99bce23272521d6
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -7,28 +7,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Wasser
-    second: {fileID: 2100000, guid: a7a6feb0c5943d24191cc0eaa940cc94, type: 2}
+      name: bat-body
+    second: {fileID: 2100000, guid: bb7ad1c6d4911b14ca957b7b2c58f146, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: moss
-    second: {fileID: 2100000, guid: 32237201a8d4fcf45b9c0e8ac0e3005f, type: 2}
+      name: bat-wing
+    second: {fileID: 2100000, guid: 76f838c8fee8f484d9c3252870301ffd, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: rock
-    second: {fileID: 2100000, guid: c3bc56c3494e1d34099cc89243545f33, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: stalaktit
-    second: {fileID: 2100000, guid: 7ceb14ace6ac9cf4388a2222d733c126, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: wasserfall
-    second: {fileID: 2100000, guid: 05ab3785848749e4983c97075a11c46c, type: 2}
+      name: schwarz
+    second: {fileID: 2100000, guid: a84cdf7c63e7f744f84b1c950490f15c, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
