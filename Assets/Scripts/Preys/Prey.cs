@@ -17,7 +17,11 @@ public abstract class Prey : MonoBehaviour
     [SerializeField] private PreyGivesUpgrade givesUpgrade = PreyGivesUpgrade.None;
     [SerializeField] private int upgradeLevel = 1;
 
+    [Header("Eat Settings")]
+    [SerializeField] private float eatDistance = 1.2f;
+
     private bool isCaptured;
+    private bool canBeEaten;
     private Transform followTarget;
     private Transform player;
 
@@ -39,6 +43,9 @@ public abstract class Prey : MonoBehaviour
 
         if (upgradeLevel < 1)
             upgradeLevel = 1;
+
+        if (eatDistance < 0.1f)
+            eatDistance = 0.1f;
     }
 
     protected virtual void Update()
@@ -46,7 +53,10 @@ public abstract class Prey : MonoBehaviour
         if (isCaptured)
         {
             FollowTongue();
-            CheckAutoEat();
+
+            if (canBeEaten)
+                CheckAutoEat();
+
             return;
         }
 
@@ -60,14 +70,26 @@ public abstract class Prey : MonoBehaviour
         if (isCaptured) return;
 
         isCaptured = true;
+        canBeEaten = false;
         followTarget = tongueTarget;
         player = tongueTarget.root;
 
         if (TryGetComponent(out Rigidbody rb))
+        {
             rb.isKinematic = true;
+            rb.useGravity = false;
+        }
 
         if (TryGetComponent(out Collider col))
-            col.enabled = false;
+        {
+            col.enabled = true;
+            col.isTrigger = true;
+        }
+    }
+
+    public void AllowEat()
+    {
+        canBeEaten = true;
     }
 
     private void FollowTongue()
@@ -85,34 +107,68 @@ public abstract class Prey : MonoBehaviour
     {
         if (player == null) return;
 
-        if (Vector3.Distance(transform.position, player.position) < 0.5f)
+        Vector3 closestPoint = transform.position;
+
+        CharacterController controller =
+            player.GetComponentInParent<CharacterController>() ??
+            player.GetComponentInChildren<CharacterController>();
+
+        if (controller != null)
         {
-            PlayerHealth health =
-                player.GetComponentInParent<PlayerHealth>() ??
-                player.GetComponentInChildren<PlayerHealth>();
-
-            if (health != null)
-            {
-                if (preyType == PreyType.Poison)
-                {
-                    health.TakeDamage(damage);
-                }
-                else if (preyType == PreyType.Normal)
-                {
-                    health.Heal(healAmount);
-                }
-            }
-
-            UpgradeSystem upgradeSystem =
-                player.GetComponentInParent<UpgradeSystem>() ??
-                player.GetComponentInChildren<UpgradeSystem>();
-
-            if (upgradeSystem != null)
-            {
-                upgradeSystem.UnlockUpgrade(givesUpgrade, upgradeLevel);
-            }
-
-            Destroy(gameObject);
+            closestPoint = controller.ClosestPoint(transform.position);
         }
+
+        float distance = Vector3.Distance(transform.position, closestPoint);
+
+        if (distance <= eatDistance)
+        {
+            Eat();
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!isCaptured || !canBeEaten)
+            return;
+
+        if (other.CompareTag("Player") || other.GetComponentInParent<PlayerHealth>() != null)
+        {
+            Eat();
+        }
+    }
+
+    private void Eat()
+    {
+        if (player == null) return;
+
+        PlayerHealth health =
+            player.GetComponentInParent<PlayerHealth>() ??
+            player.GetComponentInChildren<PlayerHealth>();
+
+        if (health != null)
+        {
+            if (preyType == PreyType.Poison)
+                health.TakeDamage(damage);
+            else
+                health.Heal(healAmount);
+        }
+
+        UpgradeSystem upgradeSystem =
+            player.GetComponentInParent<UpgradeSystem>() ??
+            player.GetComponentInChildren<UpgradeSystem>();
+
+        if (upgradeSystem != null)
+        {
+            upgradeSystem.UnlockUpgrade(givesUpgrade, upgradeLevel);
+        }
+        
+        MissionTarget missionTarget = GetComponent<MissionTarget>();
+
+        if (missionTarget != null)
+        {
+            MissionManager.ReportTargetCollected(missionTarget.TargetId);
+        }
+        
+        Destroy(gameObject);
     }
 }
