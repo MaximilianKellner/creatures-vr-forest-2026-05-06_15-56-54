@@ -31,11 +31,11 @@ public class CreatureSenses : MonoBehaviour
                 return;
             }
 
-            ToggleNightVision();
+            ToggleNightVisionVR();
         }
     }
 
-    private void ToggleNightVision()
+    public void ToggleNightVisionVR()
     {
         isNightVisionActive = !isNightVisionActive;
 

@@ -26,11 +26,11 @@ public class PlayerTongue : MonoBehaviour
     {
         if (!isBusy && Mouse.current.leftButton.wasPressedThisFrame)
         {
-            TryShoot();
+            TryShootVR();
         }
     }
 
-    private void TryShoot()
+    public void TryShootVR()
     {
         Vector3 targetPos =
             playerCamera.transform.position +

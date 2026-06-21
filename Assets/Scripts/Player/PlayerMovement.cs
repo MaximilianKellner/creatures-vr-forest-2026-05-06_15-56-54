@@ -34,6 +34,19 @@ public class PlayerMovement : MonoBehaviour
     private UpgradeSystem upgradeSystem;
     private bool canMove = true;
 
+    private Vector2 vrMoveInput;
+    private bool vrJumpRequested;
+
+    public void SetVRMoveInput(Vector2 input)
+    {
+        vrMoveInput = input;
+    }
+
+    public void RequestVRJump()
+    {
+        vrJumpRequested = true;
+    }
+
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -87,16 +100,33 @@ public class PlayerMovement : MonoBehaviour
             : (wantsToSprint ? currentRunSpeed : currentWalkSpeed);
 
         // 2. Richtung auslesen (WASD / Pfeiltasten)
-        float moveVertical = (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed ? 1f : 0f) - (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed ? 1f : 0f);
-        float moveHorizontal = (keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed ? 1f : 0f) - (keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed ? 1f : 0f);
+        float moveVertical = vrMoveInput.y;
+        float moveHorizontal = vrMoveInput.x;
+
+        if (Keyboard.current != null)
+        {
+            moveVertical += (keyboard.wKey.isPressed || keyboard.upArrowKey.isPressed ? 1f : 0f)
+                          - (keyboard.sKey.isPressed || keyboard.downArrowKey.isPressed ? 1f : 0f);
+
+            moveHorizontal += (keyboard.dKey.isPressed || keyboard.rightArrowKey.isPressed ? 1f : 0f)
+                            - (keyboard.aKey.isPressed || keyboard.leftArrowKey.isPressed ? 1f : 0f);
+        }
+
+        moveVertical = Mathf.Clamp(moveVertical, -1f, 1f);
+        moveHorizontal = Mathf.Clamp(moveHorizontal, -1f, 1f);
 
         // 3. Bewegungs-Vektor berechnen
         float lastY = moveDirection.y;
         moveDirection = canMove ? (transform.forward * moveVertical + transform.right * moveHorizontal) * speed : Vector3.zero;
         
         // 4. Springen & Gravitation
-        moveDirection.y = (keyboard.spaceKey.isPressed && canMove && characterController.isGrounded) ? currentJumpPower : lastY;
-        if (!characterController.isGrounded) moveDirection.y -= gravity * Time.deltaTime;
+        bool jumpPressed = keyboard.spaceKey.isPressed || vrJumpRequested;
+
+        moveDirection.y = (jumpPressed && canMove && characterController.isGrounded)
+            ? currentJumpPower
+            : lastY;
+
+        vrJumpRequested = false;
 
         // 5. Ausführen
         characterController.Move(moveDirection * Time.deltaTime);
