@@ -561,6 +561,10 @@ PrefabInstance:
       value: Night_Vision
       objectReference: {fileID: 0}
     - target: {fileID: 7120984939765292800, guid: ca2204c415257cf40a527950822f6659, type: 3}
+      propertyPath: missionText
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7120984939765292800, guid: ca2204c415257cf40a527950822f6659, type: 3}
       propertyPath: notificationText
       value: 
       objectReference: {fileID: 1833795338}
@@ -613,6 +617,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4476953515073182178, guid: ca2204c415257cf40a527950822f6659, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1833795340}
+    - targetCorrespondingSourceObject: {fileID: 4476953515073182178, guid: ca2204c415257cf40a527950822f6659, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1011688317}
     - targetCorrespondingSourceObject: {fileID: 5207426544200541938, guid: ca2204c415257cf40a527950822f6659, type: 3}
       insertIndex: 1
       addedObject: {fileID: 1369100987}
@@ -19345,6 +19352,99 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1011688316
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1011688317}
+  - component: {fileID: 1011688320}
+  - component: {fileID: 1011688319}
+  - component: {fileID: 1011688318}
+  m_Layer: 5
+  m_Name: TongueTutorialPopup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1011688317
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1011688316}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1655307741}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 192.50003, y: 127.99997}
+  m_SizeDelta: {x: 165, y: 175}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1011688318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1011688316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28829fda4566f9c43b763fe6211ca523, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TutorialPopup
+  tutorialImageObject: {fileID: 1011688316}
+  displayDuration: 5
+  pulseSpeed: 4
+  sizeDeviation: 0.15
+  alphaDeviation: 0.25
+--- !u!114 &1011688319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1011688316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.42745098}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 41495c7d910020445affc183feea1830, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1011688320
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1011688316}
+  m_CullTransparentMesh: 1
 --- !u!1 &1012222535
 GameObject:
   m_ObjectHideFlags: 0
