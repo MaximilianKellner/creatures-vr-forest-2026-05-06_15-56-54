@@ -1,0 +1,42 @@
+Hey, thank you so much for downloading my Triceratops!
+
+This is a beautiful scan Licenced under CC0 Public Domain that I found on Sketchfab made by The Smithsonian Institution.
+https://sketchfab.com/3d-models/triceratops-horridus-marsh-e9c507f179ed4455aac3b208c9e6c973
+
+I spent a couple of days cleaning and rigging the mesh to be able to animate it. 
+
+This asset contains 1 rigged, textured and animated Triceratops
+
+This project supports 3 render pipelines (Built-in, URP and HDRP), so I had to make some concessions and tidy up the project accordingly. Sorry for the inconvenience.
+
+Import:
+Check all the files you need and the correct pipeline folder. uncheck the two other pipeline folder to proprely import it
+
+Animation:
+This model is supplied with 6 animations:
+- Idle
+- Rise Up
+- Roar
+- Roar To walk transition
+- walk 
+- fall
+
+You can find all the animations directly inside the Triceratops fbx file contained in the "Meshes" folder
+I also added an animator example (Inside the "DemoAnimator" folder) that loops between all animations.
+
+Materials and textures:
+1 material made up of 4 textures (2048px):
+- Albedo
+- Ambient Occlusion
+- Metallic Smoothness
+- Normal map
+
+(plus the HDRP MaskMap)
+
+You will also find a demo scene featuring the Triceratops and the animator
+
+Thank you again, if you have any questions feel free to contact me by email or Instagram
+Zack
+
+zacxophone3d@gmail.com
+https://www.instagram.com/zacxophone_/

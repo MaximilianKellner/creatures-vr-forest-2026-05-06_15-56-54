@@ -65,6 +65,7 @@ public class PlayerTongue : MonoBehaviour
         );
 
         Prey hitPrey = null;
+        ThrowableObject hitThrowable = null; 
         bool hitObstacle = false;
 
         // Zunge ausfahren
@@ -75,6 +76,8 @@ public class PlayerTongue : MonoBehaviour
             Vector3 start = tongueOrigin.position;
             Vector3 pos = Vector3.Lerp(start, targetPos, t);
 
+            if(tongueTip != null) tongueTip.position = pos;
+
             if (Physics.Raycast(
                 start,
                 (pos - start).normalized,
@@ -82,10 +85,20 @@ public class PlayerTongue : MonoBehaviour
                 Vector3.Distance(start, pos),
                 collisionMask))
             {
+                // Fall 1: Beute getroffen
                 if (hit.collider.TryGetComponent(out Prey prey))
                 {
                     hitPrey = prey;
                 }
+                // Fall 2: Werfbares Objekt getroffen
+                else if (hit.collider.TryGetComponent(out ThrowableObject throwable))
+                {
+                    hitThrowable = throwable;
+                    hitObstacle = true;
+                    targetPos = hit.point;
+                    break;
+                }
+                // Fall 3: Normale Wand getroffen
                 else
                 {
                     hitObstacle = true;
@@ -100,10 +113,16 @@ public class PlayerTongue : MonoBehaviour
             yield return null;
         }
 
-        // Beute an Zunge befestigen
+        // Objekte an der Spitze befestigen
         if (!hitObstacle && hitPrey != null)
         {
             hitPrey.AttachToTongue(tongueTip);
+        }
+        else if (hitThrowable != null)
+        {
+            hitThrowable.transform.SetParent(tongueTip);
+            if(hitThrowable.GetComponent<Rigidbody>() != null) 
+                hitThrowable.GetComponent<Rigidbody>().isKinematic = true;
         }
 
         // Zunge zurückziehen
@@ -116,6 +135,8 @@ public class PlayerTongue : MonoBehaviour
             Vector3 start = tongueOrigin.position;
             Vector3 pos = Vector3.Lerp(start, targetPos, backT);
 
+            if(tongueTip != null) tongueTip.position = pos;
+
             lineRenderer.SetPosition(0, start);
             lineRenderer.SetPosition(1, pos);
 
@@ -125,9 +146,14 @@ public class PlayerTongue : MonoBehaviour
         lineRenderer.positionCount = 0;
         lineRenderer.enabled = false;
 
+        // Endstation: Essen oder Halten
         if (hitPrey != null)
         {
             hitPrey.AllowEat();
+        }
+        else if (hitThrowable != null)
+        {
+            hitThrowable.VonZungeGefangen(); 
         }
 
         isBusy = false;

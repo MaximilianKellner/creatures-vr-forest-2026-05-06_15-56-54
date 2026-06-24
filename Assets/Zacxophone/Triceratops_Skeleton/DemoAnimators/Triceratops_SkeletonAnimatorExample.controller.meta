@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 547c048439fdbc341abb4bddd670a353
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 338852
+  packageName: Animated triceratops skeleton
+  packageVersion: 1.0
+  assetPath: Assets/Zacxophone/Triceratops_Skeleton/DemoAnimators/Triceratops_SkeletonAnimatorExample.controller
+  uploadId: 802918
