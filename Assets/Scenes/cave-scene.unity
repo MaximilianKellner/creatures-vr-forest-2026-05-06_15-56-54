@@ -22407,8 +22407,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8348897109103787272, guid: 4bb8f74f8170091449aedafe306d5d40, type: 3}
       propertyPath: nightVisionVolume
-      value: 
+      value:
       objectReference: {fileID: 1685532702}
+    - target: {fileID: 506880262833144602, guid: 4bb8f74f8170091449aedafe306d5d40, type: 3}
+      propertyPath: playerCamera
+      value:
+      objectReference: {fileID: 1279344201}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
