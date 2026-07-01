@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class UpgradeSystem : MonoBehaviour
 {
+    [Header("UI")]
+    [SerializeField] private UpgradeNotificationUI upgradeNotificationUI;
+
     private Dictionary<PreyGivesUpgrade, int> upgrades = new Dictionary<PreyGivesUpgrade, int>();
 
     public void UnlockUpgrade(PreyGivesUpgrade upgrade, int level = 1)
@@ -20,6 +23,11 @@ public class UpgradeSystem : MonoBehaviour
         }
 
         Debug.Log("Upgrade freigeschaltet: " + upgrade + " Level " + level);
+
+        if (upgradeNotificationUI != null)
+        {
+            upgradeNotificationUI.ShowUpgrade(upgrade, level);
+        }
     }
 
     public bool HasUpgrade(PreyGivesUpgrade upgrade)
