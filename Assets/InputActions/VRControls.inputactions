@@ -15,15 +15,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "SnapTurn",
-                    "type": "Value",
-                    "id": "64f2b212-c044-420e-a48b-e3a5b44d4bb6",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "HeadPosition",
                     "type": "Value",
                     "id": "54acd502-31b5-4a1e-b010-6e111d375d0a",
@@ -51,17 +42,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "2f6657e4-21c7-4287-82f9-ac5a1c32c841",
-                    "path": "<ViveController>{RightHand}/trackpad",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SnapTurn",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

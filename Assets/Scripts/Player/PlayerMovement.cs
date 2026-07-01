@@ -10,9 +10,8 @@
 /// - Ducken: C-Taste (halten)
 ///
 /// STEUERUNG (VR / HTC Vive Pro):
-/// - Bewegen: linkes Controller-Trackpad (Richtung + Auslenkung wie ein Analogstick)
-/// - Umschauen: Kopfbewegung (HMD-Tracking)
-/// - Drehen: rechtes Controller-Trackpad (Snap-Turn nach links/rechts)
+/// - Bewegen: linkes Controller-Trackpad (nur vorwärts/rückwärts)
+/// - Umschauen/Drehen: ausschließlich über die Kopfbewegung (HMD-Tracking)
 /// </summary>
 
 using UnityEngine;
@@ -36,14 +35,9 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("VR Locomotion")]
     [SerializeField] private InputActionReference vrMoveAction;
-    [SerializeField] private InputActionReference vrSnapTurnAction;
-    [SerializeField] private float snapTurnAngle = 45f;
-    [SerializeField] private float snapTurnDeadzone = 0.5f;
-    [SerializeField] private float snapTurnCooldown = 0.3f;
 
     private Vector3 moveDirection;
     private float rotationX;
-    private float snapTurnCooldownTimer;
     private CharacterController characterController;
     private UpgradeSystem upgradeSystem;
     private bool canMove = true;
@@ -64,13 +58,11 @@ public class PlayerMovement : MonoBehaviour
     private void OnEnable()
     {
         vrMoveAction?.action?.Enable();
-        vrSnapTurnAction?.action?.Enable();
     }
 
     private void OnDisable()
     {
         vrMoveAction?.action?.Disable();
-        vrSnapTurnAction?.action?.Disable();
     }
 
     private void Update()
@@ -78,7 +70,6 @@ public class PlayerMovement : MonoBehaviour
         if (XRSettings.isDeviceActive)
         {
             HandleVRMovement();
-            HandleSnapTurn();
             return;
         }
 
@@ -155,48 +146,21 @@ public class PlayerMovement : MonoBehaviour
             : Vector2.zero;
 
         // Blickrichtung der Kamera (vom HMD getrackt) als Bewegungsbasis, auf die Bodenebene projiziert.
+        // Nur vorwärts/rückwärts entlang der Blickrichtung - Drehen passiert ausschließlich über den Kopf.
         Vector3 camForward = playerCamera.transform.forward;
         camForward.y = 0f;
         camForward.Normalize();
 
-        Vector3 camRight = playerCamera.transform.right;
-        camRight.y = 0f;
-        camRight.Normalize();
-
-        float speed = GetCurrentWalkSpeed() * Mathf.Clamp01(moveInput.magnitude);
+        float speed = GetCurrentWalkSpeed();
+        float forwardInput = Mathf.Clamp(moveInput.y, -1f, 1f);
 
         float lastY = moveDirection.y;
-        moveDirection = canMove ? (camForward * moveInput.y + camRight * moveInput.x) * speed : Vector3.zero;
+        moveDirection = canMove ? forwardInput * speed * camForward : Vector3.zero;
 
         moveDirection.y = lastY;
         if (!characterController.isGrounded) moveDirection.y -= gravity * Time.deltaTime;
 
         characterController.Move(moveDirection * Time.deltaTime);
-    }
-
-    private void HandleSnapTurn()
-    {
-        // Kopf-Tracking bleibt unabhängig von canLook aktiv (kann physische Kopfdrehung nicht sperren) -
-        // nur der zusätzliche Snap-Turn per Trackpad wird gesperrt.
-        if (!canLook) return;
-
-        snapTurnCooldownTimer -= Time.deltaTime;
-        if (snapTurnCooldownTimer > 0f) return;
-
-        Vector2 turnInput = vrSnapTurnAction != null && vrSnapTurnAction.action != null
-            ? vrSnapTurnAction.action.ReadValue<Vector2>()
-            : Vector2.zero;
-
-        if (turnInput.x > snapTurnDeadzone)
-        {
-            transform.Rotate(0f, snapTurnAngle, 0f);
-            snapTurnCooldownTimer = snapTurnCooldown;
-        }
-        else if (turnInput.x < -snapTurnDeadzone)
-        {
-            transform.Rotate(0f, -snapTurnAngle, 0f);
-            snapTurnCooldownTimer = snapTurnCooldown;
-        }
     }
 
     private float GetCurrentWalkSpeed()

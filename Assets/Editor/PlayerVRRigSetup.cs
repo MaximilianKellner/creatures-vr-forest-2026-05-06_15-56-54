@@ -19,11 +19,10 @@ public static class PlayerVRRigSetup
         InputActionReference FindRef(string name) => subAssets.FirstOrDefault(a => a.action.name == name);
 
         var moveRef = FindRef("Move");
-        var snapTurnRef = FindRef("SnapTurn");
         var headPosRef = FindRef("HeadPosition");
         var headRotRef = FindRef("HeadRotation");
 
-        if (moveRef == null || snapTurnRef == null || headPosRef == null || headRotRef == null)
+        if (moveRef == null || headPosRef == null || headRotRef == null)
         {
             Debug.LogError("PlayerVRRigSetup: FAILED to resolve one or more InputActionReferences. Aborting.");
             return;
@@ -58,9 +57,8 @@ public static class PlayerVRRigSetup
 
             var so = new SerializedObject(playerMovement);
             so.FindProperty("vrMoveAction").objectReferenceValue = moveRef;
-            so.FindProperty("vrSnapTurnAction").objectReferenceValue = snapTurnRef;
             so.ApplyModifiedPropertiesWithoutUndo();
-            Debug.Log("PlayerVRRigSetup: wired vrMoveAction/vrSnapTurnAction on PlayerMovement");
+            Debug.Log("PlayerVRRigSetup: wired vrMoveAction on PlayerMovement");
 
             bool saved = false;
             PrefabUtility.SaveAsPrefabAsset(root, PrefabPath, out saved);

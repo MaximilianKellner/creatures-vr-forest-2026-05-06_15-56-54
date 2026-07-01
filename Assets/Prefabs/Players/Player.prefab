@@ -446,10 +446,6 @@ MonoBehaviour:
   crouchHeight: 1
   crouchSpeed: 3
   vrMoveAction: {fileID: -8928127214606321100, guid: cb533733237120e4fb99560648b26cb7, type: 3}
-  vrSnapTurnAction: {fileID: -6821915157135539436, guid: cb533733237120e4fb99560648b26cb7, type: 3}
-  snapTurnAngle: 45
-  snapTurnDeadzone: 0.5
-  snapTurnCooldown: 0.3
 --- !u!114 &3832237899210524204
 MonoBehaviour:
   m_ObjectHideFlags: 0
