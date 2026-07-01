@@ -126,6 +126,7 @@ GameObject:
   - component: {fileID: 285351513551149103}
   - component: {fileID: 5358678848508013037}
   - component: {fileID: 4849736674117895913}
+  - component: {fileID: 1299650457328528447}
   m_Layer: 6
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -251,6 +252,75 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &1299650457328528447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4584356337258173597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2fadf230d1919748a9aa21d40f74619, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.XR.TrackedPoseDriver
+  m_TrackingType: 0
+  m_UpdateType: 0
+  m_IgnoreTrackingState: 0
+  m_PositionInput:
+    m_UseReference: 1
+    m_Action:
+      m_Name: 
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: cc5a2d63-d240-4510-b002-f34763f861a9
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 4006947699279024886, guid: cb533733237120e4fb99560648b26cb7, type: 3}
+  m_RotationInput:
+    m_UseReference: 1
+    m_Action:
+      m_Name: 
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 82df0904-0d7d-4ac3-97a3-4fa7f494189c
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: -4530518891826597355, guid: cb533733237120e4fb99560648b26cb7, type: 3}
+  m_TrackingStateInput:
+    m_UseReference: 0
+    m_Action:
+      m_Name: Tracking State
+      m_Type: 0
+      m_ExpectedControlType: Integer
+      m_Id: eb365306-1fd9-414d-99ab-ebb8a9705175
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  m_PositionAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: a3874970-3bd6-43d0-b1a5-226c04dc56a1
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  m_RotationAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 1148e061-117a-43e6-8d25-77803d591eb4
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!1 &5681182136230923980
 GameObject:
   m_ObjectHideFlags: 0
@@ -375,6 +445,11 @@ MonoBehaviour:
   defaultHeight: 2
   crouchHeight: 1
   crouchSpeed: 3
+  vrMoveAction: {fileID: -8928127214606321100, guid: cb533733237120e4fb99560648b26cb7, type: 3}
+  vrSnapTurnAction: {fileID: -6821915157135539436, guid: cb533733237120e4fb99560648b26cb7, type: 3}
+  snapTurnAngle: 45
+  snapTurnDeadzone: 0.5
+  snapTurnCooldown: 0.3
 --- !u!114 &3832237899210524204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -510,6 +585,8 @@ MonoBehaviour:
   volumeParameter: WorldVolume
   normalVolume: -18
   hearingVolume: 0
+  hearingDuration: 5
+  cooldown: 10
 --- !u!1 &7124845941672037646
 GameObject:
   m_ObjectHideFlags: 0

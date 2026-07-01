@@ -1,17 +1,23 @@
 /// <summary>
 /// Zuständig für die First-Person-Spielerbewegung (Laufen, Sprinten, Ducken, Schwerkraft und Springen)
-/// sowie die Kamerasteuerung über die Maus.
-/// 
-/// STEUERUNG:
+/// sowie die Kamerasteuerung über die Maus bzw. das VR-Headset.
+///
+/// STEUERUNG (Desktop):
 /// - Bewegen: W, A, S, D oder Pfeiltasten
 /// - Umschauen: Mausbewegung
 /// - Sprinten: Shift-Taste links (halten)
 /// - Springen: Leertaste
 /// - Ducken: C-Taste (halten)
+///
+/// STEUERUNG (VR / HTC Vive Pro):
+/// - Bewegen: linkes Controller-Trackpad (Richtung + Auslenkung wie ein Analogstick)
+/// - Umschauen: Kopfbewegung (HMD-Tracking)
+/// - Drehen: rechtes Controller-Trackpad (Snap-Turn nach links/rechts)
 /// </summary>
 
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
@@ -23,13 +29,21 @@ public class PlayerMovement : MonoBehaviour
     [Header("Upgrade Settings")]
     [SerializeField] float speedBonusPerLevel = 0.2f;
     [SerializeField] float jumpBonusPerLevel = 0.2f;
-    
+
     [Header("Look & Crouch")]
     [SerializeField] float lookSpeed = 2f, lookXLimit = 45f;
     [SerializeField] float defaultHeight = 2f, crouchHeight = 1f, crouchSpeed = 3f;
 
+    [Header("VR Locomotion")]
+    [SerializeField] private InputActionReference vrMoveAction;
+    [SerializeField] private InputActionReference vrSnapTurnAction;
+    [SerializeField] private float snapTurnAngle = 45f;
+    [SerializeField] private float snapTurnDeadzone = 0.5f;
+    [SerializeField] private float snapTurnCooldown = 0.3f;
+
     private Vector3 moveDirection;
     private float rotationX;
+    private float snapTurnCooldownTimer;
     private CharacterController characterController;
     private UpgradeSystem upgradeSystem;
     private bool canMove = true;
@@ -47,8 +61,27 @@ public class PlayerMovement : MonoBehaviour
         Cursor.visible = false;
     }
 
+    private void OnEnable()
+    {
+        vrMoveAction?.action?.Enable();
+        vrSnapTurnAction?.action?.Enable();
+    }
+
+    private void OnDisable()
+    {
+        vrMoveAction?.action?.Disable();
+        vrSnapTurnAction?.action?.Disable();
+    }
+
     private void Update()
     {
+        if (XRSettings.isDeviceActive)
+        {
+            HandleVRMovement();
+            HandleSnapTurn();
+            return;
+        }
+
         // Sicherheitsabfrage: Gibt es überhaupt Eingabegeräte?
         if (Keyboard.current == null || Mouse.current == null) return;
 
@@ -113,6 +146,70 @@ public class PlayerMovement : MonoBehaviour
         playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
 
         transform.rotation *= Quaternion.Euler(0, mouseDelta.x, 0);
+    }
+
+    private void HandleVRMovement()
+    {
+        Vector2 moveInput = vrMoveAction != null && vrMoveAction.action != null
+            ? vrMoveAction.action.ReadValue<Vector2>()
+            : Vector2.zero;
+
+        // Blickrichtung der Kamera (vom HMD getrackt) als Bewegungsbasis, auf die Bodenebene projiziert.
+        Vector3 camForward = playerCamera.transform.forward;
+        camForward.y = 0f;
+        camForward.Normalize();
+
+        Vector3 camRight = playerCamera.transform.right;
+        camRight.y = 0f;
+        camRight.Normalize();
+
+        float speed = GetCurrentWalkSpeed() * Mathf.Clamp01(moveInput.magnitude);
+
+        float lastY = moveDirection.y;
+        moveDirection = canMove ? (camForward * moveInput.y + camRight * moveInput.x) * speed : Vector3.zero;
+
+        moveDirection.y = lastY;
+        if (!characterController.isGrounded) moveDirection.y -= gravity * Time.deltaTime;
+
+        characterController.Move(moveDirection * Time.deltaTime);
+    }
+
+    private void HandleSnapTurn()
+    {
+        // Kopf-Tracking bleibt unabhängig von canLook aktiv (kann physische Kopfdrehung nicht sperren) -
+        // nur der zusätzliche Snap-Turn per Trackpad wird gesperrt.
+        if (!canLook) return;
+
+        snapTurnCooldownTimer -= Time.deltaTime;
+        if (snapTurnCooldownTimer > 0f) return;
+
+        Vector2 turnInput = vrSnapTurnAction != null && vrSnapTurnAction.action != null
+            ? vrSnapTurnAction.action.ReadValue<Vector2>()
+            : Vector2.zero;
+
+        if (turnInput.x > snapTurnDeadzone)
+        {
+            transform.Rotate(0f, snapTurnAngle, 0f);
+            snapTurnCooldownTimer = snapTurnCooldown;
+        }
+        else if (turnInput.x < -snapTurnDeadzone)
+        {
+            transform.Rotate(0f, -snapTurnAngle, 0f);
+            snapTurnCooldownTimer = snapTurnCooldown;
+        }
+    }
+
+    private float GetCurrentWalkSpeed()
+    {
+        float currentWalkSpeed = walkSpeed;
+
+        if (upgradeSystem != null)
+        {
+            int speedLevel = upgradeSystem.GetUpgradeLevel(PreyGivesUpgrade.FasterRun);
+            currentWalkSpeed *= 1f + speedLevel * speedBonusPerLevel;
+        }
+
+        return currentWalkSpeed;
     }
     public void SetMovementEnabled(bool enabled)
     {
