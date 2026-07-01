@@ -42,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
     private UpgradeSystem upgradeSystem;
     private bool canMove = true;
     private bool canLook = true;
+    private float debugLogTimer;
 
     private void Start()
     {
@@ -67,6 +68,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        LogVrDebugStatus();
+
         if (XRSettings.isDeviceActive)
         {
             HandleVRMovement();
@@ -78,6 +81,24 @@ public class PlayerMovement : MonoBehaviour
 
         HandleMovement();
         HandleLook();
+    }
+
+    // TEMPORÄR: Diagnose für den VR-Input-Bug - kann wieder entfernt werden, sobald geklärt ist,
+    // warum Controller/Head-Tracking im Headset nicht ankommen.
+    private void LogVrDebugStatus()
+    {
+        debugLogTimer -= Time.deltaTime;
+        if (debugLogTimer > 0f) return;
+        debugLogTimer = 1f;
+
+        string moveInfo = "vrMoveAction ist NULL (nicht im Inspector zugewiesen)";
+        if (vrMoveAction != null && vrMoveAction.action != null)
+        {
+            var action = vrMoveAction.action;
+            moveInfo = $"enabled={action.enabled}, gebundeneControls={action.controls.Count}, wert={action.ReadValue<Vector2>()}";
+        }
+
+        Debug.Log($"[VR-Debug] XRSettings.isDeviceActive={XRSettings.isDeviceActive} | Move-Action: {moveInfo} | KameraLocalRotation={playerCamera.transform.localRotation.eulerAngles}");
     }
 
     private void HandleMovement()
