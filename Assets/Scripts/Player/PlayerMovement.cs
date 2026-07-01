@@ -9,9 +9,10 @@
 /// - Springen: Leertaste
 /// - Ducken: C-Taste (halten)
 ///
-/// STEUERUNG (VR / HTC Vive Pro):
-/// - Bewegen: linkes Controller-Trackpad (nur vorwärts/rückwärts)
-/// - Umschauen/Drehen: ausschließlich über die Kopfbewegung (HMD-Tracking)
+/// STEUERUNG (VR):
+/// - Bewegen: Controller-Thumbstick/Trackpad, wie WASD (vor/zurück und seitwärts), relativ zur Blickrichtung
+/// - Umschauen/Drehen: ausschließlich über die Kopfbewegung (HMD-Tracking, nur Rotation -
+///   die Kopfposition wird nicht getrackt, sodass reales Umherlaufen im Headset keine Spielerbewegung auslöst)
 /// </summary>
 
 using UnityEngine;
@@ -42,7 +43,6 @@ public class PlayerMovement : MonoBehaviour
     private UpgradeSystem upgradeSystem;
     private bool canMove = true;
     private bool canLook = true;
-    private float debugLogTimer;
 
     private void Start()
     {
@@ -68,8 +68,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        LogVrDebugStatus();
-
         if (XRSettings.isDeviceActive)
         {
             HandleVRMovement();
@@ -81,24 +79,6 @@ public class PlayerMovement : MonoBehaviour
 
         HandleMovement();
         HandleLook();
-    }
-
-    // TEMPORÄR: Diagnose für den VR-Input-Bug - kann wieder entfernt werden, sobald geklärt ist,
-    // warum Controller/Head-Tracking im Headset nicht ankommen.
-    private void LogVrDebugStatus()
-    {
-        debugLogTimer -= Time.deltaTime;
-        if (debugLogTimer > 0f) return;
-        debugLogTimer = 1f;
-
-        string moveInfo = "vrMoveAction ist NULL (nicht im Inspector zugewiesen)";
-        if (vrMoveAction != null && vrMoveAction.action != null)
-        {
-            var action = vrMoveAction.action;
-            moveInfo = $"enabled={action.enabled}, gebundeneControls={action.controls.Count}, wert={action.ReadValue<Vector2>()}";
-        }
-
-        Debug.Log($"[VR-Debug] XRSettings.isDeviceActive={XRSettings.isDeviceActive} | Move-Action: {moveInfo} | KameraLocalRotation={playerCamera.transform.localRotation.eulerAngles}");
     }
 
     private void HandleMovement()
@@ -163,20 +143,25 @@ public class PlayerMovement : MonoBehaviour
     private void HandleVRMovement()
     {
         Vector2 moveInput = vrMoveAction != null && vrMoveAction.action != null
-            ? vrMoveAction.action.ReadValue<Vector2>()
+            ? Vector2.ClampMagnitude(vrMoveAction.action.ReadValue<Vector2>(), 1f)
             : Vector2.zero;
 
-        // Blickrichtung der Kamera (vom HMD getrackt) als Bewegungsbasis, auf die Bodenebene projiziert.
-        // Nur vorwärts/rückwärts entlang der Blickrichtung - Drehen passiert ausschließlich über den Kopf.
+        // Blickrichtung der Kamera (vom HMD getrackt) als Bewegungsbasis, auf die Bodenebene projiziert -
+        // wie bei WASD auf dem Desktop, nur dass hier der Kopf statt der Maus die Blickrichtung vorgibt.
+        // Drehen passiert ausschließlich über den Kopf, nicht über den Controller.
         Vector3 camForward = playerCamera.transform.forward;
         camForward.y = 0f;
         camForward.Normalize();
 
+        Vector3 camRight = playerCamera.transform.right;
+        camRight.y = 0f;
+        camRight.Normalize();
+
         float speed = GetCurrentWalkSpeed();
-        float forwardInput = Mathf.Clamp(moveInput.y, -1f, 1f);
+        Vector3 wishDirection = camForward * moveInput.y + camRight * moveInput.x;
 
         float lastY = moveDirection.y;
-        moveDirection = canMove ? forwardInput * speed * camForward : Vector3.zero;
+        moveDirection = canMove ? wishDirection * speed : Vector3.zero;
 
         moveDirection.y = lastY;
         if (!characterController.isGrounded) moveDirection.y -= gravity * Time.deltaTime;

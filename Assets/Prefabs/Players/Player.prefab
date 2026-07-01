@@ -262,23 +262,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2fadf230d1919748a9aa21d40f74619, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.XR.TrackedPoseDriver
-  m_TrackingType: 0
+  m_TrackingType: 1
   m_UpdateType: 0
   m_IgnoreTrackingState: 0
   m_PositionInput:
-    m_UseReference: 1
+    m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name:
       m_Type: 0
-      m_ExpectedControlType: 
+      m_ExpectedControlType:
       m_Id: cc5a2d63-d240-4510-b002-f34763f861a9
-      m_Processors: 
-      m_Interactions: 
+      m_Processors:
+      m_Interactions:
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: 4006947699279024886, guid: cb533733237120e4fb99560648b26cb7, type: 3}
+    m_Reference: {fileID: 0}
   m_RotationInput:
     m_UseReference: 1
     m_Action:

@@ -19,10 +19,9 @@ public static class PlayerVRRigSetup
         InputActionReference FindRef(string name) => subAssets.FirstOrDefault(a => a.action.name == name);
 
         var moveRef = FindRef("Move");
-        var headPosRef = FindRef("HeadPosition");
         var headRotRef = FindRef("HeadRotation");
 
-        if (moveRef == null || headPosRef == null || headRotRef == null)
+        if (moveRef == null || headRotRef == null)
         {
             Debug.LogError("PlayerVRRigSetup: FAILED to resolve one or more InputActionReferences. Aborting.");
             return;
@@ -42,8 +41,7 @@ public static class PlayerVRRigSetup
             if (poseDriver == null)
                 poseDriver = cameraTransform.gameObject.AddComponent<TrackedPoseDriver>();
 
-            poseDriver.trackingType = TrackedPoseDriver.TrackingType.RotationAndPosition;
-            poseDriver.positionInput = new InputActionProperty(headPosRef);
+            poseDriver.trackingType = TrackedPoseDriver.TrackingType.RotationOnly;
             poseDriver.rotationInput = new InputActionProperty(headRotRef);
             EditorUtility.SetDirty(poseDriver);
             Debug.Log("PlayerVRRigSetup: TrackedPoseDriver added/updated on Main Camera");

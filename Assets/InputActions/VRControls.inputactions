@@ -15,15 +15,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "HeadPosition",
-                    "type": "Value",
-                    "id": "54acd502-31b5-4a1e-b010-6e111d375d0a",
-                    "expectedControlType": "Vector3",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "HeadRotation",
                     "type": "Value",
                     "id": "48429f0b-465c-417c-a20c-1eaa483d0c3e",
@@ -42,17 +33,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "992b38ec-2c9c-42e7-9094-a149194c1c8f",
-                    "path": "<XRHMD>/centerEyePosition",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "HeadPosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
