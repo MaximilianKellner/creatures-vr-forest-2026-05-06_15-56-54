@@ -12,7 +12,10 @@ public class WinZone : MonoBehaviour
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject creditsPanel;
 
-    [Header("Scene")]
+    [Header("Bei Nein")]
+    [SerializeField] private Transform putPlayerHere;
+
+    [Header("Hauptmenü")]
     [SerializeField] private string mainMenuSceneName = "MainMenu";
 
     [SerializeField] private TMP_Text timeText;
@@ -69,6 +72,20 @@ public class WinZone : MonoBehaviour
     {
         if (leaveQuestionPanel != null)
             leaveQuestionPanel.SetActive(false);
+
+        if (putPlayerHere != null && playerMovement != null)
+        {
+            CharacterController controller = playerMovement.GetComponent<CharacterController>();
+
+            if (controller != null)
+                controller.enabled = false;
+
+            playerMovement.transform.position = putPlayerHere.position;
+            playerMovement.transform.rotation = putPlayerHere.rotation;
+
+            if (controller != null)
+                controller.enabled = true;
+        }
 
         if (playerMovement != null)
         {
