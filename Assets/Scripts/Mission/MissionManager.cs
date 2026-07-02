@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -33,8 +34,14 @@ public class MissionManager : MonoBehaviour
     [Header("Input")]
     [SerializeField] private Key keyToHold = Key.Z;
 
+    [Header("Auto Show")]
+    [SerializeField] private float autoShowDuration = 3f;
+
     private int currentMissionIndex;
     private int currentAmount;
+
+    private Coroutine autoShowRoutine;
+    private bool autoShowing;
 
     private void Awake()
     {
@@ -62,7 +69,7 @@ public class MissionManager : MonoBehaviour
         bool isHoldingKey = Keyboard.current[keyToHold].isPressed;
 
         if (missionUI != null)
-            missionUI.SetActive(isHoldingKey);
+            missionUI.SetActive(isHoldingKey || autoShowing);
     }
 
     private void HandleTargetCollected(string targetId)
@@ -87,6 +94,7 @@ public class MissionManager : MonoBehaviour
         }
 
         UpdateMissionUI();
+        ShowMissionTemporarily();
     }
 
     private void UpdateMissionUI()
@@ -102,7 +110,7 @@ public class MissionManager : MonoBehaviour
 
         if (currentMissionIndex >= missions.Length)
         {
-            missionText.text = "Alle Missionen abgeschlossen!";
+            missionText.text = "Verlasse die Höhle!";
             return;
         }
 
@@ -111,5 +119,30 @@ public class MissionManager : MonoBehaviour
         missionText.text =
             currentMission.missionText + "\n" +
             currentAmount + " / " + currentMission.requiredAmount;
+    }
+
+    private void ShowMissionTemporarily()
+    {
+        if (autoShowRoutine != null)
+            StopCoroutine(autoShowRoutine);
+
+        autoShowRoutine = StartCoroutine(AutoShowRoutine());
+    }
+
+    private IEnumerator AutoShowRoutine()
+    {
+        autoShowing = true;
+
+        if (missionUI != null)
+            missionUI.SetActive(true);
+
+        yield return new WaitForSeconds(autoShowDuration);
+
+        autoShowing = false;
+
+        if (missionUI != null)
+            missionUI.SetActive(false);
+
+        autoShowRoutine = null;
     }
 }

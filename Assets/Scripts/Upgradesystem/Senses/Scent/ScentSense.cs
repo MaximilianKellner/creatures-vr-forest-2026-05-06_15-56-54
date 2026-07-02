@@ -30,10 +30,17 @@ public class ScentSense : MonoBehaviour
     [Header("Line Look")]
     [SerializeField] private float lineWidth = 0.35f;
 
+    [Header("Line Animation")]
+    [SerializeField] private float scrollSpeed = 0.6f;
+    [SerializeField] private float textureTilingX = 10f;
+
     [Header("Materials")]
     [SerializeField] private Material normalMaterial;
     [SerializeField] private Material upgradeMaterial;
     [SerializeField] private Material poisonMaterial;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource ScentSound;
 
     private UpgradeSystem upgradeSystem;
     private bool isOnCooldown;
@@ -56,6 +63,8 @@ public class ScentSense : MonoBehaviour
 
         if (Keyboard.current[key].wasPressedThisFrame)
             TryUseScentSense();
+
+        AnimateLines();
     }
 
     private void TryUseScentSense()
@@ -75,6 +84,12 @@ public class ScentSense : MonoBehaviour
         }
 
         StartCoroutine(ScentRoutine());
+
+        if (ScentSound != null)
+            {
+                ScentSound.Stop();
+                ScentSound.Play();
+            }
     }
 
     private IEnumerator ScentRoutine()
@@ -102,7 +117,6 @@ public class ScentSense : MonoBehaviour
         yield return new WaitForSeconds(cooldown);
 
         isOnCooldown = false;
-
         Debug.Log("Geruchssinn wieder bereit.");
     }
 
@@ -146,9 +160,7 @@ public class ScentSense : MonoBehaviour
                 out NavMeshHit navHit,
                 navMeshSampleDistance,
                 NavMesh.AllAreas))
-        {
             return;
-        }
 
         NavMeshPath path = new NavMeshPath();
 
@@ -187,14 +199,34 @@ public class ScentSense : MonoBehaviour
 
         LineRenderer line = Instantiate(linePrefab);
         line.useWorldSpace = true;
+        line.textureMode = LineTextureMode.Tile;
+        line.alignment = LineAlignment.View;
         line.widthMultiplier = lineWidth;
-        line.material = new Material(GetMaterial(target.scentType));
+
+        Material mat = new Material(GetMaterial(target.scentType));
+        mat.mainTextureScale = new Vector2(textureTilingX, 1f);
+        mat.mainTextureOffset = new Vector2(-Time.time * scrollSpeed, 0f);
+        line.material = mat;
+
         line.positionCount = animatedPoints.Count;
 
         for (int i = 0; i < animatedPoints.Count; i++)
             line.SetPosition(i, animatedPoints[i]);
 
         activeLines.Add(line);
+    }
+
+    private void AnimateLines()
+    {
+        foreach (LineRenderer line in activeLines)
+        {
+            if (line == null || line.material == null)
+                continue;
+
+            Vector2 offset = line.material.mainTextureOffset;
+            offset.x -= scrollSpeed * Time.deltaTime;
+            line.material.mainTextureOffset = offset;
+        }
     }
 
     private List<Vector3> GetPartialPath(List<Vector3> points, float progress)
@@ -259,6 +291,13 @@ public class ScentSense : MonoBehaviour
                 Color color = line.material.color;
                 color.a = alpha;
                 line.material.color = color;
+
+                if (line.material.HasProperty("_BaseColor"))
+                {
+                    Color baseColor = line.material.GetColor("_BaseColor");
+                    baseColor.a = alpha;
+                    line.material.SetColor("_BaseColor", baseColor);
+                }
             }
 
             yield return null;

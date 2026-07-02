@@ -26,6 +26,11 @@ public class PlayerEnemy : MonoBehaviour
     [SerializeField] private int damage = 10;
     [SerializeField] private LayerMask attackMask;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource enemyAlertSound;
+
+    private bool isChasing;
+
     private NavMeshAgent agent;
     private int currentWaypointIndex;
     private bool isAttacking;
@@ -69,6 +74,11 @@ public class PlayerEnemy : MonoBehaviour
 
     private void Patrol()
     {
+        if (isChasing)
+        {
+            isChasing = false;
+        }
+        
         if (isAttacking)
             return;
 
@@ -89,6 +99,12 @@ public class PlayerEnemy : MonoBehaviour
     {
         if (isAttacking)
             return;
+
+        if (!isChasing)
+        {
+            isChasing = true;
+            enemyAlertSound.PlayOneShot(enemyAlertSound.clip);
+        }
 
         agent.speed = chaseSpeed;
         agent.stoppingDistance = stopDistance;

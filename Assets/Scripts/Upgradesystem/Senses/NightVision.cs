@@ -1,15 +1,26 @@
+using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 
-public class CreatureSenses : MonoBehaviour
+public class NightVision : MonoBehaviour
 {
-    [Header("Night Vision Settings")]
-    [Tooltip("Ziehe hier das NightVision_Volume Objekt hinein")]
-    public Volume nightVisionVolume;
+    [Header("Upgrade")]
+    [SerializeField] private bool needsUpgrade = true;
 
-    private bool isNightVisionActive = false;
+    [Header("Night Vision")]
+    [SerializeField] private Volume nightVisionVolume;
+
+    [SerializeField] private float activeTime = 5f;
+    [SerializeField] private float cooldown = 8f;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource nightVisionSound;
+
     private UpgradeSystem upgradeSystem;
+
+    private bool isActive;
+    private bool isOnCooldown;
 
     private void Awake()
     {
@@ -23,29 +34,53 @@ public class CreatureSenses : MonoBehaviour
 
     private void Update()
     {
-        if (Keyboard.current != null && Keyboard.current.nKey.wasPressedThisFrame)
+        if (Keyboard.current == null)
+            return;
+
+        if (Keyboard.current.nKey.wasPressedThisFrame)
         {
-            if (upgradeSystem == null || !upgradeSystem.HasUpgrade(PreyGivesUpgrade.NightVision))
+            if (isActive || isOnCooldown)
+                return;
+
+            if (needsUpgrade &&
+                (upgradeSystem == null ||
+                 !upgradeSystem.HasUpgrade(PreyGivesUpgrade.NightVision)))
             {
                 Debug.Log("Nachtsicht noch nicht freigeschaltet.");
                 return;
             }
 
-            ToggleNightVision();
+            StartCoroutine(NightVisionRoutine());
         }
     }
 
-    private void ToggleNightVision()
+    private IEnumerator NightVisionRoutine()
     {
-        isNightVisionActive = !isNightVisionActive;
+        isActive = true;
 
-        if (nightVisionVolume == null)
-            return;
+        if (nightVisionVolume != null)
+            nightVisionVolume.weight = 1f;
+            nightVisionSound.Play();
 
-        nightVisionVolume.weight = isNightVisionActive ? 1f : 0f;
+        Debug.Log("Nachtsicht aktiviert.");
 
-        Debug.Log(isNightVisionActive
-            ? "Nachtsicht: AKTIVIERT"
-            : "Nachtsicht: DEAKTIVIERT");
+        yield return new WaitForSeconds(activeTime);
+
+        if (nightVisionVolume != null)
+            nightVisionVolume.weight = 0f;
+
+        Debug.Log("Nachtsicht deaktiviert.");
+
+        isActive = false;
+        isOnCooldown = true;
+
+        yield return new WaitForSeconds(cooldown);
+
+        isOnCooldown = false;
+
+        Debug.Log("Nachtsicht wieder bereit.");
     }
+
+    public bool IsActive => isActive;
+    public bool IsOnCooldown => isOnCooldown;
 }
