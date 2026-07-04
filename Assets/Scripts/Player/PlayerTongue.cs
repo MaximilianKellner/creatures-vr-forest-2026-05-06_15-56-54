@@ -10,6 +10,10 @@ public class PlayerTongue : MonoBehaviour
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private Camera playerCamera;
 
+    [Header("UI Freischaltungen")]
+    public TutorialPopup tutorialPopup; // Ziehe hier das Tutorial-Objekt rein
+    public Map mapScript;               // Ziehe hier das Map-Objekt rein
+
     [Header("Settings")]
     [SerializeField] private float speed = 20f;
     [SerializeField] private float maxDistance = 20f;
@@ -20,6 +24,7 @@ public class PlayerTongue : MonoBehaviour
 
     private UpgradeSystem upgradeSystem;
     private bool isBusy;
+    private bool hasUsedTongueOnce = false; // Merkt sich den ersten Klick
 
     private void Awake()
     {
@@ -42,6 +47,24 @@ public class PlayerTongue : MonoBehaviour
 
     private void TryShoot()
     {
+        // NEU: Einmaliger UI-Check beim ersten Schießen
+        if (!hasUsedTongueOnce)
+        {
+            // 1. Tutorial ausblenden
+            if (tutorialPopup != null) 
+            {
+                tutorialPopup.HideTutorial();
+            }
+            
+            // 2. Map einblenden
+            if (mapScript != null) 
+            {
+                mapScript.ShowMap();
+            }
+            
+            hasUsedTongueOnce = true; 
+        }
+
         Vector3 targetPos =
             playerCamera.transform.position +
             playerCamera.transform.forward * maxDistance;
