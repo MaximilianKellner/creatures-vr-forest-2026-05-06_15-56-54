@@ -21,18 +21,18 @@ public class HUDManager : MonoBehaviour
     private bool nachtsichtIstAktiv = false;
 
     void Start()
-{
-    // Das sorgt dafür, dass der Button beim Start rigoros deaktiviert wird
-    if (nightVisionButtonObject != null)
     {
-        nightVisionButtonObject.SetActive(false);
+        // Das sorgt dafür, dass der Button beim Start rigoros deaktiviert wird
+        if (nightVisionButtonObject != null)
+        {
+            nightVisionButtonObject.SetActive(false);
+        }
+        
+        if (notificationText != null)
+        {
+            notificationText.gameObject.SetActive(false);
+        }
     }
-    
-    if (notificationText != null)
-    {
-        notificationText.gameObject.SetActive(false);
-    }
-}
 
     // Die Update-Methode bleibt leer, damit das alte Input-System keine Fehler wirft!
     void Update()

@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
+using UnityEngine.UI; // 1. WICHTIG: Wurde hinzugefügt für das UI-Image
 
 public class NightVision : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class NightVision : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioSource nightVisionSound;
 
+    [Header("UI Feedback")] // 2. Das Feld für den Cooldown-Kreis im Inspector
+    [SerializeField] private Image cooldownOverlay;
+
     private UpgradeSystem upgradeSystem;
 
     private bool isActive;
@@ -30,6 +34,10 @@ public class NightVision : MonoBehaviour
 
         if (nightVisionVolume != null)
             nightVisionVolume.weight = 0f;
+
+        // Sicherstellen, dass der weiße Kreis am Anfang unsichtbar ist
+        if (cooldownOverlay != null)
+            cooldownOverlay.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -60,6 +68,8 @@ public class NightVision : MonoBehaviour
 
         if (nightVisionVolume != null)
             nightVisionVolume.weight = 1f;
+        
+        if (nightVisionSound != null)
             nightVisionSound.Play();
 
         Debug.Log("Nachtsicht aktiviert.");
@@ -69,12 +79,35 @@ public class NightVision : MonoBehaviour
         if (nightVisionVolume != null)
             nightVisionVolume.weight = 0f;
 
-        Debug.Log("Nachtsicht deaktiviert.");
+        Debug.Log("Nachtsicht deaktiviert. Cooldown startet.");
 
         isActive = false;
         isOnCooldown = true;
 
-        yield return new WaitForSeconds(cooldown);
+        // --- AB HIER STARTET DER VISUELLE COOLDOWN ---
+        if (cooldownOverlay != null)
+        {
+            cooldownOverlay.gameObject.SetActive(true);
+            cooldownOverlay.fillAmount = 1f;
+        }
+
+        // Der Kreis läuft jetzt flüssig ab
+        float cooldownTimer = cooldown;
+        while (cooldownTimer > 0)
+        {
+            cooldownTimer -= Time.deltaTime; 
+            
+            if (cooldownOverlay != null)
+            {
+                cooldownOverlay.fillAmount = cooldownTimer / cooldown;
+            }
+            
+            yield return null; 
+        }
+
+        // Kreis wieder unsichtbar machen
+        if (cooldownOverlay != null) 
+            cooldownOverlay.gameObject.SetActive(false);
 
         isOnCooldown = false;
 

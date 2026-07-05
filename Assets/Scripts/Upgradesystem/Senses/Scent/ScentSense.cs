@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using UnityEngine.UI; // WICHTIG: Wurde hinzugefügt für das UI-Image
 
 public class ScentSense : MonoBehaviour
 {
@@ -42,6 +43,9 @@ public class ScentSense : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioSource ScentSound;
 
+    [Header("UI Feedback")] // NEU: Das Feld für den Cooldown-Kreis
+    [SerializeField] private Image cooldownOverlay;
+
     private UpgradeSystem upgradeSystem;
     private bool isOnCooldown;
     private readonly List<LineRenderer> activeLines = new List<LineRenderer>();
@@ -54,6 +58,10 @@ public class ScentSense : MonoBehaviour
 
         if (playerPosition == null)
             playerPosition = transform;
+
+        // Sicherstellen, dass der weiße Kreis am Anfang unsichtbar ist
+        if (cooldownOverlay != null)
+            cooldownOverlay.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -86,10 +94,10 @@ public class ScentSense : MonoBehaviour
         StartCoroutine(ScentRoutine());
 
         if (ScentSound != null)
-            {
-                ScentSound.Stop();
-                ScentSound.Play();
-            }
+        {
+            ScentSound.Stop();
+            ScentSound.Play();
+        }
     }
 
     private IEnumerator ScentRoutine()
@@ -114,7 +122,30 @@ public class ScentSense : MonoBehaviour
 
         ClearLines();
 
-        yield return new WaitForSeconds(cooldown);
+        // --- AB HIER STARTET DER VISUELLE COOLDOWN ---
+        if (cooldownOverlay != null)
+        {
+            cooldownOverlay.gameObject.SetActive(true);
+            cooldownOverlay.fillAmount = 1f;
+        }
+
+        // Der Kreis läuft flüssig ab
+        float cooldownTimer = cooldown;
+        while (cooldownTimer > 0)
+        {
+            cooldownTimer -= Time.deltaTime; 
+            
+            if (cooldownOverlay != null)
+            {
+                cooldownOverlay.fillAmount = cooldownTimer / cooldown;
+            }
+            
+            yield return null; 
+        }
+
+        // Kreis wieder unsichtbar machen
+        if (cooldownOverlay != null) 
+            cooldownOverlay.gameObject.SetActive(false);
 
         isOnCooldown = false;
         Debug.Log("Geruchssinn wieder bereit.");
