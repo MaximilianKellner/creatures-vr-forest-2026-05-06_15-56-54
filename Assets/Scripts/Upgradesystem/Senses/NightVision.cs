@@ -1,29 +1,26 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.InputSystem;
-using UnityEngine.UI; // WICHTIG: Erlaubt die Steuerung des UI-Overlays
+using UnityEngine.Rendering;
 
-public class CreatureSenses : MonoBehaviour
+public class NightVision : MonoBehaviour
 {
     [Header("Upgrade")]
-    [Tooltip("Auf false stellen, um die Nachtsicht direkt ohne Beute-Upgrade zu testen!")]
     [SerializeField] private bool needsUpgrade = true;
 
-    [Header("Night Vision Settings")]
-    [Tooltip("Ziehe hier das NightVision_Volume Objekt hinein")]
-    public Volume nightVisionVolume;
+    [Header("Night Vision")]
+    [SerializeField] private Volume nightVisionVolume;
 
-    [Header("Timing")]
-    [SerializeField] private float visionDuration = 5f; // Wie lange bleibt die Nachtsicht an?
-    [SerializeField] private float cooldown = 10f;       // Wie lange lädt sie auf?
+    [SerializeField] private float activeTime = 5f;
+    [SerializeField] private float cooldown = 8f;
 
-    [Header("UI Feedback")]
-    [Tooltip("Ziehe hier das Cooldown_overlay GameObject oder Image hinein")]
-    [SerializeField] private Image cooldownOverlay;
+    [Header("Audio")]
+    [SerializeField] private AudioSource nightVisionSound;
 
     private UpgradeSystem upgradeSystem;
-    private bool isOnCooldown = false;
+
+    private bool isActive;
+    private bool isOnCooldown;
 
     private void Awake()
     {
@@ -33,88 +30,57 @@ public class CreatureSenses : MonoBehaviour
 
         if (nightVisionVolume != null)
             nightVisionVolume.weight = 0f;
-
-        // Sicherstellen, dass das Cooldown-Bild am Anfang unsichtbar ist
-        if (cooldownOverlay != null) 
-            cooldownOverlay.gameObject.SetActive(false);
     }
 
     private void Update()
     {
-        if (Keyboard.current == null) return;
+        if (Keyboard.current == null)
+            return;
 
-        // Reagiert auf die Taste 'N'
         if (Keyboard.current.nKey.wasPressedThisFrame)
         {
-            TryUseNightVision();
-        }
-    }
+            if (isActive || isOnCooldown)
+                return;
 
-    // PUBLIC, damit auch ein Klick auf den UI-Button diese Funktion auslösen kann!
-    public void TryUseNightVision()
-    {
-        if (isOnCooldown)
-        {
-            Debug.Log("Nachtsicht ist noch im Cooldown.");
-            return;
-        }
+            if (needsUpgrade &&
+                (upgradeSystem == null ||
+                 !upgradeSystem.HasUpgrade(PreyGivesUpgrade.NightVision)))
+            {
+                Debug.Log("Nachtsicht noch nicht freigeschaltet.");
+                return;
+            }
 
-        // Überprüfung des Upgrade-Systems (kann via Inspector deaktiviert werden)
-        if (needsUpgrade &&
-            (upgradeSystem == null || !upgradeSystem.HasUpgrade(PreyGivesUpgrade.NightVision)))
-        {
-            Debug.Log("Nachtsicht noch nicht freigeschaltet.");
-            return;
+            StartCoroutine(NightVisionRoutine());
         }
-
-        StartCoroutine(NightVisionRoutine());
     }
 
     private IEnumerator NightVisionRoutine()
     {
-        isOnCooldown = true;
+        isActive = true;
 
-        // 1. Nachtsicht einschalten
         if (nightVisionVolume != null)
             nightVisionVolume.weight = 1f;
-        
-        Debug.Log("Nachtsicht: AKTIVIERT");
+            nightVisionSound.Play();
 
-        // Warte die aktive Dauer ab
-        yield return new WaitForSeconds(visionDuration);
+        Debug.Log("Nachtsicht aktiviert.");
 
-        // 2. Nachtsicht wieder ausschalten & Cooldown starten
+        yield return new WaitForSeconds(activeTime);
+
         if (nightVisionVolume != null)
             nightVisionVolume.weight = 0f;
 
-        Debug.Log("Nachtsicht: DEAKTIVIERT. Cooldown startet.");
+        Debug.Log("Nachtsicht deaktiviert.");
 
-        // Cooldown-Overlay aktivieren und voll anzeigen
-        if (cooldownOverlay != null)
-        {
-            cooldownOverlay.gameObject.SetActive(true);
-            cooldownOverlay.fillAmount = 1f;
-        }
+        isActive = false;
+        isOnCooldown = true;
 
-        // Cooldown flüssig jede Frame runterzählen (Uhren-Effekt)
-        float cooldownTimer = cooldown;
-        while (cooldownTimer > 0)
-        {
-            cooldownTimer -= Time.deltaTime;
-            
-            if (cooldownOverlay != null)
-            {
-                cooldownOverlay.fillAmount = cooldownTimer / cooldown;
-            }
-            
-            yield return null; // Wartet bis zum nächsten Frame
-        }
-
-        // Cooldown beendet: Overlay wieder verstecken
-        if (cooldownOverlay != null) 
-            cooldownOverlay.gameObject.SetActive(false);
+        yield return new WaitForSeconds(cooldown);
 
         isOnCooldown = false;
+
         Debug.Log("Nachtsicht wieder bereit.");
     }
+
+    public bool IsActive => isActive;
+    public bool IsOnCooldown => isOnCooldown;
 }

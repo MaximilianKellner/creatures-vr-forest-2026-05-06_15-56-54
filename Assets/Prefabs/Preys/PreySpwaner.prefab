@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1275986413964057970}
   - component: {fileID: 8607485175169899384}
   - component: {fileID: 2829177581221345682}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PreySpwaner
   m_TagString: Untagged
   m_Icon: {fileID: 0}

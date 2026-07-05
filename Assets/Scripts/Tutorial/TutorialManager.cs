@@ -14,6 +14,10 @@ public class TutorialManager : MonoBehaviour
     [Header("Animation")]
     [SerializeField] private float fadeDuration = 0.4f;
 
+    [Header("UI")]
+    [SerializeField] private UpgradeNotificationUI upgradeNotificationUI;
+    [SerializeField] private TutorialManager tutorialManager;
+
     private Coroutine currentTutorialRoutine;
 
     private void Awake()

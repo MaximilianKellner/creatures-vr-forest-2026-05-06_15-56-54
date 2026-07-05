@@ -296,8 +296,8 @@ GameObject:
   - component: {fileID: 3832237899210524204}
   - component: {fileID: 4912719440939054673}
   - component: {fileID: 646243655710726396}
-  - component: {fileID: 8348897109103787272}
   - component: {fileID: -7761265728051693892}
+  - component: {fileID: -1493713122074088765}
   - component: {fileID: 5547600307460113117}
   - component: {fileID: 7462253000959589376}
   m_Layer: 6
@@ -423,19 +423,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6777b11659b034d4c89d60ffe3d7c4af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeSystem
---- !u!114 &8348897109103787272
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7016127780127911447}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27bf988b309b683a8b5396e8f3e769f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CreatureSenses
-  nightVisionVolume: {fileID: 0}
+  upgradeNotificationUI: {fileID: 0}
+  tutorialManager: {fileID: 0}
 --- !u!114 &-7761265728051693892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -463,6 +452,19 @@ MonoBehaviour:
   sonarVolume: {fileID: 0}
   volumeFadeSpeed: 5
   sonarSound: {fileID: 0}
+--- !u!114 &-1493713122074088765
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7016127780127911447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27bf988b309b683a8b5396e8f3e769f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CreatureSenses
+  nightVisionVolume: {fileID: 0}
 --- !u!114 &5547600307460113117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,6 +492,8 @@ MonoBehaviour:
   cooldown: 5
   fadeOutTime: 1.2
   lineWidth: 0.35
+  scrollSpeed: 0.6
+  textureTilingX: 10
   normalMaterial: {fileID: 2100000, guid: 11b24e553524f20469b0c3323ec36889, type: 2}
   upgradeMaterial: {fileID: 2100000, guid: 2cede75aa0c6b694aacaa2fab3ac4a08, type: 2}
   poisonMaterial: {fileID: 2100000, guid: 7aceb05c331424d4a99307ec6d4df5a5, type: 2}

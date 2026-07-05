@@ -1,6 +1,20 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-4862637799583477846
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
+  m_Name: BlurEffect Profile
+  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.VolumeProfile
+  components:
+  - {fileID: 4524861234138235528}
+--- !u!114 &4524861234138235528
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -18,10 +32,10 @@ MonoBehaviour:
     m_Value: 2
   gaussianStart:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 10
   gaussianEnd:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 30
   gaussianMaxRadius:
     m_OverrideState: 1
     m_Value: 1.5
@@ -32,31 +46,17 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 1
   aperture:
-    m_OverrideState: 0
-    m_Value: 4.4
+    m_OverrideState: 1
+    m_Value: 30.4
   focalLength:
     m_OverrideState: 1
-    m_Value: 55
+    m_Value: 300
   bladeCount:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 6
   bladeCurvature:
-    m_OverrideState: 0
-    m_Value: 0.595
+    m_OverrideState: 1
+    m_Value: 0.337
   bladeRotation:
-    m_OverrideState: 0
-    m_Value: -61
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7fd9488000d3734a9e00ee676215985, type: 3}
-  m_Name: BlurEffect Profile
-  m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.VolumeProfile
-  components:
-  - {fileID: -4862637799583477846}
+    m_OverrideState: 1
+    m_Value: 68

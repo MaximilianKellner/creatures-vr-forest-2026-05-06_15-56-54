@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
-using UnityEngine.UI; // WICHTIG: Erlaubt uns die Steuerung des UI-Cooldown-Kreises
 
 public class ScentSense : MonoBehaviour
 {
@@ -31,13 +30,17 @@ public class ScentSense : MonoBehaviour
     [Header("Line Look")]
     [SerializeField] private float lineWidth = 0.35f;
 
+    [Header("Line Animation")]
+    [SerializeField] private float scrollSpeed = 0.6f;
+    [SerializeField] private float textureTilingX = 10f;
+
     [Header("Materials")]
     [SerializeField] private Material normalMaterial;
     [SerializeField] private Material upgradeMaterial;
     [SerializeField] private Material poisonMaterial;
 
-    [Header("UI Feedback")] // Hier fügst du den weißen Cooldown-Kreis für den Geruchssinn ein
-    [SerializeField] private Image cooldownOverlay;
+    [Header("Audio")]
+    [SerializeField] private AudioSource ScentSound;
 
     private UpgradeSystem upgradeSystem;
     private bool isOnCooldown;
@@ -51,10 +54,6 @@ public class ScentSense : MonoBehaviour
 
         if (playerPosition == null)
             playerPosition = transform;
-
-        // Sicherstellen, dass der weiße Kreis am Anfang unsichtbar ist
-        if (cooldownOverlay != null) 
-            cooldownOverlay.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -64,10 +63,11 @@ public class ScentSense : MonoBehaviour
 
         if (Keyboard.current[key].wasPressedThisFrame)
             TryUseScentSense();
+
+        AnimateLines();
     }
 
-    // Auf PUBLIC gesetzt, damit auch ein UI-Button diese Funktion auslösen kann
-    public void TryUseScentSense()
+    private void TryUseScentSense()
     {
         if (isOnCooldown)
         {
@@ -84,6 +84,12 @@ public class ScentSense : MonoBehaviour
         }
 
         StartCoroutine(ScentRoutine());
+
+        if (ScentSound != null)
+            {
+                ScentSound.Stop();
+                ScentSound.Play();
+            }
     }
 
     private IEnumerator ScentRoutine()
@@ -94,7 +100,6 @@ public class ScentSense : MonoBehaviour
 
         float timer = 0f;
 
-        // Fährten animieren und anzeigen während der aktiven Zeit
         while (timer < activeTime)
         {
             timer += Time.deltaTime;
@@ -105,41 +110,13 @@ public class ScentSense : MonoBehaviour
             yield return null;
         }
 
-        // Fährten sanft verblassen lassen
         yield return StartCoroutine(FadeOutLines());
 
-        // Alle Linien-Reste komplett löschen
         ClearLines();
 
-        // --- AB HIER STARTET DER COOLDOWN ---
-        // Weißen Kreis sichtbar machen und voll ausfüllen
-        if (cooldownOverlay != null)
-        {
-            cooldownOverlay.gameObject.SetActive(true);
-            cooldownOverlay.fillAmount = 1f;
-        }
-
-        // Der Kreis läuft flüssig jede Frame als Uhr ab
-        float cooldownTimer = cooldown;
-        while (cooldownTimer > 0)
-        {
-            cooldownTimer -= Time.deltaTime; // Zieht die vergangene Zeit ab
-            
-            if (cooldownOverlay != null)
-            {
-                // Berechnet den Kreis-Fortschritt (zwischen 1.0 und 0.0)
-                cooldownOverlay.fillAmount = cooldownTimer / cooldown;
-            }
-            
-            yield return null; // Wartet bis zum nächsten Frame
-        }
-
-        // Cooldown vorbei: Kreis wieder unsichtbar machen
-        if (cooldownOverlay != null) 
-            cooldownOverlay.gameObject.SetActive(false);
+        yield return new WaitForSeconds(cooldown);
 
         isOnCooldown = false;
-
         Debug.Log("Geruchssinn wieder bereit.");
     }
 
@@ -183,9 +160,7 @@ public class ScentSense : MonoBehaviour
                 out NavMeshHit navHit,
                 navMeshSampleDistance,
                 NavMesh.AllAreas))
-        {
             return;
-        }
 
         NavMeshPath path = new NavMeshPath();
 
@@ -224,14 +199,34 @@ public class ScentSense : MonoBehaviour
 
         LineRenderer line = Instantiate(linePrefab);
         line.useWorldSpace = true;
+        line.textureMode = LineTextureMode.Tile;
+        line.alignment = LineAlignment.View;
         line.widthMultiplier = lineWidth;
-        line.material = new Material(GetMaterial(target.scentType));
+
+        Material mat = new Material(GetMaterial(target.scentType));
+        mat.mainTextureScale = new Vector2(textureTilingX, 1f);
+        mat.mainTextureOffset = new Vector2(-Time.time * scrollSpeed, 0f);
+        line.material = mat;
+
         line.positionCount = animatedPoints.Count;
 
         for (int i = 0; i < animatedPoints.Count; i++)
             line.SetPosition(i, animatedPoints[i]);
 
         activeLines.Add(line);
+    }
+
+    private void AnimateLines()
+    {
+        foreach (LineRenderer line in activeLines)
+        {
+            if (line == null || line.material == null)
+                continue;
+
+            Vector2 offset = line.material.mainTextureOffset;
+            offset.x -= scrollSpeed * Time.deltaTime;
+            line.material.mainTextureOffset = offset;
+        }
     }
 
     private List<Vector3> GetPartialPath(List<Vector3> points, float progress)
@@ -296,6 +291,13 @@ public class ScentSense : MonoBehaviour
                 Color color = line.material.color;
                 color.a = alpha;
                 line.material.color = color;
+
+                if (line.material.HasProperty("_BaseColor"))
+                {
+                    Color baseColor = line.material.GetColor("_BaseColor");
+                    baseColor.a = alpha;
+                    line.material.SetColor("_BaseColor", baseColor);
+                }
             }
 
             yield return null;
