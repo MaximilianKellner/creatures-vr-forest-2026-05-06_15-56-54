@@ -10,9 +10,7 @@ public class MissionManager : MonoBehaviour
 
     public static void ReportTargetCollected(string targetId)
     {
-        if (string.IsNullOrWhiteSpace(targetId))
-            return;
-
+        if (string.IsNullOrWhiteSpace(targetId)) return;
         OnTargetCollected?.Invoke(targetId);
     }
 
@@ -25,8 +23,9 @@ public class MissionManager : MonoBehaviour
     }
 
     [Header("UI References")]
-    [SerializeField] private GameObject missionUI;
     [SerializeField] private TMP_Text missionText;
+    [SerializeField] private CanvasGroup missionCanvasGroup;
+    [SerializeField] private RectTransform missionWindowRect;
 
     [Header("Missions")]
     [SerializeField] private MissionStep[] missions;
@@ -34,42 +33,65 @@ public class MissionManager : MonoBehaviour
     [Header("Input")]
     [SerializeField] private Key keyToHold = Key.Z;
 
-    [Header("Auto Show")]
+    [Header("Animation Settings")]
     [SerializeField] private float autoShowDuration = 3f;
+    [SerializeField] private float fadeDuration = 0.4f;
 
     private int currentMissionIndex;
     private int currentAmount;
-
     private Coroutine autoShowRoutine;
     private bool autoShowing;
+    private float currentAnimProgress = 0f; 
 
     private void Awake()
     {
-        if (missionUI != null)
-            missionUI.SetActive(false);
+        // AUTOMATIK-CHECK: Falls du vergessen hast, sie im Inspector reinzuziehen
+        if (missionCanvasGroup == null) missionCanvasGroup = GetComponentInChildren<CanvasGroup>();
+        if (missionWindowRect == null) 
+        {
+            // Sucht nach dem "Background" Objekt in den Kindern
+            Transform bg = transform.Find("Background");
+            if(bg != null) missionWindowRect = bg.GetComponent<RectTransform>();
+        }
+
+        // Startzustand
+        if (missionCanvasGroup != null) missionCanvasGroup.alpha = 0f;
+        if (missionWindowRect != null)
+        {
+            Vector3 scale = missionWindowRect.localScale;
+            scale.x = 0f;
+            missionWindowRect.localScale = scale;
+        }
 
         UpdateMissionUI();
     }
 
-    private void OnEnable()
-    {
-        OnTargetCollected += HandleTargetCollected;
-    }
-
-    private void OnDisable()
-    {
-        OnTargetCollected -= HandleTargetCollected;
-    }
+    private void OnEnable() => OnTargetCollected += HandleTargetCollected;
+    private void OnDisable() => OnTargetCollected -= HandleTargetCollected;
 
     private void Update()
     {
-        if (Keyboard.current == null)
-            return;
+        if (Keyboard.current == null) return;
 
         bool isHoldingKey = Keyboard.current[keyToHold].isPressed;
+        bool shouldShow = isHoldingKey || autoShowing;
 
-        if (missionUI != null)
-            missionUI.SetActive(isHoldingKey || autoShowing);
+        if (shouldShow) currentAnimProgress += Time.deltaTime / fadeDuration;
+        else currentAnimProgress -= Time.deltaTime / fadeDuration;
+
+        currentAnimProgress = Mathf.Clamp01(currentAnimProgress);
+        ApplyAnimation(currentAnimProgress);
+    }
+
+    private void ApplyAnimation(float progress)
+    {
+        if (missionCanvasGroup != null) missionCanvasGroup.alpha = progress;
+        if (missionWindowRect != null)
+        {
+            Vector3 scale = missionWindowRect.localScale;
+            scale.x = progress;
+            missionWindowRect.localScale = scale;
+        }
     }
 
     private void HandleTargetCollected(string targetId)
@@ -132,17 +154,13 @@ public class MissionManager : MonoBehaviour
     private IEnumerator AutoShowRoutine()
     {
         autoShowing = true;
-
-        if (missionUI != null)
-            missionUI.SetActive(true);
+        // Die Update-Schleife kümmert sich jetzt automatisch um das Reinwischen!
 
         yield return new WaitForSeconds(autoShowDuration);
 
         autoShowing = false;
-
-        if (missionUI != null)
-            missionUI.SetActive(false);
-
+        // Die Update-Schleife kümmert sich jetzt automatisch um das Rauswischen!
+        
         autoShowRoutine = null;
     }
 }

@@ -229,6 +229,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4212946}
   - component: {fileID: 4212947}
+  - component: {fileID: 4212948}
   m_Layer: 5
   m_Name: MissionUI
   m_TagString: Untagged
@@ -271,6 +272,25 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &4212948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4212945}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5712c03917069284b9ccf235b4e0907e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MissionManager
+  missionText: {fileID: 1012222537}
+  missionCanvasGroup: {fileID: 4212947}
+  missionWindowRect: {fileID: 704175807}
+  missions: []
+  keyToHold: 40
+  autoShowDuration: 3
+  fadeDuration: 0.4
 --- !u!1001 &6386873
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10219,8 +10239,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5712c03917069284b9ccf235b4e0907e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MissionManager
-  missionUI: {fileID: 4212945}
   missionText: {fileID: 908350364}
+  missionCanvasGroup: {fileID: 4212947}
+  missionWindowRect: {fileID: 4212946}
   missions:
   - missionText: Fange eine lila Fliege
     requiredTargetId: FliegeLila
@@ -10230,6 +10251,7 @@ MonoBehaviour:
     requiredAmount: 2
   keyToHold: 34
   autoShowDuration: 5
+  fadeDuration: 0.4
 --- !u!4 &398523411 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8405877764314130294, guid: 7980d97342ba6724abeac1e61d18c176, type: 3}
@@ -41054,7 +41076,7 @@ GameObject:
   - component: {fileID: 1623829733}
   - component: {fileID: 1623829732}
   m_Layer: 5
-  m_Name: Glow
+  m_Name: Glow_Mission
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44632,7 +44654,7 @@ GameObject:
   - component: {fileID: 1803504306}
   - component: {fileID: 1803504305}
   m_Layer: 5
-  m_Name: Glow (1)
+  m_Name: Glow_Tutorial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
