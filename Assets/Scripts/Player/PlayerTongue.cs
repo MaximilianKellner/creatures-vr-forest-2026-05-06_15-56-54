@@ -40,7 +40,7 @@ public class PlayerTongue : MonoBehaviour
         }
     }
 
-    private void TryShoot()
+    public void TryShoot()
     {
         Vector3 targetPos =
             playerCamera.transform.position +

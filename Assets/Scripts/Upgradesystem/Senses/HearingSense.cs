@@ -49,7 +49,7 @@ public class HearingSense : MonoBehaviour
             TryUseHearing();
     }
 
-    private void TryUseHearing()
+    public void TryUseHearing()
     {
         if (isOnCooldown)
         {

@@ -67,7 +67,7 @@ public class ScentSense : MonoBehaviour
         AnimateLines();
     }
 
-    private void TryUseScentSense()
+    public void TryUseScentSense()
     {
         if (isOnCooldown)
         {

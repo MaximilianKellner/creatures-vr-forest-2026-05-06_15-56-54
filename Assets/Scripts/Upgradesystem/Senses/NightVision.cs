@@ -38,20 +38,23 @@ public class NightVision : MonoBehaviour
             return;
 
         if (Keyboard.current.nKey.wasPressedThisFrame)
+            TryUseNightVision();
+    }
+
+    public void TryUseNightVision()
+    {
+        if (isActive || isOnCooldown)
+            return;
+
+        if (needsUpgrade &&
+            (upgradeSystem == null ||
+             !upgradeSystem.HasUpgrade(PreyGivesUpgrade.NightVision)))
         {
-            if (isActive || isOnCooldown)
-                return;
-
-            if (needsUpgrade &&
-                (upgradeSystem == null ||
-                 !upgradeSystem.HasUpgrade(PreyGivesUpgrade.NightVision)))
-            {
-                Debug.Log("Nachtsicht noch nicht freigeschaltet.");
-                return;
-            }
-
-            StartCoroutine(NightVisionRoutine());
+            Debug.Log("Nachtsicht noch nicht freigeschaltet.");
+            return;
         }
+
+        StartCoroutine(NightVisionRoutine());
     }
 
     private IEnumerator NightVisionRoutine()
@@ -60,6 +63,8 @@ public class NightVision : MonoBehaviour
 
         if (nightVisionVolume != null)
             nightVisionVolume.weight = 1f;
+
+        if (nightVisionSound != null)
             nightVisionSound.Play();
 
         Debug.Log("Nachtsicht aktiviert.");

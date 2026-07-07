@@ -57,7 +57,7 @@ public class SonarSense : MonoBehaviour
             TryUseSonar();
     }
 
-    private void TryUseSonar()
+    public void TryUseSonar()
     {
         if (isOnCooldown)
             return;
