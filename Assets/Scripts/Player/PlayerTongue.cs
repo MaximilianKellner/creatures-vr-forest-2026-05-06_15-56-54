@@ -42,6 +42,12 @@ public class PlayerTongue : MonoBehaviour
 
     public void TryShoot()
     {
+        if (isBusy)
+        {
+            Debug.Log("[PlayerTongue] Zunge ist noch aktiv, ignoriere Input!");
+            return;
+        }
+
         Vector3 targetPos =
             playerCamera.transform.position +
             playerCamera.transform.forward * maxDistance;
@@ -53,8 +59,21 @@ public class PlayerTongue : MonoBehaviour
     {
         isBusy = true;
 
+        Debug.Log($"[PlayerTongue] Shoot gestartet. LineRenderer null? {lineRenderer == null}");
+        
+        if (lineRenderer == null)
+        {
+            Debug.LogError("[PlayerTongue] FEHLER: LineRenderer ist NULL! Kann nicht schießen!");
+            isBusy = false;
+            yield break;
+        }
+
         lineRenderer.enabled = true;
         lineRenderer.positionCount = 2;
+
+        Debug.Log($"[PlayerTongue] LineRenderer Material: {lineRenderer.material}");
+        Debug.Log($"[PlayerTongue] LineRenderer StartWidth: {lineRenderer.startWidth}");
+        Debug.Log($"[PlayerTongue] LineRenderer EndWidth: {lineRenderer.endWidth}");
 
         float currentSpeed = GetTongueSpeed();
 
@@ -64,16 +83,21 @@ public class PlayerTongue : MonoBehaviour
             targetPos
         );
 
+        Debug.Log($"[PlayerTongue] Distance: {distance}, Speed: {currentSpeed}");
+
         Prey hitPrey = null;
         bool hitObstacle = false;
 
         // Zunge ausfahren
         while (t < 1f)
         {
+            Debug.Log($"[PlayerTongue] While-Loop Iteration: t={t:F3}");
             t += Time.deltaTime * currentSpeed / distance;
 
             Vector3 start = tongueOrigin.position;
             Vector3 pos = Vector3.Lerp(start, targetPos, t);
+
+            Debug.Log($"[PlayerTongue] SetPosition - start: {start}, pos: {pos}");
 
             if (Physics.Raycast(
                 start,

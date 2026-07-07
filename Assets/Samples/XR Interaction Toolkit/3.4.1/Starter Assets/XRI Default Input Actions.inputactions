@@ -2071,27 +2071,27 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Shoot",
-                    "type": "Button",
-                    "id": "253188f9-1785-4f85-a397-609c8b45211c",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "AbilitiesClick",
                     "type": "Button",
-                    "id": "e35002b3-a62e-4f58-8546-e037d2682699",
+                    "id": "5279d726-aea5-4b32-90ba-fdfb6fe087e1",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "AbilitiesTouch",
+                    "name": "AbilitiesAxis",
                     "type": "Button",
-                    "id": "b54a9651-9287-463c-9222-db0a67119f37",
+                    "id": "6984ed10-4842-455a-af90-5d48b162e556",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Shoot",
+                    "type": "Button",
+                    "id": "a884d80f-d25e-4dfe-a15b-4533738cde80",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -2409,18 +2409,7 @@
                 },
                 {
                     "name": "",
-                    "id": "4a553c51-291a-438d-958f-61cf49b0359d",
-                    "path": "<XRController>{RightHand}/{TriggerButton}",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Shoot",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "2d2f5f04-b5fb-415a-a291-33b48c9ac3c1",
+                    "id": "6870551f-78ef-4051-a44c-24101ceb90aa",
                     "path": "<XRController>{RightHand}/{Primary2DAxisClick}",
                     "interactions": "",
                     "processors": "",
@@ -2431,12 +2420,23 @@
                 },
                 {
                     "name": "",
-                    "id": "45fc8420-eca5-46d6-a859-b5366a5f8bee",
+                    "id": "6b1ecb76-e621-4cbe-8782-c09e3d5e80b6",
                     "path": "<XRController>{RightHand}/{Primary2DAxisTouch}",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "AbilitiesTouch",
+                    "action": "AbilitiesAxis",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "98e75cae-6bcb-43d8-a442-50d4b97682e2",
+                    "path": "<XRController>{RightHand}/{TriggerButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -2504,7 +2504,7 @@
                     "name": "Jump",
                     "type": "Button",
                     "id": "01c7fda4-9c15-4167-8b87-58024f21d903",
-                    "expectedControlType": "",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
