@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &9083073575976175122
+--- !u!1001 &2597309997687410624
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,23 +10,23 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 734a7e35ed4dea040973a32353dea1c9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.20128
+      value: 4.106224
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 734a7e35ed4dea040973a32353dea1c9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.76944
+      value: -2.200599
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 734a7e35ed4dea040973a32353dea1c9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 97.15992
+      value: 99.125
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 734a7e35ed4dea040973a32353dea1c9, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.76604444
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 734a7e35ed4dea040973a32353dea1c9, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.64278764
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 734a7e35ed4dea040973a32353dea1c9, type: 3}
       propertyPath: m_LocalRotation.y
@@ -34,7 +34,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 734a7e35ed4dea040973a32353dea1c9, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 734a7e35ed4dea040973a32353dea1c9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -50,7 +50,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 734a7e35ed4dea040973a32353dea1c9, type: 3}
       propertyPath: m_Name
-      value: fledermaus 1
+      value: fledermaus
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -58,20 +58,20 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 734a7e35ed4dea040973a32353dea1c9, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5185346722708837494}
+      addedObject: {fileID: 7128366978470895557}
   m_SourcePrefab: {fileID: 100100000, guid: 734a7e35ed4dea040973a32353dea1c9, type: 3}
---- !u!1 &8272240168577088323 stripped
+--- !u!1 &2939186443202310801 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 734a7e35ed4dea040973a32353dea1c9, type: 3}
-  m_PrefabInstance: {fileID: 9083073575976175122}
+  m_PrefabInstance: {fileID: 2597309997687410624}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &5185346722708837494
+--- !u!65 &7128366978470895557
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8272240168577088323}
+  m_GameObject: {fileID: 2939186443202310801}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -84,5 +84,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.60999894, y: 0.2747291, z: 0.066643335}
-  m_Center: {x: 0, y: 0.020931596, z: 0.0030046569}
+  m_Size: {x: 2.07, y: 0.33, z: 1}
+  m_Center: {x: 0, y: 0.15, z: 0}
