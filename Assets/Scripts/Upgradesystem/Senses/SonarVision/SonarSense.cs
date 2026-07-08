@@ -41,6 +41,9 @@ public class SonarSense : MonoBehaviour
     private bool isOnCooldown;
     private Coroutine volumeRoutine;
 
+    // NEU: Merkt sich, ob die Fähigkeit im laufenden Spiel freigeschaltet wurde
+    private bool isUnlocked = false; 
+
     private void Awake()
     {
         upgradeSystem =
@@ -52,14 +55,23 @@ public class SonarSense : MonoBehaviour
 
         if (sonarVolume != null)
             sonarVolume.weight = 0f;
+    }
 
-        // Sicherstellen, dass das Cooldown-Bild am Anfang unsichtbar ist
-        if (cooldownOverlay != null) 
-            cooldownOverlay.gameObject.SetActive(false);
+    private void Start() // NEU: Hinzugefügt für den ersten Check beim Spielstart
+    {
+        // Direkt prüfen, ob der Button ausgegraut sein muss
+        CheckUnlockStatus();
     }
 
     private void Update()
     {
+        // NEU: Solange es gesperrt ist, checken wir, ob der Spieler das Upgrade gerade eingesammelt hat
+        if (!isUnlocked)
+        {
+            CheckUnlockStatus();
+            return; // Verhindert die Tastatur-Eingabe, solange gesperrt
+        }
+
         if (Keyboard.current == null)
             return;
 
@@ -67,19 +79,51 @@ public class SonarSense : MonoBehaviour
             TryUseSonar();
     }
 
+    // NEU: Diese Methode steuert das Ausgrauen des Buttons basierend auf dem UpgradeSystem
+    private void CheckUnlockStatus()
+    {
+        // WICHTIG: Hier wird auf PreyGivesUpgrade.SonarSense geprüft
+        if (!needsUpgrade || (upgradeSystem != null && upgradeSystem.HasUpgrade(PreyGivesUpgrade.SonarSense)))
+        {
+            // FÄHIGKEIT IST FREIGESCHALTET!
+            if (!isUnlocked) 
+            {
+                isUnlocked = true;
+                Debug.Log("Ultraschall freigeschaltet!");
+
+                // Grauen Schleier entfernen (nur wenn wir nicht gerade im echten Cooldown sind)
+                if (cooldownOverlay != null && !isOnCooldown)
+                {
+                    cooldownOverlay.gameObject.SetActive(false);
+                }
+            }
+        }
+        else
+        {
+            // FÄHIGKEIT IST GESPERRT
+            isUnlocked = false;
+
+            if (cooldownOverlay != null)
+            {
+                cooldownOverlay.gameObject.SetActive(true);
+                cooldownOverlay.fillAmount = 1f; // Overlay dauerhaft auf 100% setzen (ausgrauen)
+            }
+        }
+    }
+
     // AUF PUBLIC GEÄNDERT: Damit der UI-Button diese Funktion direkt auslösen kann
     public void TryUseSonar()
     {
-        if (isOnCooldown)
+        // NEU: Schützt vor Klicks über den UI-Button auf dem Bildschirm, falls noch gesperrt
+        if (!isUnlocked)
         {
-            Debug.Log("Ultraschall ist noch im Cooldown.");
+            Debug.Log("Ultraschall noch nicht freigeschaltet.");
             return;
         }
 
-        if (needsUpgrade &&
-            (upgradeSystem == null || !upgradeSystem.HasUpgrade(PreyGivesUpgrade.SonarSense)))
+        if (isOnCooldown)
         {
-            Debug.Log("Ultraschall noch nicht freigeschaltet.");
+            Debug.Log("Ultraschall ist noch im Cooldown.");
             return;
         }
 
@@ -98,14 +142,12 @@ public class SonarSense : MonoBehaviour
         StartVolumeEffect();
 
         // --- AB HIER STARTET DER VISUELLE COOLDOWN ---
-        // Overlay sichtbar machen und voll ausfüllen
         if (cooldownOverlay != null)
         {
             cooldownOverlay.gameObject.SetActive(true);
             cooldownOverlay.fillAmount = 1f;
         }
 
-        // Der Kreis läuft flüssig jede Frame als Uhr ab (über die gesamte Cooldown-Dauer)
         float cooldownTimer = cooldown;
         while (cooldownTimer > 0)
         {
@@ -116,10 +158,9 @@ public class SonarSense : MonoBehaviour
                 cooldownOverlay.fillAmount = cooldownTimer / cooldown;
             }
             
-            yield return null; // Wartet bis zum nächsten Frame
+            yield return null; 
         }
 
-        // Cooldown vorbei: Kreis wieder unsichtbar machen
         if (cooldownOverlay != null) 
             cooldownOverlay.gameObject.SetActive(false);
 

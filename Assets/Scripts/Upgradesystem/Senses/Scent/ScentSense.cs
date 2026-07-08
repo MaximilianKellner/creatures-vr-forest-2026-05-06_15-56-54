@@ -50,6 +50,9 @@ public class ScentSense : MonoBehaviour
     private bool isOnCooldown;
     private readonly List<LineRenderer> activeLines = new List<LineRenderer>();
 
+    // NEU: Merkt sich, ob die Fähigkeit im laufenden Spiel freigeschaltet wurde
+    private bool isUnlocked = false; 
+
     private void Awake()
     {
         upgradeSystem =
@@ -58,14 +61,24 @@ public class ScentSense : MonoBehaviour
 
         if (playerPosition == null)
             playerPosition = transform;
+    }
 
-        // Sicherstellen, dass der weiße Kreis am Anfang unsichtbar ist
-        if (cooldownOverlay != null)
-            cooldownOverlay.gameObject.SetActive(false);
+    private void Start() // NEU: Hinzugefügt für Initial-Check
+    {
+        // Initialen Status prüfen (Ausgrauen)
+        CheckUnlockStatus();
     }
 
     private void Update()
     {
+        // NEU: Solange es gesperrt ist, checken wir, ob der Spieler das Upgrade gerade eingesammelt hat
+        if (!isUnlocked)
+        {
+            CheckUnlockStatus();
+            AnimateLines(); // Linien-Animation läuft trotzdem weiter, falls nötig
+            return; // Verhindert Eingabe, solange gesperrt
+        }
+
         if (Keyboard.current == null)
             return;
 
@@ -75,14 +88,50 @@ public class ScentSense : MonoBehaviour
         AnimateLines();
     }
 
+    // NEU: Diese Methode steuert das Ausgrauen des Buttons
+    private void CheckUnlockStatus()
+    {
+        // Prüfen, ob ein Upgrade nötig ist UND ob wir es schon haben
+        // WICHTIG: Hier benutzen wir PreyGivesUpgrade.ScentSense
+        if (!needsUpgrade || (upgradeSystem != null && upgradeSystem.HasUpgrade(PreyGivesUpgrade.ScentSense)))
+        {
+            // FÄHIGKEIT IST FREIGESCHALTET!
+            if (!isUnlocked) 
+            {
+                isUnlocked = true;
+                Debug.Log("Geruchssinn freigeschaltet!");
+
+                // Grauen Schleier entfernen (nur wenn wir nicht gerade im echten Cooldown sind)
+                if (cooldownOverlay != null && !isOnCooldown)
+                {
+                    cooldownOverlay.gameObject.SetActive(false);
+                }
+            }
+        }
+        else
+        {
+            // FÄHIGKEIT IST GESPERRT
+            isUnlocked = false;
+
+            if (cooldownOverlay != null)
+            {
+                cooldownOverlay.gameObject.SetActive(true);
+                cooldownOverlay.fillAmount = 1f; // Overlay dauerhaft auf 100% (ausgegraut)
+            }
+        }
+    }
+
     private void TryUseScentSense()
     {
+        // Da Update() TryUseScentSense() nur aufruft, wenn isUnlocked == true ist, 
+        // ist der Upgrade-Check hier theoretisch redundant, aber schadet nicht.
         if (isOnCooldown)
         {
             Debug.Log("Geruchssinn ist noch im Cooldown.");
             return;
         }
 
+        // NEU: Diese Prüfung ist jetzt durch Update() abgedeckt, kann aber zur Sicherheit bleiben
         if (needsUpgrade &&
             (upgradeSystem == null ||
              !upgradeSystem.HasUpgrade(PreyGivesUpgrade.ScentSense)))

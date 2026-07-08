@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
-using UnityEngine.UI; // 1. WICHTIG: Wurde hinzugefügt für das UI-Image
+using UnityEngine.UI;
 
 public class NightVision : MonoBehaviour
 {
@@ -18,13 +18,16 @@ public class NightVision : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioSource nightVisionSound;
 
-    [Header("UI Feedback")] // 2. Das Feld für den Cooldown-Kreis im Inspector
+    [Header("UI Feedback")]
     [SerializeField] private Image cooldownOverlay;
 
     private UpgradeSystem upgradeSystem;
 
     private bool isActive;
     private bool isOnCooldown;
+    
+    // NEU: Merkt sich, ob die Fähigkeit im laufenden Spiel freigeschaltet wurde
+    private bool isUnlocked = false; 
 
     private void Awake()
     {
@@ -34,14 +37,23 @@ public class NightVision : MonoBehaviour
 
         if (nightVisionVolume != null)
             nightVisionVolume.weight = 0f;
+    }
 
-        // Sicherstellen, dass der weiße Kreis am Anfang unsichtbar ist
-        if (cooldownOverlay != null)
-            cooldownOverlay.gameObject.SetActive(false);
+    private void Start()
+    {
+        // NEU: Beim Start direkt prüfen, ob das Icon ausgegraut sein muss oder nicht
+        CheckUnlockStatus();
     }
 
     private void Update()
     {
+        // NEU: Solange es gesperrt ist, checken wir, ob der Spieler das Upgrade gerade eingesammelt hat
+        if (!isUnlocked)
+        {
+            CheckUnlockStatus();
+            return; // Verhindert jegliche Eingabe, solange es gesperrt ist
+        }
+
         if (Keyboard.current == null)
             return;
 
@@ -50,15 +62,38 @@ public class NightVision : MonoBehaviour
             if (isActive || isOnCooldown)
                 return;
 
-            if (needsUpgrade &&
-                (upgradeSystem == null ||
-                 !upgradeSystem.HasUpgrade(PreyGivesUpgrade.NightVision)))
-            {
-                Debug.Log("Nachtsicht noch nicht freigeschaltet.");
-                return;
-            }
-
             StartCoroutine(NightVisionRoutine());
+        }
+    }
+
+    // NEU: Diese Methode steuert das Ausgrauen des Buttons
+    private void CheckUnlockStatus()
+    {
+        // Prüfen, ob ein Upgrade nötig ist UND ob wir es schon haben
+        if (!needsUpgrade || (upgradeSystem != null && upgradeSystem.HasUpgrade(PreyGivesUpgrade.NightVision)))
+        {
+            // Fähigkeit IST freigeschaltet!
+            if (!isUnlocked) 
+            {
+                isUnlocked = true;
+                
+                // Grauen Schleier entfernen (nur wenn wir nicht zufällig gerade im Cooldown sind)
+                if (cooldownOverlay != null && !isOnCooldown)
+                {
+                    cooldownOverlay.gameObject.SetActive(false);
+                }
+            }
+        }
+        else
+        {
+            // Fähigkeit ist noch GESPERRT
+            isUnlocked = false;
+            
+            if (cooldownOverlay != null)
+            {
+                cooldownOverlay.gameObject.SetActive(true);
+                cooldownOverlay.fillAmount = 1f; // Overlay zu 100% füllen (ausgrauen)
+            }
         }
     }
 
@@ -84,14 +119,13 @@ public class NightVision : MonoBehaviour
         isActive = false;
         isOnCooldown = true;
 
-        // --- AB HIER STARTET DER VISUELLE COOLDOWN ---
+        // --- VISUELLER COOLDOWN ---
         if (cooldownOverlay != null)
         {
             cooldownOverlay.gameObject.SetActive(true);
             cooldownOverlay.fillAmount = 1f;
         }
 
-        // Der Kreis läuft jetzt flüssig ab
         float cooldownTimer = cooldown;
         while (cooldownTimer > 0)
         {
@@ -105,7 +139,6 @@ public class NightVision : MonoBehaviour
             yield return null; 
         }
 
-        // Kreis wieder unsichtbar machen
         if (cooldownOverlay != null) 
             cooldownOverlay.gameObject.SetActive(false);
 

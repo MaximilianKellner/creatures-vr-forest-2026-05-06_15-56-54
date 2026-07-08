@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.InputSystem;
-using UnityEngine.UI; // 1. WICHTIG: Erlaubt uns die Steuerung von UI-Bildern
+using UnityEngine.UI; 
 
 public class HearingSense : MonoBehaviour
 {
@@ -24,11 +24,14 @@ public class HearingSense : MonoBehaviour
     [SerializeField] private float hearingDuration = 5f;
     [SerializeField] private float cooldown = 10f;
 
-    [Header("UI Feedback")] // 2. Hier fügen wir deinen weißen Kreis ein
+    [Header("UI Feedback")] 
     [SerializeField] private Image cooldownOverlay;
 
     private UpgradeSystem upgradeSystem;
     private bool isOnCooldown;
+    
+    // NEU: Merkt sich den Freischalt-Status
+    private bool isUnlocked = false;
 
     private void Awake()
     {
@@ -38,7 +41,6 @@ public class HearingSense : MonoBehaviour
 
         SetVolume(normalVolume);
 
-        // Sicherstellen, dass der weiße Kreis am Anfang unsichtbar ist
         if (cooldownOverlay != null) 
             cooldownOverlay.gameObject.SetActive(false);
     }
@@ -46,10 +48,20 @@ public class HearingSense : MonoBehaviour
     private void Start()
     {
         SetVolume(normalVolume);
+        
+        // NEU: Beim Start direkt prüfen, ob das Icon ausgegraut sein muss
+        CheckUnlockStatus();
     }
 
     private void Update()
     {
+        // NEU: Solange es gesperrt ist, auf das Upgrade warten
+        if (!isUnlocked)
+        {
+            CheckUnlockStatus();
+            return; // Verhindert Tastatureingaben, solange gesperrt
+        }
+
         if (Keyboard.current == null)
             return;
 
@@ -57,27 +69,53 @@ public class HearingSense : MonoBehaviour
             TryUseHearing();
     }
 
-    // 3. Auf PUBLIC geändert, damit der UI-Button diese Funktion auslösen kann!
+    // NEU: Steuert das Ausgrauen des Buttons
+    private void CheckUnlockStatus()
+    {
+        if (!needsUpgrade || (upgradeSystem != null && upgradeSystem.HasUpgrade(PreyGivesUpgrade.HearingSense)))
+        {
+            // Fähigkeit IST freigeschaltet
+            if (!isUnlocked) 
+            {
+                isUnlocked = true;
+                
+                if (cooldownOverlay != null && !isOnCooldown)
+                {
+                    cooldownOverlay.gameObject.SetActive(false);
+                }
+            }
+        }
+        else
+        {
+            // Fähigkeit ist noch GESPERRT
+            isUnlocked = false;
+            
+            if (cooldownOverlay != null)
+            {
+                cooldownOverlay.gameObject.SetActive(true);
+                cooldownOverlay.fillAmount = 1f; // Vollständig ausgrauen
+            }
+        }
+    }
+
     public void TryUseHearing()
     {
+        // NEU: Einfachere Abfrage durch die isUnlocked-Variable (wichtig für Klicks per UI-Button)
+        if (!isUnlocked)
+        {
+            Debug.Log("Hörsinn noch nicht freigeschaltet.");
+            return;
+        }
+
         if (isOnCooldown)
         {
             Debug.Log("Hörsinn ist noch im Cooldown.");
             return;
         }
 
-        if (needsUpgrade &&
-            (upgradeSystem == null ||
-             !upgradeSystem.HasUpgrade(PreyGivesUpgrade.HearingSense)))
-        {
-            Debug.Log("Hörsinn noch nicht freigeschaltet.");
-            return;
-        }
-
         StartCoroutine(HearingRoutine());
     }
 
-    // 4. Die Coroutine steuert jetzt den weißen Kreis
     private IEnumerator HearingRoutine()
     {
         isOnCooldown = true;
@@ -85,36 +123,31 @@ public class HearingSense : MonoBehaviour
         SetVolume(hearingVolume);
         Debug.Log("Hörsinn aktiviert.");
 
-        // Warte, solange der Hörsinn aktiv ist (z.B. 5 Sekunden)
         yield return new WaitForSeconds(hearingDuration);
 
         SetVolume(normalVolume);
         Debug.Log("Hörsinn deaktiviert. Cooldown startet.");
 
-        // --- AB HIER STARTET DER COOLDOWN ---
-        // Weißen Kreis sichtbar machen und voll ausfüllen
+        // --- VISUELLER COOLDOWN ---
         if (cooldownOverlay != null)
         {
             cooldownOverlay.gameObject.SetActive(true);
             cooldownOverlay.fillAmount = 1f;
         }
 
-        // Der Kreis läuft jetzt flüssig jede Frame als Uhr ab (z.B. 10 Sekunden lang)
         float cooldownTimer = cooldown;
         while (cooldownTimer > 0)
         {
-            cooldownTimer -= Time.deltaTime; // Zieht die vergangene Zeit ab
+            cooldownTimer -= Time.deltaTime; 
             
             if (cooldownOverlay != null)
             {
-                // Berechnet den Kreis-Fortschritt (zwischen 1.0 und 0.0)
                 cooldownOverlay.fillAmount = cooldownTimer / cooldown;
             }
             
-            yield return null; // Wartet bis zum nächsten Frame
+            yield return null; 
         }
 
-        // Cooldown vorbei: Kreis wieder unsichtbar machen
         if (cooldownOverlay != null) 
             cooldownOverlay.gameObject.SetActive(false);
 
