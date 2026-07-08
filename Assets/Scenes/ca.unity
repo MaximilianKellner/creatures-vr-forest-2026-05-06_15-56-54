@@ -11036,7 +11036,7 @@ Transform:
   m_GameObject: {fileID: 427275308}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 56.9727, y: 2.847, z: 143.4803}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11509,7 +11509,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8135023674665499069, guid: 58d0a4ac86f2348deb02f3880c71378e, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8518324294302271954, guid: 58d0a4ac86f2348deb02f3880c71378e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -24690,6 +24690,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 7016127780127911447, guid: 4bb8f74f8170091449aedafe306d5d40, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
+      objectReference: {fileID: 0}
     - target: {fileID: 7124845941672037646, guid: 4bb8f74f8170091449aedafe306d5d40, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -24708,17 +24712,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6410833532625853128, guid: 4bb8f74f8170091449aedafe306d5d40, type: 3}
   m_PrefabInstance: {fileID: 997954170}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &997954173 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 646243655710726396, guid: 4bb8f74f8170091449aedafe306d5d40, type: 3}
-  m_PrefabInstance: {fileID: 997954170}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6777b11659b034d4c89d60ffe3d7c4af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UpgradeSystem
 --- !u!114 &997954174 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 506880262833144602, guid: 4bb8f74f8170091449aedafe306d5d40, type: 3}
@@ -24730,28 +24723,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb4afe11a53053a4295aa81e12a87738, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
---- !u!114 &997954177 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5547600307460113117, guid: 4bb8f74f8170091449aedafe306d5d40, type: 3}
-  m_PrefabInstance: {fileID: 997954170}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e17715686b62c44c8c1195819d990ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ScentSense
---- !u!114 &997954179 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: -1493713122074088765, guid: 4bb8f74f8170091449aedafe306d5d40, type: 3}
-  m_PrefabInstance: {fileID: 997954170}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27bf988b309b683a8b5396e8f3e769f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CreatureSenses
 --- !u!1001 &1003194541
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25925,7 +25896,7 @@ Transform:
   m_GameObject: {fileID: 1040254398}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 56.9727, y: 2.847, z: 143.4803}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -33498,7 +33469,7 @@ Transform:
   m_GameObject: {fileID: 1321924878}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 20.845, y: -1.923706, z: 178.7047}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -37118,10 +37089,10 @@ MonoBehaviour:
     ability: 4
   left:
     ability: 3
-  nightVision: {fileID: 997954179}
-  sonarSense: {fileID: 0}
-  scentSense: {fileID: 997954177}
-  hearingSense: {fileID: 0}
+  nightVision: {fileID: 2103153994}
+  sonarSense: {fileID: 2103153996}
+  scentSense: {fileID: 2103153992}
+  hearingSense: {fileID: 2103153995}
   jumpProvider: {fileID: 0}
   gateJumpByUpgrade: 0
   jumpUpgrade: 6
@@ -44978,6 +44949,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 1316853283282549446, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1352799979873374140, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_Layer
       value: 6
@@ -45298,6 +45273,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2103153992}
+    - targetCorrespondingSourceObject: {fileID: 1717954561962503725, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2103154004}
     - targetCorrespondingSourceObject: {fileID: 1767192433, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1824967429}
@@ -48403,6 +48381,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1308df68a95b5db458c9a4385474c800, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1949533222}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1308df68a95b5db458c9a4385474c800, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1949533223}
   m_SourcePrefab: {fileID: 100100000, guid: 1308df68a95b5db458c9a4385474c800, type: 3}
 --- !u!4 &1949533220 stripped
 Transform:
@@ -48436,6 +48417,20 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 3865787828139655912, guid: 1308df68a95b5db458c9a4385474c800, type: 3}
+--- !u!114 &1949533223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949533221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4801164914fab97628ae41a54f5c1583, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RuntimeMeshColliderBuilder
+  includeInactive: 0
+  skipObjectsWithCollider: 1
 --- !u!1 &1949681422
 GameObject:
   m_ObjectHideFlags: 0
@@ -51639,7 +51634,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EcholocationSense
   needsUpgrade: 1
   key: 16
-  playerPosition: {fileID: 997954171}
+  playerPosition: {fileID: 1824967428}
   sonarRadius: 25
   sonarVisibleTime: 2.5
   cooldown: 3
@@ -51688,6 +51683,27 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   tongueSpeedBonus: 10
+--- !u!114 &2103154004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1452020632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4cda55ed594685566b19aea6ec70962f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::XRCharacterControllerGravity
+  gravity: -9.81
+  terminalVelocity: -30
+  groundedStickVelocity: -1
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 1
+  groundCheckDistance: 20
+  groundSnapDistance: 2
+  groundSkin: 0.03
 --- !u!1001 &2105865260
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -51925,7 +51941,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IntroStartLock
   playerMovement: {fileID: 997954174}
-  upgradeSystem: {fileID: 997954173}
+  upgradeSystem: {fileID: 2103153993}
   tutorialManager: {fileID: 1465638074}
   blurVolume: {fileID: 1791223436}
   requiredUpgrade: 1
