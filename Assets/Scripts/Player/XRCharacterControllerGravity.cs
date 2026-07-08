@@ -28,7 +28,6 @@ public class XRCharacterControllerGravity : MonoBehaviour
         }
 
         verticalVelocity = Mathf.Max(verticalVelocity + gravity * Time.deltaTime, terminalVelocity);
-
         characterController.Move(Vector3.up * verticalVelocity * Time.deltaTime);
     }
 
