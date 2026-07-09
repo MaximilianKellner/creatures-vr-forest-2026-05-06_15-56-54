@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Locomotion.Gravity;
 
 [RequireComponent(typeof(CharacterController))]
 public class XRCharacterControllerGravity : MonoBehaviour
 {
+    [SerializeField] bool disableWhenXriGravityProviderExists = true;
     [SerializeField] float gravity = -9.81f;
     [SerializeField] float terminalVelocity = -30f;
     [SerializeField] float groundedStickVelocity = -1f;
@@ -17,6 +19,9 @@ public class XRCharacterControllerGravity : MonoBehaviour
     void Awake()
     {
         characterController = GetComponent<CharacterController>();
+
+        if (disableWhenXriGravityProviderExists && HasActiveXriGravityProvider())
+            enabled = false;
     }
 
     void Update()
@@ -51,5 +56,13 @@ public class XRCharacterControllerGravity : MonoBehaviour
             characterController.Move(Vector3.up * deltaY);
 
         return true;
+    }
+
+    bool HasActiveXriGravityProvider()
+    {
+        var gravityProvider = GetComponentInParent<GravityProvider>() ??
+                              GetComponentInChildren<GravityProvider>(true);
+
+        return gravityProvider != null && gravityProvider.isActiveAndEnabled;
     }
 }

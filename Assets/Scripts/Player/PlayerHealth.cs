@@ -7,6 +7,9 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private int maxHealth;
     [SerializeField] private int currentHealth;
 
+    private int baseMaxHealth;
+    private int appliedMaxHealthBonus;
+
     public int CurrentHealth => currentHealth;
     public int MaxHealth => maxHealth;
 
@@ -15,6 +18,7 @@ public class PlayerHealth : MonoBehaviour
 
     private void Awake()
     {
+        baseMaxHealth = maxHealth;
         currentHealth = maxHealth;
     }
 
@@ -57,5 +61,20 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = 0;
         OnHealthChanged?.Invoke(currentHealth, maxHealth);
         Die();
+    }
+
+    public void ApplyMaxHealthBonus(int bonus)
+    {
+        bonus = Mathf.Max(0, bonus);
+
+        if (bonus <= appliedMaxHealthBonus)
+            return;
+
+        int gainedHealth = bonus - appliedMaxHealthBonus;
+        appliedMaxHealthBonus = bonus;
+        maxHealth = baseMaxHealth + appliedMaxHealthBonus;
+        currentHealth = Mathf.Clamp(currentHealth + gainedHealth, 0, maxHealth);
+
+        OnHealthChanged?.Invoke(currentHealth, maxHealth);
     }
 }

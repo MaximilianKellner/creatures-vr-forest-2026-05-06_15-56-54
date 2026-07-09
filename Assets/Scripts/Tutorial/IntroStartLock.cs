@@ -5,6 +5,7 @@ public class IntroStartLock : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private PlayerControlAdapter playerControl;
     [SerializeField] private UpgradeSystem upgradeSystem;
     [SerializeField] private TutorialManager tutorialManager;
 
@@ -29,14 +30,17 @@ public class IntroStartLock : MonoBehaviour
 
     private void Start()
     {
-        if (playerMovement == null)
+        XRVisualRuntimeAdapter.EnsureSceneVisuals();
+        ResolvePlayerControl();
+
+        if (playerControl == null && playerMovement == null)
         {
-            Debug.LogError("IntroStartLock: PlayerMovement fehlt.");
+            Debug.LogError("IntroStartLock: Player control fehlt.");
             return;
         }
 
-        playerMovement.SetMovementEnabled(false);
-        playerMovement.SetLookEnabled(true);
+        SetMovementEnabled(false);
+        SetLookEnabled(true);
 
         if (blurVolume != null)
         {
@@ -64,8 +68,8 @@ public class IntroStartLock : MonoBehaviour
     {
         introUnlocked = true;
 
-        playerMovement.SetMovementEnabled(true);
-        playerMovement.SetLookEnabled(true);
+        SetMovementEnabled(true);
+        SetLookEnabled(true);
 
         if (blurVolume != null)
         {
@@ -83,5 +87,37 @@ public class IntroStartLock : MonoBehaviour
         }
 
         Debug.Log("Intro beendet.");
+    }
+
+    private void ResolvePlayerControl()
+    {
+        if (playerControl != null)
+            return;
+
+        if (upgradeSystem != null)
+        {
+            playerControl =
+                upgradeSystem.GetComponentInParent<PlayerControlAdapter>() ??
+                upgradeSystem.GetComponentInChildren<PlayerControlAdapter>();
+
+            if (playerControl == null)
+                playerControl = upgradeSystem.gameObject.AddComponent<PlayerControlAdapter>();
+        }
+    }
+
+    private void SetMovementEnabled(bool enabled)
+    {
+        if (playerControl != null)
+            playerControl.SetMovementEnabled(enabled);
+        else if (playerMovement != null)
+            playerMovement.SetMovementEnabled(enabled);
+    }
+
+    private void SetLookEnabled(bool enabled)
+    {
+        if (playerControl != null)
+            playerControl.SetLookEnabled(enabled);
+        else if (playerMovement != null)
+            playerMovement.SetLookEnabled(enabled);
     }
 }

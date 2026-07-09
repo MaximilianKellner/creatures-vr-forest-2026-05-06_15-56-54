@@ -15,6 +15,8 @@ public class UpgradeNotificationUI : MonoBehaviour
 
     private void Awake()
     {
+        XRVisualRuntimeAdapter.EnsureSceneVisuals();
+
         if (panel != null)
             panel.SetActive(false);
     }

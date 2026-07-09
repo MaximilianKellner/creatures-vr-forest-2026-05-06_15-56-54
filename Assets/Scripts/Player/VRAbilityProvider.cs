@@ -16,107 +16,118 @@ public class VRAbilityProvider : MonoBehaviour
     [Serializable]
     class TouchpadAbilitySlot
     {
-        [SerializeField]
-        AbilityKind ability;
+        [SerializeField] private AbilityKind ability;
 
         public AbilityKind Ability => ability;
     }
 
     [Header("Input")]
-    [SerializeField]
-    InputActionReference rightTouchpadAxis;
-
-    [SerializeField]
-    InputActionReference rightTouchpadClick;
-
-    [SerializeField, Range(0.1f, 1f)]
-    float directionThreshold = 0.45f;
+    [SerializeField] private InputActionReference rightTouchpadAxis;
+    [SerializeField] private InputActionReference rightTouchpadClick;
+    [SerializeField, Range(0.1f, 1f)] private float directionThreshold = 0.45f;
 
     [Header("Right Touchpad Mapping")]
-    [SerializeField]
-    TouchpadAbilitySlot up = new TouchpadAbilitySlot();
-
-    [SerializeField]
-    TouchpadAbilitySlot right = new TouchpadAbilitySlot();
-
-    [SerializeField]
-    TouchpadAbilitySlot down = new TouchpadAbilitySlot();
-
-    [SerializeField]
-    TouchpadAbilitySlot left = new TouchpadAbilitySlot();
+    [SerializeField] private TouchpadAbilitySlot up = new TouchpadAbilitySlot();
+    [SerializeField] private TouchpadAbilitySlot right = new TouchpadAbilitySlot();
+    [SerializeField] private TouchpadAbilitySlot down = new TouchpadAbilitySlot();
+    [SerializeField] private TouchpadAbilitySlot left = new TouchpadAbilitySlot();
 
     [Header("Abilities")]
-    [SerializeField]
-    NightVision nightVision;
-
-    [SerializeField]
-    SonarSense sonarSense;
-
-    [SerializeField]
-    ScentSense scentSense;
-
-    [SerializeField]
-    HearingSense hearingSense;
+    [SerializeField] private NightVision nightVision;
+    [SerializeField] private SonarSense sonarSense;
+    [SerializeField] private ScentSense scentSense;
+    [SerializeField] private HearingSense hearingSense;
 
     [Header("Optional Jump Unlock Gate")]
-    [SerializeField]
-    Behaviour jumpProvider;
+    [SerializeField] private Behaviour jumpProvider;
+    [SerializeField] private bool gateJumpByUpgrade;
+    [SerializeField] private PreyGivesUpgrade jumpUpgrade = PreyGivesUpgrade.HigherJump;
 
-    [SerializeField]
-    bool gateJumpByUpgrade;
+    private UpgradeSystem upgradeSystem;
+    private InputAction fallbackAxisAction;
+    private InputAction fallbackClickAction;
+    private bool usingFallbackClickAction;
 
-    [SerializeField]
-    PreyGivesUpgrade jumpUpgrade = PreyGivesUpgrade.HigherJump;
-
-    UpgradeSystem m_UpgradeSystem;
-
-    void Awake()
+    private void Awake()
     {
-        m_UpgradeSystem =
+        upgradeSystem =
             GetComponentInParent<UpgradeSystem>() ??
             GetComponentInChildren<UpgradeSystem>();
 
         if (nightVision == null)
-            nightVision = GetComponentInParent<NightVision>() ?? GetComponentInChildren<NightVision>();
+            nightVision = GetComponentInParent<NightVision>() ??
+                          GetComponentInChildren<NightVision>();
 
         if (sonarSense == null)
-            sonarSense = GetComponentInParent<SonarSense>() ?? GetComponentInChildren<SonarSense>();
+            sonarSense = GetComponentInParent<SonarSense>() ??
+                         GetComponentInChildren<SonarSense>();
 
         if (scentSense == null)
-            scentSense = GetComponentInParent<ScentSense>() ?? GetComponentInChildren<ScentSense>();
+            scentSense = GetComponentInParent<ScentSense>() ??
+                         GetComponentInChildren<ScentSense>();
 
         if (hearingSense == null)
-            hearingSense = GetComponentInParent<HearingSense>() ?? GetComponentInChildren<HearingSense>();
+            hearingSense = GetComponentInParent<HearingSense>() ??
+                           GetComponentInChildren<HearingSense>();
+
+        CreateFallbackActions();
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
         EnableAction(rightTouchpadAxis);
-        Bind(rightTouchpadClick, OnRightTouchpadClicked);
+        fallbackAxisAction?.Enable();
+
+        usingFallbackClickAction = !Bind(rightTouchpadClick, OnRightTouchpadClicked);
+        if (usingFallbackClickAction && fallbackClickAction != null)
+        {
+            fallbackClickAction.performed += OnRightTouchpadClicked;
+            fallbackClickAction.Enable();
+        }
+
         UpdateJumpProviderState();
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
         Unbind(rightTouchpadClick, OnRightTouchpadClicked);
+
+        if (usingFallbackClickAction && fallbackClickAction != null)
+        {
+            fallbackClickAction.performed -= OnRightTouchpadClicked;
+            fallbackClickAction.Disable();
+        }
+
+        fallbackAxisAction?.Disable();
     }
 
-    void Update()
+    private void Update()
     {
         UpdateJumpProviderState();
     }
 
-    void OnRightTouchpadClicked(InputAction.CallbackContext context)
+    private void OnRightTouchpadClicked(InputAction.CallbackContext context)
     {
-        var axis = ReadVector2(rightTouchpadAxis);
+        Vector2 axis = ReadAbilityAxis();
         if (axis.sqrMagnitude < directionThreshold * directionThreshold)
             return;
 
-        var slot = GetSlot(axis);
+        TouchpadAbilitySlot slot = GetSlot(axis);
         UseAbility(slot.Ability);
     }
 
-    TouchpadAbilitySlot GetSlot(Vector2 axis)
+    private Vector2 ReadAbilityAxis()
+    {
+        if (TryReadVector2(rightTouchpadAxis, out Vector2 axis) &&
+            axis.sqrMagnitude > 0.001f)
+            return axis;
+
+        return fallbackAxisAction != null
+            ? fallbackAxisAction.ReadValue<Vector2>()
+            : Vector2.zero;
+    }
+
+    private TouchpadAbilitySlot GetSlot(Vector2 axis)
     {
         if (Mathf.Abs(axis.x) > Mathf.Abs(axis.y))
             return axis.x > 0f ? right : left;
@@ -124,7 +135,7 @@ public class VRAbilityProvider : MonoBehaviour
         return axis.y > 0f ? up : down;
     }
 
-    void UseAbility(AbilityKind ability)
+    private void UseAbility(AbilityKind ability)
     {
         switch (ability)
         {
@@ -150,46 +161,80 @@ public class VRAbilityProvider : MonoBehaviour
         }
     }
 
-    void UpdateJumpProviderState()
+    private void UpdateJumpProviderState()
     {
         if (!gateJumpByUpgrade || jumpProvider == null)
             return;
 
-        jumpProvider.enabled = m_UpgradeSystem != null && m_UpgradeSystem.HasUpgrade(jumpUpgrade);
+        jumpProvider.enabled =
+            upgradeSystem != null &&
+            upgradeSystem.HasUpgrade(jumpUpgrade);
     }
 
-    static Vector2 ReadVector2(InputActionReference actionReference)
+    private void CreateFallbackActions()
     {
-        return actionReference != null && actionReference.action != null
-            ? actionReference.action.ReadValue<Vector2>()
-            : Vector2.zero;
+        fallbackAxisAction = new InputAction(
+            "Abilities Axis Fallback",
+            InputActionType.Value,
+            expectedControlType: "Vector2");
+        fallbackAxisAction.AddBinding("<XRController>{RightHand}/{Primary2DAxis}");
+
+        fallbackClickAction = new InputAction(
+            "Abilities Click Fallback",
+            InputActionType.Button);
+        fallbackClickAction.AddBinding("<XRController>{RightHand}/{Primary2DAxisClick}");
     }
 
-    static void Bind(InputActionReference actionReference, Action<InputAction.CallbackContext> callback)
+    private static bool TryReadVector2(
+        InputActionReference actionReference,
+        out Vector2 value)
     {
-        var action = GetAction(actionReference);
+        value = Vector2.zero;
+
+        if (actionReference == null || actionReference.action == null)
+            return false;
+
+        try
+        {
+            value = actionReference.action.ReadValue<Vector2>();
+            return true;
+        }
+        catch (InvalidOperationException)
+        {
+            return false;
+        }
+    }
+
+    private static bool Bind(
+        InputActionReference actionReference,
+        Action<InputAction.CallbackContext> callback)
+    {
+        InputAction action = GetAction(actionReference);
         if (action == null)
-            return;
+            return false;
 
         action.performed += callback;
         action.Enable();
+        return true;
     }
 
-    static void Unbind(InputActionReference actionReference, Action<InputAction.CallbackContext> callback)
+    private static void Unbind(
+        InputActionReference actionReference,
+        Action<InputAction.CallbackContext> callback)
     {
-        var action = GetAction(actionReference);
+        InputAction action = GetAction(actionReference);
         if (action == null)
             return;
 
         action.performed -= callback;
     }
 
-    static void EnableAction(InputActionReference actionReference)
+    private static void EnableAction(InputActionReference actionReference)
     {
         GetAction(actionReference)?.Enable();
     }
 
-    static InputAction GetAction(InputActionReference actionReference)
+    private static InputAction GetAction(InputActionReference actionReference)
     {
         return actionReference != null ? actionReference.action : null;
     }

@@ -33,20 +33,33 @@ public class MissionManager : MonoBehaviour
 
     [Header("Input")]
     [SerializeField] private Key keyToHold = Key.Z;
+    [SerializeField] private InputActionReference missionToggleAction;
 
     [Header("Auto Show")]
     [SerializeField] private float autoShowDuration = 3f;
+
+    [Header("VR Display")]
+    [SerializeField] private bool keepVisibleInVr = true;
+    [SerializeField] private bool startVisibleInVr = true;
 
     private int currentMissionIndex;
     private int currentAmount;
 
     private Coroutine autoShowRoutine;
     private bool autoShowing;
+    private bool isVrHud;
+    private bool missionVisible;
+    private InputAction fallbackMissionToggleAction;
 
     private void Awake()
     {
+        XRVisualRuntimeAdapter.EnsureSceneVisuals();
+        isVrHud = keepVisibleInVr && HasVrPlayerInScene();
+        missionVisible = isVrHud && startVisibleInVr;
+        CreateFallbackMissionToggleAction();
+
         if (missionUI != null)
-            missionUI.SetActive(false);
+            missionUI.SetActive(missionVisible);
 
         UpdateMissionUI();
     }
@@ -54,22 +67,23 @@ public class MissionManager : MonoBehaviour
     private void OnEnable()
     {
         OnTargetCollected += HandleTargetCollected;
+        EnableAction(missionToggleAction);
+        fallbackMissionToggleAction?.Enable();
     }
 
     private void OnDisable()
     {
         OnTargetCollected -= HandleTargetCollected;
+        fallbackMissionToggleAction?.Disable();
     }
 
     private void Update()
     {
-        if (Keyboard.current == null)
-            return;
-
-        bool isHoldingKey = Keyboard.current[keyToHold].isPressed;
+        if (WasMissionTogglePressed())
+            missionVisible = !missionVisible;
 
         if (missionUI != null)
-            missionUI.SetActive(isHoldingKey || autoShowing);
+            missionUI.SetActive(missionVisible || autoShowing);
     }
 
     private void HandleTargetCollected(string targetId)
@@ -141,8 +155,46 @@ public class MissionManager : MonoBehaviour
         autoShowing = false;
 
         if (missionUI != null)
-            missionUI.SetActive(false);
+            missionUI.SetActive(missionVisible);
 
         autoShowRoutine = null;
+    }
+
+    private bool WasMissionTogglePressed()
+    {
+        if (missionToggleAction != null &&
+            missionToggleAction.action != null &&
+            missionToggleAction.action.WasPressedThisFrame())
+            return true;
+
+        if (fallbackMissionToggleAction != null &&
+            fallbackMissionToggleAction.WasPressedThisFrame())
+            return true;
+
+        return Keyboard.current != null &&
+               Keyboard.current[keyToHold].wasPressedThisFrame;
+    }
+
+    private void CreateFallbackMissionToggleAction()
+    {
+        fallbackMissionToggleAction = new InputAction(
+            "Mission Toggle Fallback",
+            InputActionType.Button);
+
+        fallbackMissionToggleAction.AddBinding("<XRController>{LeftHand}/{SecondaryButton}");
+        fallbackMissionToggleAction.AddBinding("<XRController>{LeftHand}/{PrimaryButton}");
+        fallbackMissionToggleAction.AddBinding("<Keyboard>/z");
+    }
+
+    private static void EnableAction(InputActionReference actionReference)
+    {
+        if (actionReference != null && actionReference.action != null)
+            actionReference.action.Enable();
+    }
+
+    private static bool HasVrPlayerInScene()
+    {
+        return UnityEngine.Object.FindObjectsByType<VRAbilityProvider>(
+            FindObjectsInactive.Include).Length > 0;
     }
 }

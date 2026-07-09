@@ -2081,9 +2081,9 @@
                 },
                 {
                     "name": "AbilitiesAxis",
-                    "type": "Button",
+                    "type": "Value",
                     "id": "6984ed10-4842-455a-af90-5d48b162e556",
-                    "expectedControlType": "",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -2421,7 +2421,7 @@
                 {
                     "name": "",
                     "id": "6b1ecb76-e621-4cbe-8782-c09e3d5e80b6",
-                    "path": "<XRController>{RightHand}/{Primary2DAxisTouch}",
+                    "path": "<XRController>{RightHand}/{Primary2DAxis}",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

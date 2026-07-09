@@ -11,6 +11,8 @@ public class PlayerTongue : MonoBehaviour
     [SerializeField] private Camera playerCamera;
     [SerializeField] private Transform aimSource;
     [SerializeField] private bool useAimSourceAsTongueOrigin = true;
+    [SerializeField, Min(0f)] private float aimForwardOffset = 0.25f;
+    [SerializeField, Min(0f)] private float aimDownOffset = 0.1f;
 
     [Header("Settings")]
     [SerializeField] private float speed = 20f;
@@ -22,6 +24,7 @@ public class PlayerTongue : MonoBehaviour
 
     private UpgradeSystem upgradeSystem;
     private bool isBusy;
+    private Transform aimOffsetTarget;
 
     private void Awake()
     {
@@ -44,6 +47,12 @@ public class PlayerTongue : MonoBehaviour
         {
             TryShoot();
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (aimOffsetTarget != null)
+            Destroy(aimOffsetTarget.gameObject);
     }
 
     public void TryShoot()
@@ -71,9 +80,8 @@ public class PlayerTongue : MonoBehaviour
             return;
         }
 
-        Vector3 targetPos =
-            shotAimSource.position +
-            shotAimSource.forward * maxDistance;
+        Vector3 shotStart = GetAimStart(shotAimSource);
+        Vector3 targetPos = shotStart + shotAimSource.forward * maxDistance;
 
         StartCoroutine(Shoot(shotAimSource, targetPos));
     }
@@ -85,7 +93,7 @@ public class PlayerTongue : MonoBehaviour
         Transform visualOrigin = tongueOrigin != null ? tongueOrigin : shotAimSource;
         Transform attachTarget =
             useAimSourceAsTongueOrigin && shotAimSource != null
-                ? shotAimSource
+                ? GetAimAttachTarget(shotAimSource)
                 : tongueTip != null ? tongueTip : visualOrigin;
 
         if (visualOrigin == null)
@@ -195,9 +203,44 @@ public class PlayerTongue : MonoBehaviour
     private Vector3 GetShotStart(Transform shotAimSource, Transform visualOrigin)
     {
         if (useAimSourceAsTongueOrigin && shotAimSource != null)
-            return shotAimSource.position;
+            return GetAimStart(shotAimSource);
 
         return visualOrigin.position;
+    }
+
+    private Vector3 GetAimStart(Transform shotAimSource)
+    {
+        if (shotAimSource == null)
+            return Vector3.zero;
+
+        return shotAimSource.TransformPoint(GetAimLocalOffset());
+    }
+
+    private Transform GetAimAttachTarget(Transform shotAimSource)
+    {
+        if (shotAimSource == null || (aimForwardOffset <= 0f && aimDownOffset <= 0f))
+            return shotAimSource;
+
+        if (aimOffsetTarget == null)
+        {
+            GameObject offsetObject = new GameObject("TongueAimOffset");
+            offsetObject.hideFlags = HideFlags.HideInHierarchy;
+            aimOffsetTarget = offsetObject.transform;
+        }
+
+        if (aimOffsetTarget.parent != shotAimSource)
+            aimOffsetTarget.SetParent(shotAimSource, false);
+
+        aimOffsetTarget.localPosition = GetAimLocalOffset();
+        aimOffsetTarget.localRotation = Quaternion.identity;
+        aimOffsetTarget.localScale = Vector3.one;
+
+        return aimOffsetTarget;
+    }
+
+    private Vector3 GetAimLocalOffset()
+    {
+        return Vector3.forward * aimForwardOffset + Vector3.down * aimDownOffset;
     }
 
     private float GetTongueSpeed()

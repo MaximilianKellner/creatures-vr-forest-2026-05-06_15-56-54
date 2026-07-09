@@ -19,6 +19,8 @@ public class TutorialManager : MonoBehaviour
 
     private void Awake()
     {
+        XRVisualRuntimeAdapter.EnsureSceneVisuals();
+
         if (tutorialCanvasGroup != null)
         {
             tutorialCanvasGroup.alpha = 0f;

@@ -24,6 +24,9 @@ public abstract class Prey : MonoBehaviour
     private bool canBeEaten;
     private Transform followTarget;
     private Transform player;
+    private CharacterController playerController;
+    private PlayerHealth playerHealth;
+    private UpgradeSystem playerUpgradeSystem;
 
     public bool IsCaptured => isCaptured;
     public PreyType Type => preyType;
@@ -72,7 +75,7 @@ public abstract class Prey : MonoBehaviour
         isCaptured = true;
         canBeEaten = false;
         followTarget = tongueTarget;
-        player = tongueTarget.root;
+        ResolvePlayerContext(tongueTarget);
 
         if (TryGetComponent(out Rigidbody rb))
         {
@@ -109,13 +112,9 @@ public abstract class Prey : MonoBehaviour
 
         Vector3 closestPoint = transform.position;
 
-        CharacterController controller =
-            player.GetComponentInParent<CharacterController>() ??
-            player.GetComponentInChildren<CharacterController>();
-
-        if (controller != null)
+        if (playerController != null)
         {
-            closestPoint = controller.ClosestPoint(transform.position);
+            closestPoint = playerController.ClosestPoint(transform.position);
         }
 
         float distance = Vector3.Distance(transform.position, closestPoint);
@@ -131,7 +130,7 @@ public abstract class Prey : MonoBehaviour
         if (!isCaptured || !canBeEaten)
             return;
 
-        if (other.CompareTag("Player") || other.GetComponentInParent<PlayerHealth>() != null)
+        if (IsPlayerCollider(other))
         {
             Eat();
         }
@@ -141,25 +140,20 @@ public abstract class Prey : MonoBehaviour
     {
         if (player == null) return;
 
-        PlayerHealth health =
-            player.GetComponentInParent<PlayerHealth>() ??
-            player.GetComponentInChildren<PlayerHealth>();
+        if (playerHealth == null || playerUpgradeSystem == null)
+            ResolvePlayerContext(followTarget);
 
-        if (health != null)
+        if (playerHealth != null)
         {
             if (preyType == PreyType.Poison)
-                health.TakeDamage(damage);
+                playerHealth.TakeDamage(damage);
             else
-                health.Heal(healAmount);
+                playerHealth.Heal(healAmount);
         }
 
-        UpgradeSystem upgradeSystem =
-            player.GetComponentInParent<UpgradeSystem>() ??
-            player.GetComponentInChildren<UpgradeSystem>();
-
-        if (upgradeSystem != null)
+        if (playerUpgradeSystem != null)
         {
-            upgradeSystem.UnlockUpgrade(givesUpgrade, upgradeLevel);
+            playerUpgradeSystem.UnlockUpgrade(givesUpgrade, upgradeLevel);
         }
         
         MissionTarget missionTarget = GetComponent<MissionTarget>();
@@ -170,5 +164,50 @@ public abstract class Prey : MonoBehaviour
         }
         
         Destroy(gameObject);
+    }
+
+    private void ResolvePlayerContext(Transform context)
+    {
+        player = null;
+        playerController = null;
+        playerHealth = null;
+        playerUpgradeSystem = null;
+
+        if (context == null)
+            return;
+
+        playerController = context.GetComponentInParent<CharacterController>();
+        playerHealth = context.GetComponentInParent<PlayerHealth>();
+        playerUpgradeSystem = context.GetComponentInParent<UpgradeSystem>();
+
+        Transform root = context.root;
+
+        if (root != null)
+        {
+            if (playerController == null)
+                playerController = root.GetComponentInChildren<CharacterController>();
+
+            if (playerHealth == null)
+                playerHealth = root.GetComponentInChildren<PlayerHealth>();
+
+            if (playerUpgradeSystem == null)
+                playerUpgradeSystem = root.GetComponentInChildren<UpgradeSystem>();
+        }
+
+        if (playerController != null)
+            player = playerController.transform;
+        else if (playerHealth != null)
+            player = playerHealth.transform;
+        else if (playerUpgradeSystem != null)
+            player = playerUpgradeSystem.transform;
+        else
+            player = root;
+    }
+
+    private bool IsPlayerCollider(Collider other)
+    {
+        return other.CompareTag("Player") ||
+               other.GetComponentInParent<PlayerHealth>() != null ||
+               other.GetComponentInParent<UpgradeSystem>() != null;
     }
 }

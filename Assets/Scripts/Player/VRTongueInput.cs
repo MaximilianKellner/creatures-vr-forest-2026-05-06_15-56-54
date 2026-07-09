@@ -4,70 +4,80 @@ using UnityEngine.InputSystem;
 
 public class VRTongueInput : MonoBehaviour
 {
-    [SerializeField]
-    InputActionReference shootAction;
+    [SerializeField] private InputActionReference shootAction;
+    [SerializeField] private PlayerTongue playerTongue;
 
-    [SerializeField]
-    PlayerTongue playerTongue;
+    private InputAction fallbackShootAction;
+    private bool usingFallbackShootAction;
 
-    void Awake()
+    private void Awake()
     {
         if (playerTongue == null)
-            playerTongue = GetComponentInParent<PlayerTongue>() ?? GetComponentInChildren<PlayerTongue>();
+            playerTongue = GetComponentInParent<PlayerTongue>() ??
+                           GetComponentInChildren<PlayerTongue>();
+
+        fallbackShootAction = new InputAction(
+            "Tongue Shoot Fallback",
+            InputActionType.Button);
+        fallbackShootAction.AddBinding("<XRController>{RightHand}/{TriggerButton}");
+        fallbackShootAction.AddBinding("<Keyboard>/t");
     }
 
-    void OnEnable()
+    private void OnEnable()
     {
-        Debug.Log("[VRTongueInput] OnEnable aufgerufen");
-        Debug.Log($"[VRTongueInput] shootAction null? {shootAction == null}");
-        Debug.Log($"[VRTongueInput] playerTongue null? {playerTongue == null}");
-        Bind(shootAction, OnShootPerformed);
+        usingFallbackShootAction = !Bind(shootAction, OnShootPerformed);
+
+        if (usingFallbackShootAction && fallbackShootAction != null)
+        {
+            fallbackShootAction.performed += OnShootPerformed;
+            fallbackShootAction.Enable();
+        }
     }
 
-    void OnDisable()
+    private void OnDisable()
     {
-        Debug.Log("[VRTongueInput] OnDisable aufgerufen");
         Unbind(shootAction, OnShootPerformed);
+
+        if (usingFallbackShootAction && fallbackShootAction != null)
+        {
+            fallbackShootAction.performed -= OnShootPerformed;
+            fallbackShootAction.Disable();
+        }
     }
 
-    void OnShootPerformed(InputAction.CallbackContext context)
+    private void OnShootPerformed(InputAction.CallbackContext context)
     {
-        Debug.Log("[VRTongueInput] OnShootPerformed - Input empfangen!");
         if (playerTongue != null)
-        {
-            Debug.Log("[VRTongueInput] TryShoot wird aufgerufen");
             playerTongue.TryShoot();
-        }
         else
-        {
-            Debug.LogError("[VRTongueInput] playerTongue ist NULL!");
-        }
+            Debug.LogError("[VRTongueInput] PlayerTongue reference is missing.");
     }
 
-    static void Bind(InputActionReference actionReference, Action<InputAction.CallbackContext> callback)
+    private static bool Bind(
+        InputActionReference actionReference,
+        Action<InputAction.CallbackContext> callback)
     {
-        var action = GetAction(actionReference);
+        InputAction action = GetAction(actionReference);
         if (action == null)
-        {
-            Debug.LogError("[VRTongueInput] Bind fehlgeschlagen - action ist NULL! shootAction wurde nicht konfiguriert?");
-            return;
-        }
+            return false;
 
-        Debug.Log($"[VRTongueInput] Binding erfolgreich für Action: {action.name}");
         action.performed += callback;
         action.Enable();
+        return true;
     }
 
-    static void Unbind(InputActionReference actionReference, Action<InputAction.CallbackContext> callback)
+    private static void Unbind(
+        InputActionReference actionReference,
+        Action<InputAction.CallbackContext> callback)
     {
-        var action = GetAction(actionReference);
+        InputAction action = GetAction(actionReference);
         if (action == null)
             return;
 
         action.performed -= callback;
     }
 
-    static InputAction GetAction(InputActionReference actionReference)
+    private static InputAction GetAction(InputActionReference actionReference)
     {
         return actionReference != null ? actionReference.action : null;
     }
