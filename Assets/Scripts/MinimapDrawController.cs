@@ -4,10 +4,18 @@ public class MinimapCameraFollow : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform player;
+    [SerializeField] private Camera minimapCamera;
 
     [Header("Settings")]
-    [SerializeField] private float height = 30f;
+    [SerializeField] private float heightAbovePlayer = 30f;
+    [SerializeField] private float orthographicSize = 30f;
     [SerializeField] private bool rotateWithPlayer = true;
+
+    private void Awake()
+    {
+        if (minimapCamera == null)
+            minimapCamera = GetComponent<Camera>();
+    }
 
     private void LateUpdate()
     {
@@ -16,21 +24,15 @@ public class MinimapCameraFollow : MonoBehaviour
 
         transform.position = new Vector3(
             player.position.x,
-            height,
+            player.position.y + heightAbovePlayer,
             player.position.z
         );
 
-        if (rotateWithPlayer)
-        {
-            transform.rotation = Quaternion.Euler(
-                90f,
-                player.eulerAngles.y,
-                0f
-            );
-        }
-        else
-        {
-            transform.rotation = Quaternion.Euler(90f, 0f, 0f);
-        }
+        transform.rotation = rotateWithPlayer
+            ? Quaternion.Euler(90f, player.eulerAngles.y, 0f)
+            : Quaternion.Euler(90f, 0f, 0f);
+
+        if (minimapCamera != null)
+            minimapCamera.orthographicSize = orthographicSize;
     }
 }
