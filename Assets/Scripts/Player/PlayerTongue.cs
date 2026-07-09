@@ -9,6 +9,8 @@ public class PlayerTongue : MonoBehaviour
     [SerializeField] private Transform tongueTip;
     [SerializeField] private LineRenderer lineRenderer;
     [SerializeField] private Camera playerCamera;
+    [SerializeField] private Transform aimSource;
+    [SerializeField] private bool useAimSourceAsTongueOrigin = true;
 
     [Header("Settings")]
     [SerializeField] private float speed = 20f;
@@ -23,7 +25,11 @@ public class PlayerTongue : MonoBehaviour
 
     private void Awake()
     {
-        lineRenderer.enabled = false;
+        if (lineRenderer != null)
+            lineRenderer.enabled = false;
+
+        if (aimSource == null && playerCamera != null)
+            aimSource = playerCamera.transform;
 
         upgradeSystem =
             GetComponentInParent<UpgradeSystem>() ??
@@ -42,6 +48,23 @@ public class PlayerTongue : MonoBehaviour
 
     public void TryShoot()
     {
+        if (lineRenderer == null)
+        {
+            Debug.LogError("[PlayerTongue] FEHLER: LineRenderer ist NULL! Kann nicht schießen!");
+            return;
+        }
+
+        Transform shotAimSource = aimSource;
+
+        if (shotAimSource == null && playerCamera != null)
+            shotAimSource = playerCamera.transform;
+
+        if (shotAimSource == null)
+        {
+            Debug.LogError("[PlayerTongue] FEHLER: Keine Kamera/Aim Source gesetzt! Kann nicht zielen.");
+            return;
+        }
+
         if (isBusy)
         {
             Debug.Log("[PlayerTongue] Zunge ist noch aktiv, ignoriere Input!");
@@ -49,21 +72,25 @@ public class PlayerTongue : MonoBehaviour
         }
 
         Vector3 targetPos =
-            playerCamera.transform.position +
-            playerCamera.transform.forward * maxDistance;
+            shotAimSource.position +
+            shotAimSource.forward * maxDistance;
 
-        StartCoroutine(Shoot(targetPos));
+        StartCoroutine(Shoot(shotAimSource, targetPos));
     }
 
-    private IEnumerator Shoot(Vector3 targetPos)
+    private IEnumerator Shoot(Transform shotAimSource, Vector3 targetPos)
     {
         isBusy = true;
 
-        Debug.Log($"[PlayerTongue] Shoot gestartet. LineRenderer null? {lineRenderer == null}");
-        
-        if (lineRenderer == null)
+        Transform visualOrigin = tongueOrigin != null ? tongueOrigin : shotAimSource;
+        Transform attachTarget =
+            useAimSourceAsTongueOrigin && shotAimSource != null
+                ? shotAimSource
+                : tongueTip != null ? tongueTip : visualOrigin;
+
+        if (visualOrigin == null)
         {
-            Debug.LogError("[PlayerTongue] FEHLER: LineRenderer ist NULL! Kann nicht schießen!");
+            Debug.LogError("[PlayerTongue] FEHLER: Kein Tongue Origin gesetzt!");
             isBusy = false;
             yield break;
         }
@@ -71,19 +98,19 @@ public class PlayerTongue : MonoBehaviour
         lineRenderer.enabled = true;
         lineRenderer.positionCount = 2;
 
-        Debug.Log($"[PlayerTongue] LineRenderer Material: {lineRenderer.material}");
-        Debug.Log($"[PlayerTongue] LineRenderer StartWidth: {lineRenderer.startWidth}");
-        Debug.Log($"[PlayerTongue] LineRenderer EndWidth: {lineRenderer.endWidth}");
-
         float currentSpeed = GetTongueSpeed();
+        Vector3 start = GetShotStart(shotAimSource, visualOrigin);
 
         float t = 0f;
-        float distance = Vector3.Distance(
-            tongueOrigin.position,
-            targetPos
-        );
+        float distance = Vector3.Distance(start, targetPos);
 
-        Debug.Log($"[PlayerTongue] Distance: {distance}, Speed: {currentSpeed}");
+        if (distance <= 0.01f)
+        {
+            lineRenderer.positionCount = 0;
+            lineRenderer.enabled = false;
+            isBusy = false;
+            yield break;
+        }
 
         Prey hitPrey = null;
         bool hitObstacle = false;
@@ -91,29 +118,37 @@ public class PlayerTongue : MonoBehaviour
         // Zunge ausfahren
         while (t < 1f)
         {
-            Debug.Log($"[PlayerTongue] While-Loop Iteration: t={t:F3}");
             t += Time.deltaTime * currentSpeed / distance;
 
-            Vector3 start = tongueOrigin.position;
+            start = GetShotStart(shotAimSource, visualOrigin);
             Vector3 pos = Vector3.Lerp(start, targetPos, t);
+            Vector3 direction = pos - start;
+            float rayDistance = direction.magnitude;
 
-            Debug.Log($"[PlayerTongue] SetPosition - start: {start}, pos: {pos}");
-
-            if (Physics.Raycast(
+            if (rayDistance > 0.001f && Physics.Raycast(
                 start,
-                (pos - start).normalized,
+                direction.normalized,
                 out RaycastHit hit,
-                Vector3.Distance(start, pos),
-                collisionMask))
+                rayDistance,
+                collisionMask,
+                QueryTriggerInteraction.Collide))
             {
-                if (hit.collider.TryGetComponent(out Prey prey))
+                Prey prey =
+                    hit.collider.GetComponentInParent<Prey>() ??
+                    hit.collider.GetComponentInChildren<Prey>();
+
+                if (prey != null)
                 {
                     hitPrey = prey;
+                    targetPos = hit.point;
+                    distance = Mathf.Max(Vector3.Distance(start, targetPos), 0.01f);
+                    break;
                 }
                 else
                 {
                     hitObstacle = true;
                     targetPos = hit.point;
+                    distance = Mathf.Max(Vector3.Distance(start, targetPos), 0.01f);
                     break;
                 }
             }
@@ -127,7 +162,7 @@ public class PlayerTongue : MonoBehaviour
         // Beute an Zunge befestigen
         if (!hitObstacle && hitPrey != null)
         {
-            hitPrey.AttachToTongue(tongueTip);
+            hitPrey.AttachToTongue(attachTarget);
         }
 
         // Zunge zurückziehen
@@ -137,7 +172,7 @@ public class PlayerTongue : MonoBehaviour
         {
             backT -= Time.deltaTime * currentSpeed / distance;
 
-            Vector3 start = tongueOrigin.position;
+            start = GetShotStart(shotAimSource, visualOrigin);
             Vector3 pos = Vector3.Lerp(start, targetPos, backT);
 
             lineRenderer.SetPosition(0, start);
@@ -155,6 +190,14 @@ public class PlayerTongue : MonoBehaviour
         }
 
         isBusy = false;
+    }
+
+    private Vector3 GetShotStart(Transform shotAimSource, Transform visualOrigin)
+    {
+        if (useAimSourceAsTongueOrigin && shotAimSource != null)
+            return shotAimSource.position;
+
+        return visualOrigin.position;
     }
 
     private float GetTongueSpeed()

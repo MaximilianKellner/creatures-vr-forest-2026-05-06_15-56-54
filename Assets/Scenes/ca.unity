@@ -20089,7 +20089,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::VRTongueInput
   shootAction: {fileID: 7989251391846848317, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  playerTongue: {fileID: 0}
+  playerTongue: {fileID: 2103153998}
 --- !u!1 &850945472
 GameObject:
   m_ObjectHideFlags: 0
@@ -51673,12 +51673,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c25af20c9192554286387242b778e79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTongue
-  tongueOrigin: {fileID: 396156359}
-  tongueTip: {fileID: 689923147}
-  lineRenderer: {fileID: 396156360}
+  tongueOrigin: {fileID: 1040254399}
+  tongueTip: {fileID: 427275309}
+  lineRenderer: {fileID: 1040254400}
   playerCamera: {fileID: 1824967426}
+  aimSource: {fileID: 0}
+  useAimSourceAsTongueOrigin: 1
   speed: 30
-  maxDistance: 10
+  maxDistance: 20
   collisionMask:
     serializedVersion: 2
     m_Bits: 128
