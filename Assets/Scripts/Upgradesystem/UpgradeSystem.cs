@@ -9,6 +9,7 @@ public class UpgradeSystem : MonoBehaviour
 
     private Dictionary<PreyGivesUpgrade, int> upgrades = new Dictionary<PreyGivesUpgrade, int>();
     private HashSet<PreyGivesUpgrade> shownTutorials = new HashSet<PreyGivesUpgrade>();
+    public event System.Action<PreyGivesUpgrade> OnUpgradeUnlocked;
 
     public void UnlockUpgrade(PreyGivesUpgrade upgrade, int level = 1)
     {
@@ -25,6 +26,7 @@ public class UpgradeSystem : MonoBehaviour
         }
 
         Debug.Log("Upgrade freigeschaltet: " + upgrade + " Level " + level);
+        OnUpgradeUnlocked?.Invoke(upgrade);
 
         if (upgradeNotificationUI != null)
         {
