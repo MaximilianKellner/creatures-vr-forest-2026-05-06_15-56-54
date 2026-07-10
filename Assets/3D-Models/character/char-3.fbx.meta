@@ -1,14 +1,9 @@
 fileFormatVersion: 2
-guid: 63e1f8b7082c5fb4aa18ba06236cff7b
+guid: 5d78ee13ddb6f764388ff319687f2c05
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Hornisse
-    second: {fileID: 2100000, guid: fb8fa70d78fc5ac409dc297ba868d18d, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -36,11 +31,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Hornisse.Armature|ArmatureAction
-      takeName: Hornisse.Armature|ArmatureAction
-      internalID: -379752107573274737
+      name: Armature|Crawl
+      takeName: Armature|Crawl
+      internalID: -4424181212379913186
       firstFrame: 0
-      lastFrame: 4
+      lastFrame: 72
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
