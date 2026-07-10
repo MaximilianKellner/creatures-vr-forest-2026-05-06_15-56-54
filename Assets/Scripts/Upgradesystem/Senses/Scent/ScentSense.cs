@@ -42,7 +42,11 @@ public class ScentSense : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioSource ScentSound;
 
+    [Header("UI")]
+    [SerializeField] private PlayerAbilityUI abilityUI;
+
     private UpgradeSystem upgradeSystem;
+    private bool isActive;
     private bool isOnCooldown;
     private readonly List<LineRenderer> activeLines = new List<LineRenderer>();
 
@@ -69,7 +73,7 @@ public class ScentSense : MonoBehaviour
 
     private void TryUseScentSense()
     {
-        if (isOnCooldown)
+        if (isActive || isOnCooldown)
         {
             Debug.Log("Geruchssinn ist noch im Cooldown.");
             return;
@@ -80,21 +84,29 @@ public class ScentSense : MonoBehaviour
              !upgradeSystem.HasUpgrade(PreyGivesUpgrade.ScentSense)))
         {
             Debug.Log("Geruchssinn noch nicht freigeschaltet.");
+            abilityUI?.SetLocked(PreyGivesUpgrade.ScentSense);
             return;
         }
 
         StartCoroutine(ScentRoutine());
 
         if (ScentSound != null)
-            {
-                ScentSound.Stop();
-                ScentSound.Play();
-            }
+        {
+            ScentSound.Stop();
+            ScentSound.Play();
+        }
     }
 
     private IEnumerator ScentRoutine()
     {
+        isActive = true;
         isOnCooldown = true;
+
+        abilityUI?.SetAbilityState(
+            PreyGivesUpgrade.ScentSense,
+            true,
+            0f
+        );
 
         ClearLines();
 
@@ -114,9 +126,33 @@ public class ScentSense : MonoBehaviour
 
         ClearLines();
 
-        yield return new WaitForSeconds(cooldown);
+        isActive = false;
+
+        abilityUI?.SetAbilityState(
+            PreyGivesUpgrade.ScentSense,
+            false,
+            1f
+        );
+
+        float cooldownTimer = cooldown;
+
+        while (cooldownTimer > 0f)
+        {
+            cooldownTimer -= Time.deltaTime;
+
+            abilityUI?.SetAbilityState(
+                PreyGivesUpgrade.ScentSense,
+                false,
+                cooldownTimer / cooldown
+            );
+
+            yield return null;
+        }
 
         isOnCooldown = false;
+
+        abilityUI?.SetReady(PreyGivesUpgrade.ScentSense);
+
         Debug.Log("Geruchssinn wieder bereit.");
     }
 
@@ -146,8 +182,7 @@ public class ScentSense : MonoBehaviour
             DrawAnimatedPathToTarget(target, progress);
         }
     }
-
-    private void DrawAnimatedPathToTarget(ScentTarget target, float progress)
+        private void DrawAnimatedPathToTarget(ScentTarget target, float progress)
     {
         if (linePrefab == null)
             return;
@@ -337,4 +372,7 @@ public class ScentSense : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(origin.position, searchRadius);
     }
+
+    public bool IsActive => isActive;
+    public bool IsOnCooldown => isOnCooldown;
 }
