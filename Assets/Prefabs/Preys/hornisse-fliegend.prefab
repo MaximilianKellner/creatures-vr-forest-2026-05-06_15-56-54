@@ -99,7 +99,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 0.54, y: 0.61, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &-3393493858174321828
 Animator:
@@ -111,7 +111,7 @@ Animator:
   m_GameObject: {fileID: 6778484503776302238}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4bbbb5724dd47ef4d95a5a181ccaae4d, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
