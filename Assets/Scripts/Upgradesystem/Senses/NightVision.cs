@@ -17,6 +17,9 @@ public class NightVision : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioSource nightVisionSound;
 
+    [Header("UI")]
+    [SerializeField] private PlayerAbilityUI abilityUI;
+
     private UpgradeSystem upgradeSystem;
 
     private bool isActive;
@@ -51,6 +54,7 @@ public class NightVision : MonoBehaviour
              !upgradeSystem.HasUpgrade(PreyGivesUpgrade.NightVision)))
         {
             Debug.Log("Nachtsicht noch nicht freigeschaltet.");
+            abilityUI?.SetLocked(PreyGivesUpgrade.NightVision);
             return;
         }
 
@@ -61,11 +65,20 @@ public class NightVision : MonoBehaviour
     {
         isActive = true;
 
+        abilityUI?.SetAbilityState(
+            PreyGivesUpgrade.NightVision,
+            true,
+            0f
+        );
+
         if (nightVisionVolume != null)
             nightVisionVolume.weight = 1f;
 
         if (nightVisionSound != null)
+        {
+            nightVisionSound.Stop();
             nightVisionSound.Play();
+        }
 
         Debug.Log("Nachtsicht aktiviert.");
 
@@ -79,9 +92,30 @@ public class NightVision : MonoBehaviour
         isActive = false;
         isOnCooldown = true;
 
-        yield return new WaitForSeconds(cooldown);
+        abilityUI?.SetAbilityState(
+            PreyGivesUpgrade.NightVision,
+            false,
+            1f
+        );
+
+        float cooldownTimer = cooldown;
+
+        while (cooldownTimer > 0f)
+        {
+            cooldownTimer -= Time.deltaTime;
+
+            abilityUI?.SetAbilityState(
+                PreyGivesUpgrade.NightVision,
+                false,
+                cooldownTimer / cooldown
+            );
+
+            yield return null;
+        }
 
         isOnCooldown = false;
+
+        abilityUI?.SetReady(PreyGivesUpgrade.NightVision);
 
         Debug.Log("Nachtsicht wieder bereit.");
     }

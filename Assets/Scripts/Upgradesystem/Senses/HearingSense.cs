@@ -23,7 +23,11 @@ public class HearingSense : MonoBehaviour
     [SerializeField] private float hearingDuration = 5f;
     [SerializeField] private float cooldown = 10f;
 
+    [Header("UI")]
+    [SerializeField] private PlayerAbilityUI abilityUI;
+
     private UpgradeSystem upgradeSystem;
+    private bool isActive;
     private bool isOnCooldown;
 
     private void Awake()
@@ -51,7 +55,7 @@ public class HearingSense : MonoBehaviour
 
     public void TryUseHearing()
     {
-        if (isOnCooldown)
+        if (isActive || isOnCooldown)
         {
             Debug.Log("Hörsinn ist noch im Cooldown.");
             return;
@@ -62,6 +66,7 @@ public class HearingSense : MonoBehaviour
              !upgradeSystem.HasUpgrade(PreyGivesUpgrade.HearingSense)))
         {
             Debug.Log("Hörsinn noch nicht freigeschaltet.");
+            abilityUI?.SetLocked(PreyGivesUpgrade.HearingSense);
             return;
         }
 
@@ -70,19 +75,49 @@ public class HearingSense : MonoBehaviour
 
     private IEnumerator HearingRoutine()
     {
-        isOnCooldown = true;
+        isActive = true;
+
+        abilityUI?.SetAbilityState(
+            PreyGivesUpgrade.HearingSense,
+            true,
+            0f);
 
         SetVolume(hearingVolume);
+
         Debug.Log("Hörsinn aktiviert.");
 
         yield return new WaitForSeconds(hearingDuration);
 
         SetVolume(normalVolume);
+
+        isActive = false;
+        isOnCooldown = true;
+
+        abilityUI?.SetAbilityState(
+            PreyGivesUpgrade.HearingSense,
+            false,
+            1f);
+
         Debug.Log("Hörsinn deaktiviert.");
 
-        yield return new WaitForSeconds(cooldown);
+        float cooldownTimer = cooldown;
+
+        while (cooldownTimer > 0f)
+        {
+            cooldownTimer -= Time.deltaTime;
+
+            abilityUI?.SetAbilityState(
+                PreyGivesUpgrade.HearingSense,
+                false,
+                cooldownTimer / cooldown);
+
+            yield return null;
+        }
 
         isOnCooldown = false;
+
+        abilityUI?.SetReady(PreyGivesUpgrade.HearingSense);
+
         Debug.Log("Hörsinn wieder bereit.");
     }
 
@@ -96,4 +131,7 @@ public class HearingSense : MonoBehaviour
 
         audioMixer.SetFloat(volumeParameter, volume);
     }
+
+    public bool IsActive => isActive;
+    public bool IsOnCooldown => isOnCooldown;
 }

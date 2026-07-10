@@ -26,6 +26,12 @@ public class IntroStartLock : MonoBehaviour
 
     [SerializeField] private float afterVisionDuration = 6f;
 
+    [Header("Zunge Bild Tutorial")]
+    [SerializeField] private GameObject tongueTutorialPopup;
+
+    [Header("Intro UI")]
+    [SerializeField] private GameObject minimapUI;
+
     private bool introUnlocked;
 
     private void Start()
@@ -39,18 +45,20 @@ public class IntroStartLock : MonoBehaviour
             return;
         }
 
+        if (minimapUI != null)
+            minimapUI.SetActive(false);
+
         SetMovementEnabled(false);
         SetLookEnabled(true);
 
         if (blurVolume != null)
-        {
             blurVolume.weight = 1f;
-        }
 
         if (tutorialManager != null)
-        {
             tutorialManager.ShowTutorial(introTutorialText);
-        }
+
+        if (tongueTutorialPopup != null)
+            tongueTutorialPopup.SetActive(true);
     }
 
     private void Update()
@@ -59,9 +67,7 @@ public class IntroStartLock : MonoBehaviour
         if (upgradeSystem == null) return;
 
         if (upgradeSystem.HasUpgrade(requiredUpgrade))
-        {
             UnlockPlayer();
-        }
     }
 
     private void UnlockPlayer()
@@ -72,18 +78,18 @@ public class IntroStartLock : MonoBehaviour
         SetLookEnabled(true);
 
         if (blurVolume != null)
-        {
             blurVolume.weight = 0f;
-        }
+
+        if (tongueTutorialPopup != null)
+            tongueTutorialPopup.SetActive(false);
+
+        if (minimapUI != null)
+            minimapUI.SetActive(true);
 
         if (tutorialManager != null)
         {
             tutorialManager.HideTutorial();
-
-            tutorialManager.ShowTutorial(
-                afterVisionTutorialText,
-                afterVisionDuration
-            );
+            tutorialManager.ShowTutorial(afterVisionTutorialText, afterVisionDuration);
         }
 
         Debug.Log("Intro beendet.");

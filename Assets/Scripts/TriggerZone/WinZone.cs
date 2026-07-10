@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Video;
 
 public class WinZone : MonoBehaviour
 {
@@ -13,17 +14,23 @@ public class WinZone : MonoBehaviour
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject creditsPanel;
 
+    [Header("Outro Video")]
+    [SerializeField] private GameObject outroVideoRawImage;
+    [SerializeField] private VideoPlayer outroVideoPlayer;
+
     [Header("Bei Nein")]
     [SerializeField] private Transform putPlayerHere;
 
     [Header("Hauptmenü")]
     [SerializeField] private string mainMenuSceneName = "MainMenu";
 
+    [Header("Spielzeit")]
     [SerializeField] private TMP_Text timeText;
 
     private bool hasTriggered;
     private Transform playerTransform;
     private CharacterController playerController;
+    private bool outroIsPlaying;
 
     private void Start()
     {
@@ -35,6 +42,16 @@ public class WinZone : MonoBehaviour
 
         if (creditsPanel != null)
             creditsPanel.SetActive(false);
+
+        if (outroVideoRawImage != null)
+            outroVideoRawImage.SetActive(false);
+
+        if (outroVideoPlayer != null)
+        {
+            outroVideoPlayer.playOnAwake = false;
+            outroVideoPlayer.Stop();
+            outroVideoPlayer.loopPointReached += OnOutroFinished;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -75,6 +92,9 @@ public class WinZone : MonoBehaviour
 
     public void ContinueExploring()
     {
+        if (outroIsPlaying)
+            return;
+
         if (leaveQuestionPanel != null)
             leaveQuestionPanel.SetActive(false);
 
@@ -85,8 +105,10 @@ public class WinZone : MonoBehaviour
             if (controller != null)
                 controller.enabled = false;
 
-            playerTransform.position = putPlayerHere.position;
-            playerTransform.rotation = putPlayerHere.rotation;
+            playerTransform.SetPositionAndRotation(
+                putPlayerHere.position,
+                putPlayerHere.rotation
+            );
 
             if (controller != null)
                 controller.enabled = true;
@@ -113,20 +135,80 @@ public class WinZone : MonoBehaviour
 
     public void LeaveCave()
     {
+        if (outroIsPlaying)
+            return;
+
         if (leaveQuestionPanel != null)
             leaveQuestionPanel.SetActive(false);
 
         if (winPanel != null)
+            winPanel.SetActive(false);
+
+        if (creditsPanel != null)
+            creditsPanel.SetActive(false);
+
+        if (GameTimer.Instance != null)
+            GameTimer.Instance.StopTimer();
+
+        PlayOutroVideo();
+    }
+
+    private void PlayOutroVideo()
+    {
+        if (outroVideoPlayer == null)
+        {
+            ShowWinScreen();
+            return;
+        }
+
+        outroIsPlaying = true;
+
+        // Spielsounds pausieren
+        AudioListener.pause = true;
+
+        Time.timeScale = 0f;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = false;
+
+        if (outroVideoRawImage != null)
+            outroVideoRawImage.SetActive(true);
+
+        outroVideoPlayer.Stop();
+        outroVideoPlayer.time = 0;
+        outroVideoPlayer.frame = 0;
+        outroVideoPlayer.Play();
+    }
+
+    private void OnOutroFinished(VideoPlayer videoPlayer)
+    {
+        ShowWinScreen();
+    }
+
+    private void ShowWinScreen()
+    {
+        outroIsPlaying = false;
+        AudioListener.pause = false;
+
+        if (outroVideoPlayer != null)
+            outroVideoPlayer.Stop();
+
+        if (outroVideoRawImage != null)
+            outroVideoRawImage.SetActive(false);
+
+        if (winPanel != null)
             winPanel.SetActive(true);
 
-        // Steuerung bleibt deaktiviert
+        if (timeText != null && GameTimer.Instance != null)
+        {
+            timeText.text =
+                "Spielzeit: " + GameTimer.Instance.GetFormattedTime();
+        }
+
         Time.timeScale = 0f;
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-
-        GameTimer.Instance.StopTimer();
-        timeText.text = "Spielzeit: " + GameTimer.Instance.GetFormattedTime();
     }
 
     public void ShowCredits()
@@ -181,5 +263,11 @@ public class WinZone : MonoBehaviour
             playerTransform = playerController.transform;
         else
             playerTransform = other.transform.root;
+    }
+
+    private void OnDestroy()
+    {
+        if (outroVideoPlayer != null)
+            outroVideoPlayer.loopPointReached -= OnOutroFinished;
     }
 }

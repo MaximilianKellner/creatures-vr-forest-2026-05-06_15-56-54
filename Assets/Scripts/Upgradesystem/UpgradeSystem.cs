@@ -19,6 +19,7 @@ public class UpgradeSystem : MonoBehaviour
 
     private Dictionary<PreyGivesUpgrade, int> upgrades = new Dictionary<PreyGivesUpgrade, int>();
     private HashSet<PreyGivesUpgrade> shownTutorials = new HashSet<PreyGivesUpgrade>();
+    public event System.Action<PreyGivesUpgrade> OnUpgradeUnlocked;
 
     private void Awake()
     {
@@ -41,6 +42,7 @@ public class UpgradeSystem : MonoBehaviour
         }
 
         Debug.Log("Upgrade freigeschaltet: " + upgrade + " Level " + level);
+        OnUpgradeUnlocked?.Invoke(upgrade);
 
         ApplyImmediateUpgradeEffect(upgrade, GetUpgradeLevel(upgrade));
 

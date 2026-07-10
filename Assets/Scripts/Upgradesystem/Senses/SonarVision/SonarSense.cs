@@ -31,7 +31,11 @@ public class SonarSense : MonoBehaviour
     [Header("Sound Optional")]
     [SerializeField] private AudioSource sonarSound;
 
+    [Header("UI")]
+    [SerializeField] private PlayerAbilityUI abilityUI;
+
     private UpgradeSystem upgradeSystem;
+    private bool isActive;
     private bool isOnCooldown;
     private Coroutine volumeRoutine;
 
@@ -59,7 +63,7 @@ public class SonarSense : MonoBehaviour
 
     public void TryUseSonar()
     {
-        if (isOnCooldown)
+        if (isActive || isOnCooldown)
             return;
 
         if (needsUpgrade &&
@@ -67,6 +71,7 @@ public class SonarSense : MonoBehaviour
              !upgradeSystem.HasUpgrade(PreyGivesUpgrade.SonarSense)))
         {
             Debug.Log("Ultraschall noch nicht freigeschaltet.");
+            abilityUI?.SetLocked(PreyGivesUpgrade.SonarSense);
             return;
         }
 
@@ -75,18 +80,53 @@ public class SonarSense : MonoBehaviour
 
     private IEnumerator SonarRoutine()
     {
+        isActive = true;
         isOnCooldown = true;
 
+        abilityUI?.SetAbilityState(
+            PreyGivesUpgrade.SonarSense,
+            true,
+            0f
+        );
+
         if (sonarSound != null)
+        {
+            sonarSound.Stop();
             sonarSound.Play();
+        }
 
         SpawnWave();
         RevealTargets();
         StartVolumeEffect();
 
-        yield return new WaitForSeconds(cooldown);
+        yield return new WaitForSeconds(sonarVisibleTime);
+
+        isActive = false;
+
+        abilityUI?.SetAbilityState(
+            PreyGivesUpgrade.SonarSense,
+            false,
+            1f
+        );
+
+        float cooldownTimer = cooldown;
+
+        while (cooldownTimer > 0f)
+        {
+            cooldownTimer -= Time.deltaTime;
+
+            abilityUI?.SetAbilityState(
+                PreyGivesUpgrade.SonarSense,
+                false,
+                cooldownTimer / cooldown
+            );
+
+            yield return null;
+        }
 
         isOnCooldown = false;
+
+        abilityUI?.SetReady(PreyGivesUpgrade.SonarSense);
     }
 
     private void SpawnWave()
@@ -170,4 +210,7 @@ public class SonarSense : MonoBehaviour
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(origin.position, sonarRadius);
     }
+
+    public bool IsActive => isActive;
+    public bool IsOnCooldown => isOnCooldown;
 }

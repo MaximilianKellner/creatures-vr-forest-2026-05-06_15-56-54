@@ -53,34 +53,34 @@ public class UpgradeNotificationUI : MonoBehaviour
         switch (upgrade)
         {
             case PreyGivesUpgrade.Vision:
-                return "Neue Fähigkeit freigeschaltet:\nSehsinn";
+                return "Neue Fähigkeit freigeschaltet: Sehsinn";
 
             case PreyGivesUpgrade.NightVision:
-                return "Neue Fähigkeit freigeschaltet:\nNachtsicht";
+                return "Neue Fähigkeit freigeschaltet: Nachtsicht";
 
             case PreyGivesUpgrade.ScentSense:
-                return "Neue Fähigkeit freigeschaltet:\nGeruchssinn";
+                return "Neue Fähigkeit freigeschaltet: Geruchssinn";
 
             case PreyGivesUpgrade.SonarSense:
-                return "Neue Fähigkeit freigeschaltet:\nSonarsinn";
+                return "Neue Fähigkeit freigeschaltet: Sonarsinn";
 
             case PreyGivesUpgrade.HearingSense:
-                return "Neue Fähigkeit freigeschaltet:\nGehörsinn";
+                return "Neue Fähigkeit freigeschaltet: Gehörsinn";
 
             case PreyGivesUpgrade.HigherJump:
-                return "Upgrade erhalten:\nHöher springen Level " + level;
+                return "Upgrade erhalten:Höher springen Level " + level;
 
             case PreyGivesUpgrade.Sprint:
-                return "Neue Fähigkeit freigeschaltet:\nSprinten";
+                return "Neue Fähigkeit freigeschaltet: Sprinten";
 
             case PreyGivesUpgrade.FasterRun:
-                return "Upgrade erhalten:\nSchneller laufen Level " + level;
+                return "Upgrade erhalten: Schneller laufen Level " + level;
 
             case PreyGivesUpgrade.TongueSpeed:
-                return "Upgrade erhalten:\nSchnellere Zunge Level " + level;
+                return "Upgrade erhalten:Schnellere Zunge Level " + level;
 
             case PreyGivesUpgrade.MoreHealth:
-                return "Upgrade erhalten:\nMehr Leben Level " + level;
+                return "Upgrade erhalten:Mehr Leben Level " + level;
 
             default:
                 return "Upgrade freigeschaltet";
