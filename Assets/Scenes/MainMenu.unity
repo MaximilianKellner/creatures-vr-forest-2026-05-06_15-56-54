@@ -464,7 +464,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Hauptmen\xFC"
+  m_text: Hauptmenue
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: da76b0350d0644b4bbd18e49e99ac2e4, type: 2}
   m_sharedMaterial: {fileID: 4687133607550985879, guid: da76b0350d0644b4bbd18e49e99ac2e4, type: 2}

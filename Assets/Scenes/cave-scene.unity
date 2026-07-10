@@ -4305,7 +4305,6 @@ Transform:
   - {fileID: 721127410}
   - {fileID: 996743682}
   - {fileID: 1415873415}
-  - {fileID: 1481170086}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &147395702
@@ -20376,7 +20375,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -95.2}
-  m_SizeDelta: {x: 171.2, y: 50}
+  m_SizeDelta: {x: 194.6, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &784385534
 MonoBehaviour:
@@ -32489,7 +32488,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0.4}
-  m_SizeDelta: {x: 198.4, y: 90.8}
+  m_SizeDelta: {x: 233.1, y: 90.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1171385478
 MonoBehaviour:
@@ -35560,68 +35559,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1294111531}
   m_Mesh: {fileID: 8514450214155909700, guid: 92e0ccafc69611f4ba1055859db2b3be, type: 3}
---- !u!1001 &1297548856
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1481170086}
-    m_Modifications:
-    - target: {fileID: 906738134101744696, guid: fc15e369be1af70439072368cb8b9271, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -1.54
-      objectReference: {fileID: 0}
-    - target: {fileID: 906738134101744696, guid: fc15e369be1af70439072368cb8b9271, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -2.0373306
-      objectReference: {fileID: 0}
-    - target: {fileID: 906738134101744696, guid: fc15e369be1af70439072368cb8b9271, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -5.96
-      objectReference: {fileID: 0}
-    - target: {fileID: 906738134101744696, guid: fc15e369be1af70439072368cb8b9271, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 906738134101744696, guid: fc15e369be1af70439072368cb8b9271, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 906738134101744696, guid: fc15e369be1af70439072368cb8b9271, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 906738134101744696, guid: fc15e369be1af70439072368cb8b9271, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 906738134101744696, guid: fc15e369be1af70439072368cb8b9271, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 906738134101744696, guid: fc15e369be1af70439072368cb8b9271, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 906738134101744696, guid: fc15e369be1af70439072368cb8b9271, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2110589626992324154, guid: fc15e369be1af70439072368cb8b9271, type: 3}
-      propertyPath: m_Name
-      value: PutPlayerHere
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: fc15e369be1af70439072368cb8b9271, type: 3}
---- !u!4 &1297548857 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 906738134101744696, guid: fc15e369be1af70439072368cb8b9271, type: 3}
-  m_PrefabInstance: {fileID: 1297548856}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1302006484
 GameObject:
   m_ObjectHideFlags: 0
@@ -40435,7 +40372,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Hauptmen\xFC"
+  m_text: Hauptmenue
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 66d8b71b8b2ddb548afdfba6ea560905, type: 2}
   m_sharedMaterial: {fileID: 518288057015799081, guid: 66d8b71b8b2ddb548afdfba6ea560905, type: 2}
@@ -40576,115 +40513,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35d31c54e32c98846a59b5977457192f, type: 3}
---- !u!1001 &1481170085
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 141254880}
-    m_Modifications:
-    - target: {fileID: -4824722642554585135, guid: 75475098edb1a24469c428783779336c, type: 3}
-      propertyPath: timeText
-      value: 
-      objectReference: {fileID: 1322277752}
-    - target: {fileID: -4824722642554585135, guid: 75475098edb1a24469c428783779336c, type: 3}
-      propertyPath: winPanel
-      value: 
-      objectReference: {fileID: 1204136019}
-    - target: {fileID: -4824722642554585135, guid: 75475098edb1a24469c428783779336c, type: 3}
-      propertyPath: creditsPanel
-      value: 
-      objectReference: {fileID: 1032167157}
-    - target: {fileID: -4824722642554585135, guid: 75475098edb1a24469c428783779336c, type: 3}
-      propertyPath: putPlayerHere
-      value: 
-      objectReference: {fileID: 1297548857}
-    - target: {fileID: -4824722642554585135, guid: 75475098edb1a24469c428783779336c, type: 3}
-      propertyPath: playerMovement
-      value: 
-      objectReference: {fileID: 997954174}
-    - target: {fileID: -4824722642554585135, guid: 75475098edb1a24469c428783779336c, type: 3}
-      propertyPath: outroVideoPlayer
-      value: 
-      objectReference: {fileID: 1790318908}
-    - target: {fileID: -4824722642554585135, guid: 75475098edb1a24469c428783779336c, type: 3}
-      propertyPath: leaveQuestionPanel
-      value: 
-      objectReference: {fileID: 714685353}
-    - target: {fileID: -4824722642554585135, guid: 75475098edb1a24469c428783779336c, type: 3}
-      propertyPath: outroVideoRawImage
-      value: 
-      objectReference: {fileID: 1881535014}
-    - target: {fileID: 1471772558335754935, guid: 75475098edb1a24469c428783779336c, type: 3}
-      propertyPath: m_Name
-      value: TriggerWinZone (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3936955284540052319, guid: 75475098edb1a24469c428783779336c, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 20.12
-      objectReference: {fileID: 0}
-    - target: {fileID: 3936955284540052319, guid: 75475098edb1a24469c428783779336c, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 3936955284540052319, guid: 75475098edb1a24469c428783779336c, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 43.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 3936955284540052319, guid: 75475098edb1a24469c428783779336c, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3936955284540052319, guid: 75475098edb1a24469c428783779336c, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3936955284540052319, guid: 75475098edb1a24469c428783779336c, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3936955284540052319, guid: 75475098edb1a24469c428783779336c, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3936955284540052319, guid: 75475098edb1a24469c428783779336c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3936955284540052319, guid: 75475098edb1a24469c428783779336c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3936955284540052319, guid: 75475098edb1a24469c428783779336c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7361556231414168671, guid: 75475098edb1a24469c428783779336c, type: 3}
-      propertyPath: m_Size.x
-      value: 3.59
-      objectReference: {fileID: 0}
-    - target: {fileID: 7361556231414168671, guid: 75475098edb1a24469c428783779336c, type: 3}
-      propertyPath: m_Size.y
-      value: 4.69
-      objectReference: {fileID: 0}
-    - target: {fileID: 7361556231414168671, guid: 75475098edb1a24469c428783779336c, type: 3}
-      propertyPath: m_Size.z
-      value: 3.6
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 3936955284540052319, guid: 75475098edb1a24469c428783779336c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1297548857}
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 75475098edb1a24469c428783779336c, type: 3}
---- !u!4 &1481170086 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3936955284540052319, guid: 75475098edb1a24469c428783779336c, type: 3}
-  m_PrefabInstance: {fileID: 1481170085}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1482577952 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 829038235697693796, guid: 78f2db962173d1a49b8ab8268e1e369a, type: 3}
@@ -53672,8 +53500,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "3D and Texture Artist: Max\nMain Programmer: Kevin\nVR implementation:
-    Michael\nUI Design: Luan \nLevel Progression implementation: Ervan"
+  m_text: "Maximilian Kellner: 3D Environment & Asset Artist\n\nKevin Kader: Lead
+    Gameplay Programmer, Game Design & UI Implementation\n\nMichael Adzase: VR  Integration
+    \n\nLuan Jasari: UI/UX Design\n\nErvan Bao Tatcheu: Level Interaction Programmer "
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d2ca94da09b4f4443a7d0941deb722a9, type: 2}
   m_sharedMaterial: {fileID: -7523901621001121476, guid: d2ca94da09b4f4443a7d0941deb722a9, type: 2}
@@ -53700,8 +53529,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 15
+  m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
