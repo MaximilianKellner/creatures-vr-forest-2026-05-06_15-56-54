@@ -3,11 +3,28 @@ using UnityEngine;
 public class Puzzle3 : MonoBehaviour
 {
     [Header("Tür-Rotation")]
-    [Tooltip("Um wie viel Grad soll sich die Tür drehen? (Y = 90 oder -90)")]
-    public Vector3 rotationsWinkel = new Vector3(0, 90f, 0);
-    public float drehGeschwindigkeit = 150f;
+    [Tooltip("Um wie viel Grad soll sich die Tür drehen?")]
+    [SerializeField] private Vector3 rotationsWinkel = new Vector3(0f, 90f, 0f);
 
-    private bool istOffen = false;
+    [SerializeField] private float drehGeschwindigkeit = 150f;
+
+    [Header("Mission")]
+    [Tooltip("Muss mit der Required Target Id im MissionManager übereinstimmen.")]
+    [SerializeField] private string missionTargetId = "Door";
+
+    [Header("Tutorial nach dem Öffnen")]
+    [SerializeField] private TutorialManager tutorialManager;
+
+    [TextArea(4, 8)]
+    [SerializeField] private string tutorialText =
+        "Du atmest giftiges Gas ein!\n\n" +
+        "Finde schnell heraus, woher das Gas kommt, " +
+        "und schließe die Quelle.";
+
+    [SerializeField] private float tutorialDuration = 7f;
+
+    private bool istOffen;
+    private bool missionGemeldet;
     private Quaternion zielRotation;
 
     private void Start()
@@ -17,29 +34,57 @@ public class Puzzle3 : MonoBehaviour
 
     private void Update()
     {
-        if (istOffen)
+        if (!istOffen)
+            return;
+
+        transform.rotation = Quaternion.RotateTowards(
+            transform.rotation,
+            zielRotation,
+            drehGeschwindigkeit * Time.deltaTime
+        );
+
+        if (!missionGemeldet &&
+            Quaternion.Angle(transform.rotation, zielRotation) <= 0.1f)
         {
-            // Dreht die Tür flüssig auf
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, zielRotation, drehGeschwindigkeit * Time.deltaTime);
+            transform.rotation = zielRotation;
+
+            missionGemeldet = true;
+
+            // Erste Mission abschließen.
+            MissionManager.ReportTargetCollected(missionTargetId);
+
+            // Tutorial anzeigen.
+            if (tutorialManager != null)
+            {
+                tutorialManager.ShowTutorial(
+                    tutorialText,
+                    tutorialDuration
+                );
+            }
+
+            Debug.Log($"Türmission abgeschlossen: {missionTargetId}");
         }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        // Reagiert exakt auf das neue Throwable3-Skript
-        Throwable3 geworfenesObjekt = collision.gameObject.GetComponent<Throwable3>();
+        if (istOffen)
+            return;
 
-        if (geworfenesObjekt != null)
+        Throwable3 geworfenesObjekt =
+            collision.gameObject.GetComponentInParent<Throwable3>();
+
+        if (geworfenesObjekt == null)
+            return;
+
+        if (geworfenesObjekt.kannTuerenOeffnen)
         {
-            if (geworfenesObjekt.kannTuerenOeffnen)
-            {
-                istOffen = true;
-                Debug.Log("Tür öffnet sich durch schweres Objekt (Throwable3)!");
-            }
-            else
-            {
-                Debug.Log("Das Objekt ist zu leicht.");
-            }
+            istOffen = true;
+            Debug.Log("Tür öffnet sich durch schweres Objekt!");
+        }
+        else
+        {
+            Debug.Log("Das Objekt ist zu leicht.");
         }
     }
 }
