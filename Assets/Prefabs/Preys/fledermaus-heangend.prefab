@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: fledermaus-heangend
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 18e762d5912a4064a99bce23272521d6, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -59,6 +63,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 18e762d5912a4064a99bce23272521d6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7495310140483700323}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 18e762d5912a4064a99bce23272521d6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5868454887264965456}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 18e762d5912a4064a99bce23272521d6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -6469168998081657823}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 18e762d5912a4064a99bce23272521d6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 305604900334282886}
   m_SourcePrefab: {fileID: 100100000, guid: 18e762d5912a4064a99bce23272521d6, type: 3}
 --- !u!1 &1221802709364044291 stripped
 GameObject:
@@ -86,3 +99,51 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.15901376, y: 0.24188359, z: 0.11647929}
   m_Center: {x: 0.010671326, y: 0.004508831, z: 0.02552675}
+--- !u!114 &5868454887264965456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1221802709364044291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3dd52ea6708f3a4cb9c400b0ab057ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SonarTarget
+  renderers: []
+  sonarMaterial: {fileID: -876546973899608171, guid: 68370a7996e0d24429d7aaf1e69b7619, type: 3}
+--- !u!114 &-6469168998081657823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1221802709364044291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94919819440295449af270a961ebdf3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FlyNoMove
+  preyType: 0
+  damage: 0
+  healAmount: 0
+  givesUpgrade: 0
+  upgradeLevel: 1
+  eatDistance: 1.2
+  moveRadius: 2
+  moveSpeed: 2
+--- !u!114 &305604900334282886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1221802709364044291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d7aea6d4e7d8c441aed99e19c5bc1ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScentTarget
+  scentType: 0
+  canBeTracked: 1

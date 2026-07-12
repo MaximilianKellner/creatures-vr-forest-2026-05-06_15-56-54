@@ -1,67 +1,120 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Rigidbody))]
 public class Throwable3 : MonoBehaviour
 {
     [Header("Wurf-Einstellungen")]
-    public float wurfKraft = 25f;
+    [SerializeField] private float wurfGeschwindigkeit = 18f;
+    [SerializeField] private float wurfNachOben = 3f;
+    [SerializeField] private float rotationsKraft = 5f;
 
     [Header("Rätsel-Eigenschaften")]
-    public bool kannTuerenOeffnen = true; 
+    public bool kannTuerenOeffnen = true;
 
-    [Header("Visieren (Zielhilfe)")]
-    public GameObject zielPunktVorschau; 
-    public float zielReichweite = 30f;
+    [Header("Visieren")]
+    [SerializeField] private GameObject zielPunktVorschau;
+    [SerializeField] private float zielReichweite = 30f;
+
+    [Header("Position beim Halten")]
+    [SerializeField] private Vector3 haltePosition =
+        new Vector3(0.4f, -0.3f, 1.2f);
 
     private Rigidbody rb;
     private Transform spielerKamera;
-    private bool wirdGehalten = false;
+    private Collider objektCollider;
+
+    private bool wirdGehalten;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>() ?? gameObject.AddComponent<Rigidbody>();
-        if (Camera.main != null) spielerKamera = Camera.main.transform;
+        rb = GetComponent<Rigidbody>();
+        objektCollider = GetComponent<Collider>();
 
-        if (zielPunktVorschau != null) zielPunktVorschau.SetActive(false);
+        KameraSuchen();
+
+        if (zielPunktVorschau != null)
+            zielPunktVorschau.SetActive(false);
+    }
+
+    private void KameraSuchen()
+    {
+        if (Camera.main != null)
+            spielerKamera = Camera.main.transform;
     }
 
     public void VonZungeGefangen()
     {
-        if (wirdGehalten) return;
+        if (wirdGehalten)
+            return;
+
+        if (spielerKamera == null)
+            KameraSuchen();
+
+        if (spielerKamera == null)
+        {
+            Debug.LogError(
+                $"{name}: Keine Kamera mit dem Tag 'MainCamera' gefunden."
+            );
+            return;
+        }
 
         wirdGehalten = true;
-        rb.isKinematic = true; 
+
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        rb.useGravity = false;
+        rb.isKinematic = true;
+
+        if (objektCollider != null)
+            objektCollider.enabled = false;
 
         transform.SetParent(spielerKamera);
-        transform.localPosition = new Vector3(0.4f, -0.3f, 1.2f); 
+        transform.localPosition = haltePosition;
         transform.localRotation = Quaternion.identity;
 
-        if (zielPunktVorschau != null) zielPunktVorschau.SetActive(true);
+        if (zielPunktVorschau != null)
+            zielPunktVorschau.SetActive(true);
     }
 
     private void Update()
     {
-        if (wirdGehalten)
-        {
-            ZeigeZielVorschau();
+        if (!wirdGehalten)
+            return;
 
-            if (Mouse.current != null && Mouse.current.rightButton.wasPressedThisFrame)
-            {
-                Werfen();
-            }
+        ZeigeZielVorschau();
+
+        if (Mouse.current != null &&
+            Mouse.current.rightButton.wasPressedThisFrame)
+        {
+            Werfen();
         }
     }
 
     private void ZeigeZielVorschau()
     {
-        if (zielPunktVorschau == null || spielerKamera == null) return;
+        if (zielPunktVorschau == null || spielerKamera == null)
+            return;
 
-        Ray ray = new Ray(spielerKamera.position, spielerKamera.forward);
-        
-        if (Physics.Raycast(ray, out RaycastHit hit, zielReichweite))
+        Ray ray = new Ray(
+            spielerKamera.position,
+            spielerKamera.forward
+        );
+
+        if (Physics.Raycast(
+                ray,
+                out RaycastHit hit,
+                zielReichweite,
+                ~0,
+                QueryTriggerInteraction.Ignore))
         {
             zielPunktVorschau.SetActive(true);
-            zielPunktVorschau.transform.position = hit.point;
+            zielPunktVorschau.transform.position =
+                hit.point + hit.normal * 0.02f;
+
+            zielPunktVorschau.transform.rotation =
+                Quaternion.LookRotation(hit.normal);
         }
         else
         {
@@ -71,36 +124,58 @@ public class Throwable3 : MonoBehaviour
 
     private void Werfen()
     {
+        if (spielerKamera == null)
+            return;
+
         wirdGehalten = false;
-        transform.SetParent(null);
-        
-        // PHYSIK ERZWINGEN
+
+        transform.SetParent(null, true);
+
+        Animator animator =
+            GetComponent<Animator>() ??
+            GetComponentInChildren<Animator>();
+
+        if (animator != null)
+            animator.enabled = false;
+
+        Animation animationComponent =
+            GetComponent<Animation>() ??
+            GetComponentInChildren<Animation>();
+
+        if (animationComponent != null)
+            animationComponent.enabled = false;
+
+        transform.position =
+            spielerKamera.position +
+            spielerKamera.forward * 1.5f;
+
         rb.isKinematic = false;
-        rb.useGravity = true; 
+        rb.useGravity = true;
 
-        // ANTI-STORE-ANIMATOR-TRICK:
-        // Wenn der Trank eine schwebende Animation aus dem Store hat, schalten wir sie jetzt aus,
-        // damit die Physik das Objekt normal fallen lassen kann!
-        Animator storeAnimator = GetComponent<Animator>() ?? GetComponentInChildren<Animator>();
-        if (storeAnimator != null)
-        {
-            storeAnimator.enabled = false;
-        }
-        
-        Animation alteAnimation = GetComponent<Animation>() ?? GetComponentInChildren<Animation>();
-        if (alteAnimation != null)
-        {
-            alteAnimation.enabled = false;
-        }
+        rb.linearDamping = 0f;
+        rb.angularDamping = 0.05f;
 
-        // Trank vor den Spieler setzen
-        transform.position = spielerKamera.position + spielerKamera.forward * 1.5f;
-
-        if (zielPunktVorschau != null) zielPunktVorschau.SetActive(false);
-
-        // Wurf ausführen
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
-        rb.AddForce(spielerKamera.forward * wurfKraft, ForceMode.Impulse);
+
+        Vector3 wurfRichtung =
+            spielerKamera.forward +
+            Vector3.up * (wurfNachOben / wurfGeschwindigkeit);
+
+        wurfRichtung.Normalize();
+
+        rb.linearVelocity =
+            wurfRichtung * wurfGeschwindigkeit;
+
+        rb.AddTorque(
+            Random.onUnitSphere * rotationsKraft,
+            ForceMode.Impulse
+        );
+
+        if (objektCollider != null)
+            objektCollider.enabled = true;
+
+        if (zielPunktVorschau != null)
+            zielPunktVorschau.SetActive(false);
     }
 }
