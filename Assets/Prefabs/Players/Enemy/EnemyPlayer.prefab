@@ -215,6 +215,13 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   enemyAlertSound: {fileID: 0}
+  tutorialManager: {fileID: 0}
+  enemyTutorialText: 'Halte dich von diesem Monster fern!
+
+
+    Du kannst ihm nichts
+    anhaben. Vermeide es und bring dich in Sicherheit.'
+  enemyTutorialDuration: 7
 --- !u!195 &3632527358959265807
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -421,7 +428,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4c6e07e1aab94b445b7e955e0a510a79, type: 2}
+  - {fileID: 2100000, guid: a97c9623816105641a8023ba0bb7833f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

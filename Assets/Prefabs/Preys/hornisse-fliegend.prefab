@@ -130,9 +130,6 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 63e1f8b7082c5fb4aa18ba06236cff7b, type: 3}
       insertIndex: -1
-      addedObject: {fileID: -4703324041351843739}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 63e1f8b7082c5fb4aa18ba06236cff7b, type: 3}
-      insertIndex: -1
       addedObject: {fileID: -3393493858174321828}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 63e1f8b7082c5fb4aa18ba06236cff7b, type: 3}
       insertIndex: -1
@@ -146,33 +143,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 63e1f8b7082c5fb4aa18ba06236cff7b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4241109095224975586}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 63e1f8b7082c5fb4aa18ba06236cff7b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3069354973456416186}
   m_SourcePrefab: {fileID: 100100000, guid: 63e1f8b7082c5fb4aa18ba06236cff7b, type: 3}
 --- !u!1 &6778484503776302238 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 63e1f8b7082c5fb4aa18ba06236cff7b, type: 3}
   m_PrefabInstance: {fileID: 5968230960047499727}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &-4703324041351843739
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6778484503776302238}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.54, y: 0.61, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!95 &-3393493858174321828
 Animator:
   serializedVersion: 7
@@ -340,3 +319,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ScentTarget
   scentType: 0
   canBeTracked: 1
+--- !u!135 &3069354973456416186
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6778484503776302238}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
