@@ -10,7 +10,7 @@ public class Throwable3 : MonoBehaviour
     [SerializeField] private float rotationsKraft = 5f;
 
     [Header("Rätsel-Eigenschaften")]
-    public bool kannTuerenOeffnen = true;
+    [SerializeField] private bool kannTuerenOeffnen = true;
 
     [Header("Visieren")]
     [SerializeField] private GameObject zielPunktVorschau;
@@ -20,62 +20,36 @@ public class Throwable3 : MonoBehaviour
     [SerializeField] private Vector3 haltePosition =
         new Vector3(0.4f, -0.3f, 1.2f);
 
+    [Header("Wurf-Sicherheit")]
+    [Tooltip("Abstand vor der Kamera, an dem das Objekt beim Wurf platziert wird.")]
+    [SerializeField] private float wurfStartAbstand = 1.5f;
+
+    [Tooltip("Kurze Verzögerung, bevor der Collider wieder aktiviert wird.")]
+    [SerializeField] private float colliderAktivierungsVerzoegerung = 0.05f;
+
     private Rigidbody rb;
-    private Transform spielerKamera;
     private Collider objektCollider;
+    private Transform spielerKamera;
 
     private bool wirdGehalten;
+    private bool urspruenglichUseGravity;
+    private bool urspruenglichIsKinematic;
+
+    public bool KannTuerenOeffnen => kannTuerenOeffnen;
+    public bool WirdGehalten => wirdGehalten;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         objektCollider = GetComponent<Collider>();
 
+        urspruenglichUseGravity = rb.useGravity;
+        urspruenglichIsKinematic = rb.isKinematic;
+
         KameraSuchen();
 
         if (zielPunktVorschau != null)
             zielPunktVorschau.SetActive(false);
-    }
-
-    private void KameraSuchen()
-    {
-        if (Camera.main != null)
-            spielerKamera = Camera.main.transform;
-    }
-
-    public void VonZungeGefangen()
-    {
-        if (wirdGehalten)
-            return;
-
-        if (spielerKamera == null)
-            KameraSuchen();
-
-        if (spielerKamera == null)
-        {
-            Debug.LogError(
-                $"{name}: Keine Kamera mit dem Tag 'MainCamera' gefunden."
-            );
-            return;
-        }
-
-        wirdGehalten = true;
-
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
-
-        rb.useGravity = false;
-        rb.isKinematic = true;
-
-        if (objektCollider != null)
-            objektCollider.enabled = false;
-
-        transform.SetParent(spielerKamera);
-        transform.localPosition = haltePosition;
-        transform.localRotation = Quaternion.identity;
-
-        if (zielPunktVorschau != null)
-            zielPunktVorschau.SetActive(true);
     }
 
     private void Update()
@@ -92,6 +66,55 @@ public class Throwable3 : MonoBehaviour
         }
     }
 
+    private void KameraSuchen()
+    {
+        Camera mainCamera = Camera.main;
+
+        if (mainCamera != null)
+            spielerKamera = mainCamera.transform;
+    }
+
+    public void VonZungeGefangen()
+    {
+        if (wirdGehalten)
+            return;
+
+        if (spielerKamera == null)
+            KameraSuchen();
+
+        if (spielerKamera == null)
+        {
+            Debug.LogError(
+                $"{name}: Keine aktive Kamera mit dem Tag 'MainCamera' gefunden.",
+                this
+            );
+
+            return;
+        }
+
+        wirdGehalten = true;
+
+        // Geschwindigkeiten nur ändern, solange der Rigidbody dynamisch ist.
+        if (!rb.isKinematic)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
+
+        rb.useGravity = false;
+        rb.isKinematic = true;
+
+        if (objektCollider != null)
+            objektCollider.enabled = false;
+
+        transform.SetParent(spielerKamera, false);
+        transform.localPosition = haltePosition;
+        transform.localRotation = Quaternion.identity;
+
+        if (zielPunktVorschau != null)
+            zielPunktVorschau.SetActive(true);
+    }
+
     private void ZeigeZielVorschau()
     {
         if (zielPunktVorschau == null || spielerKamera == null)
@@ -102,35 +125,86 @@ public class Throwable3 : MonoBehaviour
             spielerKamera.forward
         );
 
-        if (Physics.Raycast(
-                ray,
-                out RaycastHit hit,
-                zielReichweite,
-                ~0,
-                QueryTriggerInteraction.Ignore))
-        {
-            zielPunktVorschau.SetActive(true);
-            zielPunktVorschau.transform.position =
-                hit.point + hit.normal * 0.02f;
+        bool hatTreffer = Physics.Raycast(
+            ray,
+            out RaycastHit hit,
+            zielReichweite,
+            Physics.DefaultRaycastLayers,
+            QueryTriggerInteraction.Ignore
+        );
 
-            zielPunktVorschau.transform.rotation =
-                Quaternion.LookRotation(hit.normal);
-        }
-        else
-        {
-            zielPunktVorschau.SetActive(false);
-        }
+        zielPunktVorschau.SetActive(hatTreffer);
+
+        if (!hatTreffer)
+            return;
+
+        zielPunktVorschau.transform.SetPositionAndRotation(
+            hit.point + hit.normal * 0.02f,
+            Quaternion.LookRotation(hit.normal)
+        );
     }
 
-    private void Werfen()
+    public void Werfen()
     {
-        if (spielerKamera == null)
+        if (!wirdGehalten || spielerKamera == null)
             return;
 
         wirdGehalten = false;
 
+        if (zielPunktVorschau != null)
+            zielPunktVorschau.SetActive(false);
+
         transform.SetParent(null, true);
 
+        AnimationenDeaktivieren();
+
+        transform.position =
+            spielerKamera.position +
+            spielerKamera.forward * wurfStartAbstand;
+
+        // Zuerst wieder dynamisch machen.
+        rb.isKinematic = false;
+        rb.useGravity = true;
+
+        rb.linearDamping = 0f;
+        rb.angularDamping = 0.05f;
+
+        // Jetzt dürfen Geschwindigkeiten gesetzt werden.
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        Vector3 wurfRichtung =
+            spielerKamera.forward * wurfGeschwindigkeit +
+            Vector3.up * wurfNachOben;
+
+        rb.linearVelocity = wurfRichtung;
+
+        if (rotationsKraft > 0f)
+        {
+            rb.AddTorque(
+                Random.onUnitSphere * rotationsKraft,
+                ForceMode.Impulse
+            );
+        }
+
+        if (objektCollider != null)
+        {
+            CancelInvoke(nameof(ColliderAktivieren));
+            Invoke(
+                nameof(ColliderAktivieren),
+                colliderAktivierungsVerzoegerung
+            );
+        }
+    }
+
+    private void ColliderAktivieren()
+    {
+        if (objektCollider != null)
+            objektCollider.enabled = true;
+    }
+
+    private void AnimationenDeaktivieren()
+    {
         Animator animator =
             GetComponent<Animator>() ??
             GetComponentInChildren<Animator>();
@@ -144,36 +218,11 @@ public class Throwable3 : MonoBehaviour
 
         if (animationComponent != null)
             animationComponent.enabled = false;
+    }
 
-        transform.position =
-            spielerKamera.position +
-            spielerKamera.forward * 1.5f;
-
-        rb.isKinematic = false;
-        rb.useGravity = true;
-
-        rb.linearDamping = 0f;
-        rb.angularDamping = 0.05f;
-
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
-
-        Vector3 wurfRichtung =
-            spielerKamera.forward +
-            Vector3.up * (wurfNachOben / wurfGeschwindigkeit);
-
-        wurfRichtung.Normalize();
-
-        rb.linearVelocity =
-            wurfRichtung * wurfGeschwindigkeit;
-
-        rb.AddTorque(
-            Random.onUnitSphere * rotationsKraft,
-            ForceMode.Impulse
-        );
-
-        if (objektCollider != null)
-            objektCollider.enabled = true;
+    private void OnDisable()
+    {
+        CancelInvoke();
 
         if (zielPunktVorschau != null)
             zielPunktVorschau.SetActive(false);

@@ -17530,7 +17530,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1488555552576242174, guid: 4779c36ef333c36448c29ea2cea4285e, type: 3}
       propertyPath: damage
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1488555552576242174, guid: 4779c36ef333c36448c29ea2cea4285e, type: 3}
       propertyPath: preyType
@@ -24117,6 +24117,8 @@ MonoBehaviour:
   zielPunktVorschau: {fileID: 0}
   zielReichweite: 30
   haltePosition: {x: 0.4, y: -0.3, z: 1.2}
+  wurfStartAbstand: 1.5
+  colliderAktivierungsVerzoegerung: 0.05
 --- !u!54 &705418188
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -33647,6 +33649,8 @@ MonoBehaviour:
   zielPunktVorschau: {fileID: 997954175}
   zielReichweite: 50
   haltePosition: {x: 0.4, y: -0.3, z: 1.2}
+  wurfStartAbstand: 1.5
+  colliderAktivierungsVerzoegerung: 0.05
 --- !u!54 &952517797
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -38056,6 +38060,8 @@ MonoBehaviour:
   zielPunktVorschau: {fileID: 997954175}
   zielReichweite: 50
   haltePosition: {x: 0.4, y: -0.3, z: 1.2}
+  wurfStartAbstand: 1.5
+  colliderAktivierungsVerzoegerung: 0.05
 --- !u!54 &1064537319
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -38916,6 +38922,8 @@ MonoBehaviour:
   zielPunktVorschau: {fileID: 0}
   zielReichweite: 30
   haltePosition: {x: 0.4, y: -0.3, z: 1.2}
+  wurfStartAbstand: 1.5
+  colliderAktivierungsVerzoegerung: 0.05
 --- !u!65 &1082772661
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -41416,6 +41424,8 @@ MonoBehaviour:
   zielPunktVorschau: {fileID: 997954175}
   zielReichweite: 50
   haltePosition: {x: 0.4, y: -0.3, z: 1.2}
+  wurfStartAbstand: 1.5
+  colliderAktivierungsVerzoegerung: 0.05
 --- !u!54 &1139480888
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -43616,6 +43626,8 @@ MonoBehaviour:
   zielPunktVorschau: {fileID: 997954175}
   zielReichweite: 50
   haltePosition: {x: 0.4, y: -0.3, z: 1.2}
+  wurfStartAbstand: 1.5
+  colliderAktivierungsVerzoegerung: 0.05
 --- !u!54 &1184017112
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -44916,6 +44928,8 @@ MonoBehaviour:
   zielPunktVorschau: {fileID: 997954175}
   zielReichweite: 50
   haltePosition: {x: 0.4, y: -0.3, z: 1.2}
+  wurfStartAbstand: 1.5
+  colliderAktivierungsVerzoegerung: 0.05
 --- !u!54 &1234611806
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -47402,6 +47416,8 @@ MonoBehaviour:
   zielPunktVorschau: {fileID: 0}
   zielReichweite: 30
   haltePosition: {x: 0.4, y: -0.3, z: 1.2}
+  wurfStartAbstand: 1.5
+  colliderAktivierungsVerzoegerung: 0.05
 --- !u!65 &1288543157
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -52694,7 +52710,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1488555552576242174, guid: 4779c36ef333c36448c29ea2cea4285e, type: 3}
       propertyPath: damage
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1488555552576242174, guid: 4779c36ef333c36448c29ea2cea4285e, type: 3}
       propertyPath: preyType
@@ -55080,6 +55096,8 @@ MonoBehaviour:
   zielPunktVorschau: {fileID: 997954175}
   zielReichweite: 50
   haltePosition: {x: 0.4, y: -0.3, z: 1.2}
+  wurfStartAbstand: 1.5
+  colliderAktivierungsVerzoegerung: 0.05
 --- !u!54 &1494996284
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -60590,6 +60608,8 @@ MonoBehaviour:
   zielPunktVorschau: {fileID: 997954175}
   zielReichweite: 50
   haltePosition: {x: 0.4, y: -0.3, z: 1.2}
+  wurfStartAbstand: 1.5
+  colliderAktivierungsVerzoegerung: 0.05
 --- !u!54 &1635368537
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -61159,6 +61179,8 @@ MonoBehaviour:
   zielPunktVorschau: {fileID: 0}
   zielReichweite: 30
   haltePosition: {x: 0.4, y: -0.3, z: 1.2}
+  wurfStartAbstand: 1.5
+  colliderAktivierungsVerzoegerung: 0.05
 --- !u!65 &1645143485
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -63198,6 +63220,8 @@ MonoBehaviour:
   zielPunktVorschau: {fileID: 997954175}
   zielReichweite: 50
   haltePosition: {x: 0.4, y: -0.3, z: 1.2}
+  wurfStartAbstand: 1.5
+  colliderAktivierungsVerzoegerung: 0.05
 --- !u!54 &1705328158
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -68984,6 +69008,8 @@ MonoBehaviour:
   zielPunktVorschau: {fileID: 997954175}
   zielReichweite: 50
   haltePosition: {x: 0.4, y: -0.3, z: 1.2}
+  wurfStartAbstand: 1.5
+  colliderAktivierungsVerzoegerung: 0.05
 --- !u!54 &1875678217
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -78461,6 +78487,8 @@ MonoBehaviour:
   zielPunktVorschau: {fileID: 997954175}
   zielReichweite: 50
   haltePosition: {x: 0.4, y: -0.3, z: 1.2}
+  wurfStartAbstand: 1.5
+  colliderAktivierungsVerzoegerung: 0.05
 --- !u!54 &2133117008
 Rigidbody:
   m_ObjectHideFlags: 0

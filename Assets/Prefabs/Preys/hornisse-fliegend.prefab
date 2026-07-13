@@ -153,7 +153,7 @@ PrefabInstance:
       addedObject: {fileID: 4241109095224975586}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 63e1f8b7082c5fb4aa18ba06236cff7b, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3069354973456416186}
+      addedObject: {fileID: 4407392393338773428}
   m_SourcePrefab: {fileID: 100100000, guid: 63e1f8b7082c5fb4aa18ba06236cff7b, type: 3}
 --- !u!1 &6778484503776302238 stripped
 GameObject:
@@ -327,8 +327,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ScentTarget
   scentType: 0
   canBeTracked: 1
---- !u!135 &3069354973456416186
-SphereCollider:
+--- !u!65 &4407392393338773428
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -346,5 +346,5 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Size: {x: 0.85, y: 0.51, z: 1}
   m_Center: {x: 0, y: 0, z: 0}

@@ -157,7 +157,7 @@ public class Puzzle3 : MonoBehaviour
         if (geworfenesObjekt == null)
             return;
 
-        if (geworfenesObjekt.kannTuerenOeffnen)
+        if (geworfenesObjekt.KannTuerenOeffnen)
         {
             istOffen = true;
 
