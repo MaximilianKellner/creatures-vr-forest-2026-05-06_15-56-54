@@ -7,6 +7,7 @@ public class HidePlayerHUDForMenu : MonoBehaviour
 
     [Header("Menus")]
     [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject belegUebersichtMenu;
     [SerializeField] private GameObject gameOverScreen;
     [SerializeField] private GameObject winScreen;
     [SerializeField] private GameObject creditsScreen;
@@ -16,6 +17,7 @@ public class HidePlayerHUDForMenu : MonoBehaviour
     {
         bool menuOpen =
             pauseMenu.activeSelf ||
+            belegUebersichtMenu.activeSelf ||
             gameOverScreen.activeSelf ||
             winScreen.activeSelf ||
             creditsScreen.activeSelf ||
