@@ -15056,6 +15056,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: 8076866308431420103, guid: 7a937ee5bc40ba142a195e3a41fa7258, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 4300000, guid: 7eaa5ecb3152cc64595bc8c53fe9c6f2, type: 2}
     - target: {fileID: 8712300021360254310, guid: 7a937ee5bc40ba142a195e3a41fa7258, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
@@ -16447,7 +16451,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &457034047
 Transform:
   m_ObjectHideFlags: 0
@@ -62796,6 +62800,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall_Chiseled (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6495388505115324432, guid: 91ad7bf144749b04ab484a680630a040, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 4300000, guid: 55c5990d83d6ad74aa60d8360aff6127, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -62993,6 +63001,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 857497556}
     m_Modifications:
+    - target: {fileID: 6393064947278683357, guid: 4963b55652180e946b10fda98efef25e, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 4300000, guid: e6350d7840a6d244eb1d045c42e1128f, type: 2}
     - target: {fileID: 7613687411510550139, guid: 4963b55652180e946b10fda98efef25e, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.4687002
@@ -70566,6 +70578,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 857497556}
     m_Modifications:
+    - target: {fileID: 238642695598736862, guid: 4adae8232505e0e45b64cc3b61e9d9e1, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 4300000, guid: 75cb1ab8af3ff33458141b0bd11bd9f3, type: 2}
     - target: {fileID: 5721723476799238222, guid: 4adae8232505e0e45b64cc3b61e9d9e1, type: 3}
       propertyPath: m_Name
       value: Door_Middle
@@ -71346,6 +71362,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall_Chiseled
       objectReference: {fileID: 0}
+    - target: {fileID: 6495388505115324432, guid: 91ad7bf144749b04ab484a680630a040, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 4300000, guid: 55c5990d83d6ad74aa60d8360aff6127, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
