@@ -35512,7 +35512,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5358678848508013037, guid: 4bb8f74f8170091449aedafe306d5d40, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5547600307460113117, guid: 4bb8f74f8170091449aedafe306d5d40, type: 3}
       propertyPath: cooldown
@@ -67744,7 +67744,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1841610968}
   - component: {fileID: 1841610972}
-  - component: {fileID: 1841610971}
   - component: {fileID: 1841610970}
   - component: {fileID: 1841610969}
   m_Layer: 0
@@ -67830,14 +67829,6 @@ MonoBehaviour:
   heightAbovePlayer: 10
   orthographicSize: 50
   rotateWithPlayer: 1
---- !u!81 &1841610971
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1841610967}
-  m_Enabled: 1
 --- !u!20 &1841610972
 Camera:
   m_ObjectHideFlags: 0
