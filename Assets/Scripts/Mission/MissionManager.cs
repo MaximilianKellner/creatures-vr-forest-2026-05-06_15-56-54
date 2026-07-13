@@ -19,20 +19,34 @@ public class MissionManager : MonoBehaviour
     [System.Serializable]
     public class MissionStep
     {
+        [Header("Mission")]
         public string missionText = "Fange Beute";
         public string requiredTargetId = "Fly";
+
+        [Min(1)]
         public int requiredAmount = 2;
+
+        [Header("Belohnung")]
+        [Tooltip("Upgrade, das nach Abschluss dieser Mission freigeschaltet wird.")]
+        public PreyGivesUpgrade rewardUpgrade = PreyGivesUpgrade.None;
+
+        [Min(1)]
+        [Tooltip("Level des Upgrades, das nach Abschluss vergeben wird.")]
+        public int rewardUpgradeLevel = 1;
     }
 
     [Header("UI References")]
     [SerializeField] private GameObject missionUI;
     [SerializeField] private TMP_Text missionText;
 
+    [Header("Upgrade System")]
+    [SerializeField] private UpgradeSystem upgradeSystem;
+
     [Header("Missions")]
     [SerializeField] private MissionStep[] missions;
 
     [Header("Input")]
-    [SerializeField] private Key keyToHold = Key.Z;
+    [SerializeField] private Key keyToHold = Key.T;
 
     [Header("Auto Show")]
     [SerializeField] private float autoShowDuration = 3f;
@@ -47,6 +61,11 @@ public class MissionManager : MonoBehaviour
     {
         if (missionUI != null)
             missionUI.SetActive(false);
+
+        if (upgradeSystem == null)
+        {
+            upgradeSystem = FindAnyObjectByType<UpgradeSystem>();
+        }
 
         UpdateMissionUI();
     }
@@ -66,10 +85,15 @@ public class MissionManager : MonoBehaviour
         if (Keyboard.current == null)
             return;
 
-        bool isHoldingKey = Keyboard.current[keyToHold].isPressed;
+        bool isHoldingKey =
+            Keyboard.current[keyToHold].isPressed;
 
         if (missionUI != null)
-            missionUI.SetActive(isHoldingKey || autoShowing);
+        {
+            missionUI.SetActive(
+                isHoldingKey || autoShowing
+            );
+        }
     }
 
     private void HandleTargetCollected(string targetId)
@@ -80,21 +104,64 @@ public class MissionManager : MonoBehaviour
         if (currentMissionIndex >= missions.Length)
             return;
 
-        MissionStep currentMission = missions[currentMissionIndex];
+        MissionStep currentMission =
+            missions[currentMissionIndex];
 
         if (targetId != currentMission.requiredTargetId)
             return;
 
         currentAmount++;
 
+        Debug.Log(
+            $"Missionsfortschritt: {currentMission.missionText} " +
+            $"({currentAmount}/{currentMission.requiredAmount})"
+        );
+
         if (currentAmount >= currentMission.requiredAmount)
         {
-            currentMissionIndex++;
-            currentAmount = 0;
+            CompleteCurrentMission();
         }
 
         UpdateMissionUI();
         ShowMissionTemporarily();
+    }
+
+    private void CompleteCurrentMission()
+    {
+        MissionStep completedMission =
+            missions[currentMissionIndex];
+
+        Debug.Log(
+            $"Mission abgeschlossen: {completedMission.missionText}"
+        );
+
+        // Upgrade-Belohnung vergeben
+        if (completedMission.rewardUpgrade != PreyGivesUpgrade.None)
+        {
+            if (upgradeSystem != null)
+            {
+                upgradeSystem.UnlockUpgrade(
+                    completedMission.rewardUpgrade,
+                    completedMission.rewardUpgradeLevel
+                );
+
+                Debug.Log(
+                    $"Missionsbelohnung erhalten: " +
+                    $"{completedMission.rewardUpgrade} " +
+                    $"Level {completedMission.rewardUpgradeLevel}"
+                );
+            }
+            else
+            {
+                Debug.LogWarning(
+                    "MissionManager: Kein UpgradeSystem gefunden. " +
+                    "Die Missionsbelohnung konnte nicht vergeben werden."
+                );
+            }
+        }
+
+        currentMissionIndex++;
+        currentAmount = 0;
     }
 
     private void UpdateMissionUI()
@@ -104,29 +171,38 @@ public class MissionManager : MonoBehaviour
 
         if (missions == null || missions.Length == 0)
         {
-            missionText.text = "Keine Missionen eingestellt.";
+            missionText.text =
+                "Keine Missionen eingestellt.";
+
             return;
         }
 
         if (currentMissionIndex >= missions.Length)
         {
-            missionText.text = "Verlasse die Höhle!";
+            missionText.text =
+                "Verlasse die Höhle!";
+
             return;
         }
 
-        MissionStep currentMission = missions[currentMissionIndex];
+        MissionStep currentMission =
+            missions[currentMissionIndex];
 
         missionText.text =
             currentMission.missionText + "\n" +
-            currentAmount + " / " + currentMission.requiredAmount;
+            currentAmount + " / " +
+            currentMission.requiredAmount;
     }
 
     private void ShowMissionTemporarily()
     {
         if (autoShowRoutine != null)
+        {
             StopCoroutine(autoShowRoutine);
+        }
 
-        autoShowRoutine = StartCoroutine(AutoShowRoutine());
+        autoShowRoutine =
+            StartCoroutine(AutoShowRoutine());
     }
 
     private IEnumerator AutoShowRoutine()
@@ -136,7 +212,9 @@ public class MissionManager : MonoBehaviour
         if (missionUI != null)
             missionUI.SetActive(true);
 
-        yield return new WaitForSeconds(autoShowDuration);
+        yield return new WaitForSeconds(
+            autoShowDuration
+        );
 
         autoShowing = false;
 

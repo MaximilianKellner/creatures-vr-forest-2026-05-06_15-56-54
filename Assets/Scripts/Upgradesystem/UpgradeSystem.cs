@@ -52,8 +52,13 @@ public class UpgradeSystem : MonoBehaviour
 
             case PreyGivesUpgrade.ScentSense:
                 tutorialManager.ShowTutorial(
-                    "Drücke [G], um den Geruchssinn zu aktivieren.",
-                    6f);
+                    "Du hast den Geruchssinn freigeschaltet!\n\n" +
+                    "Drücke [G], um ihn zu aktivieren.\n\n" +
+                    "Farben:\n" +
+                    "• Rot = Gefahr\n" +
+                    "• Blau = Beute mit Upgrades\n" +
+                    "• Lila = Normale Beute",
+                    10f);
                 break;
 
             case PreyGivesUpgrade.SonarSense:
