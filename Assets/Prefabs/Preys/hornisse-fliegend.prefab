@@ -108,6 +108,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 4276924201438999026, guid: 63e1f8b7082c5fb4aa18ba06236cff7b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4959762263329469572, guid: 63e1f8b7082c5fb4aa18ba06236cff7b, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -123,6 +127,10 @@ PrefabInstance:
     - target: {fileID: 8984861407614598080, guid: 63e1f8b7082c5fb4aa18ba06236cff7b, type: 3}
       propertyPath: m_Layer
       value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8984861407614598080, guid: 63e1f8b7082c5fb4aa18ba06236cff7b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
