@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3421892197823849553}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: leg.R_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2688935981532089745}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: wing.L.002
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6444589955435640570}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: leg.L_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104,7 +104,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9078851960955821890}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: wing.L.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -138,7 +138,10 @@ GameObject:
   - component: {fileID: 2558544677041596459}
   - component: {fileID: 7128366978470895557}
   - component: {fileID: -6008306236234678470}
-  m_Layer: 0
+  - component: {fileID: -4537773944478306790}
+  - component: {fileID: -3812596923544923522}
+  - component: {fileID: 2396130360529505783}
+  m_Layer: 7
   m_Name: fledermaus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -205,6 +208,54 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-4537773944478306790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2939186443202310801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccc914f8f7792b748aa7852722d92771, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Fly
+  preyType: 0
+  damage: 0
+  healAmount: 0
+  givesUpgrade: 0
+  upgradeLevel: 1
+  eatDistance: 1.2
+  moveRadius: 2
+  moveSpeed: 2
+--- !u!114 &-3812596923544923522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2939186443202310801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3dd52ea6708f3a4cb9c400b0ab057ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SonarTarget
+  renderers: []
+  sonarMaterial: {fileID: -876546973899608171, guid: 68370a7996e0d24429d7aaf1e69b7619, type: 3}
+--- !u!114 &2396130360529505783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2939186443202310801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d7aea6d4e7d8c441aed99e19c5bc1ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ScentTarget
+  scentType: 0
+  canBeTracked: 1
 --- !u!1 &3938552774200434112
 GameObject:
   m_ObjectHideFlags: 0
@@ -214,7 +265,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2793262722990150421}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: wing.L.005_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -245,7 +296,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7789722667693214705}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: wing.L.003_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -276,7 +327,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6085749143541974905}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: wing.R.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -308,7 +359,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4383684339854891179}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Armature.004
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -344,7 +395,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 920988987437312676}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: wing.R.001_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -375,7 +426,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1930686904739359938}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: wing.L.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -407,7 +458,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6757052174578514464}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: wing.R.005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -440,7 +491,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3750507400367228796}
   - component: {fileID: 3698460565495803678}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: fledermaus.005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -544,7 +595,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1664524203040636241}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: wing.L.004_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -575,7 +626,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4218684251007752988}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: leg.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -607,7 +658,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 794564272771402661}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: leg.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -639,7 +690,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4723006300001259359}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: wing.L.003
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -671,7 +722,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4193751705852158143}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: wing.L.005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -703,7 +754,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2883521585748914414}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: wing.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -736,7 +787,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4835871466141641012}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: wing.R.005_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -767,7 +818,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5352715064728834673}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: wing.L.001_end
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -798,7 +849,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5639162745996066804}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: wing.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
