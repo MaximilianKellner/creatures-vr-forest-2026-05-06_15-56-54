@@ -5,6 +5,13 @@ public class GasMagicHoleYellow : MonoBehaviour
     [Header("Referenzen")]
     [SerializeField] private PlayerHealth playerHealth;
 
+    [Header("Gesamtes Missionsobjekt")]
+    [Tooltip("Ziehe hier das Parent-Objekt Mission-2_Gas hinein.")]
+    [SerializeField] private GameObject missionObject;
+
+    [Tooltip("Verzögerung, bevor das gesamte Missionsobjekt verschwindet.")]
+    [SerializeField] private float missionObjectDestroyDelay = 0.5f;
+
     [Header("Gas-Partikel")]
     [Tooltip("Das Gas-Partikelsystem oder das Parent-Objekt mit allen Gaspartikeln.")]
     [SerializeField] private GameObject gasParticleObject;
@@ -182,7 +189,9 @@ public class GasMagicHoleYellow : MonoBehaviour
             );
         }
 
-        if (disableHoleAfterCompletion)
+        // Optional nur das Loch entfernen.
+        if (disableHoleAfterCompletion &&
+            missionObject == null)
         {
             GameObject objectToDisable =
                 holeObject != null
@@ -190,6 +199,21 @@ public class GasMagicHoleYellow : MonoBehaviour
                     : gameObject;
 
             Destroy(objectToDisable, disableDelay);
+        }
+
+        // Gesamtes Mission-2_Gas-Objekt entfernen.
+        if (missionObject != null)
+        {
+            Destroy(
+                missionObject,
+                missionObjectDestroyDelay
+            );
+        }
+        else
+        {
+            Debug.LogWarning(
+                "GasMagicHoleYellow: Kein Mission Object zugewiesen."
+            );
         }
     }
 

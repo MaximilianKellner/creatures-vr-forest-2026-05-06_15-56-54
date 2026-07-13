@@ -5,9 +5,17 @@ public class GasMagicHole : MonoBehaviour
     [Header("Referenzen")]
     private PlayerHealth playerHealth;
 
+    [Header("Gesamtes Missionsobjekt")]
+    [Tooltip("Ziehe hier das Parent-Objekt Mission-1_Gas hinein.")]
+    [SerializeField] private GameObject missionObject;
+
+    [Tooltip("Verzögerung, bevor das gesamte Missionsobjekt verschwindet.")]
+    [SerializeField] private float missionObjectDestroyDelay = 0.5f;
+
     [Header("Start-Verzögerung")]
     [Tooltip("Wie viele Sekunden soll das Gas warten? (z.B. 60 für 1 Minute)")]
     public float startVerzoegerung = 60f;
+
     private float startTimer = 0f;
     private bool istGasAusgebrochen = false;
 
@@ -18,6 +26,7 @@ public class GasMagicHole : MonoBehaviour
     [Header("Gas-Schaden")]
     public float schadenProTick = 0.2f;
     public float schadenIntervall = 1.0f;
+
     private float schadenAkkumulator = 0f;
 
     [Header("Effekte")]
@@ -127,57 +136,59 @@ public class GasMagicHole : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other)
-{
-    if (!gasIstAktiv)
-        return;
-
-    // MissionTarget auf dem getroffenen Objekt oder Parent suchen
-    MissionTarget missionTarget =
-        other.GetComponent<MissionTarget>() ??
-        other.GetComponentInParent<MissionTarget>();
-
-    if (missionTarget == null)
-        return;
-
-    // Nur magische Getränke akzeptieren
-    if (missionTarget.TargetId != requiredMissionTargetId)
-        return;
-
-    // Das eigentliche Fläschchen bestimmen
-    GameObject potion = missionTarget.gameObject;
-
-    // Anti-Mogel:
-    // Das Fläschchen darf nicht mehr getragen werden.
-    if (potion.transform.parent != null)
-        return;
-
-    portionenVersenkt++;
-
-    Debug.Log(
-        $"Potion versenkt! ({portionenVersenkt}/{benoetigtePortionen})"
-    );
-
-    // Missionsfortschritt melden
-    MissionManager.ReportTargetCollected(missionTarget.TargetId);
-
-    // Treffer-Effekt
-    if (portionTrefferEffekt != null)
     {
-        Instantiate(
-            portionTrefferEffekt,
-            transform.position,
-            Quaternion.identity
+        if (!gasIstAktiv)
+            return;
+
+        // MissionTarget auf dem getroffenen Objekt oder Parent suchen
+        MissionTarget missionTarget =
+            other.GetComponent<MissionTarget>() ??
+            other.GetComponentInParent<MissionTarget>();
+
+        if (missionTarget == null)
+            return;
+
+        // Nur magische Getränke akzeptieren
+        if (missionTarget.TargetId != requiredMissionTargetId)
+            return;
+
+        // Das eigentliche Fläschchen bestimmen
+        GameObject potion = missionTarget.gameObject;
+
+        // Anti-Mogel:
+        // Das Fläschchen darf nicht mehr getragen werden.
+        if (potion.transform.parent != null)
+            return;
+
+        portionenVersenkt++;
+
+        Debug.Log(
+            $"Potion versenkt! ({portionenVersenkt}/{benoetigtePortionen})"
         );
-    }
 
-    // Fläschchen zerstören
-    Destroy(potion);
+        // Missionsfortschritt melden
+        MissionManager.ReportTargetCollected(
+            missionTarget.TargetId
+        );
 
-    if (portionenVersenkt >= benoetigtePortionen)
-    {
-        StoppeGasWolke();
+        // Treffer-Effekt
+        if (portionTrefferEffekt != null)
+        {
+            Instantiate(
+                portionTrefferEffekt,
+                transform.position,
+                Quaternion.identity
+            );
+        }
+
+        // Fläschchen zerstören
+        Destroy(potion);
+
+        if (portionenVersenkt >= benoetigtePortionen)
+        {
+            StoppeGasWolke();
+        }
     }
-}
 
     private void StoppeGasWolke()
     {
@@ -187,7 +198,7 @@ public class GasMagicHole : MonoBehaviour
             "Geschafft! Das magische Loch ist versiegelt!"
         );
 
-        // Spawnt den großen Erfolgs-Effekt
+        // Großen Erfolgs-Effekt außerhalb des Mission-Objekts erzeugen.
         if (raetselGeloestEffekt != null)
         {
             Instantiate(
@@ -197,6 +208,7 @@ public class GasMagicHole : MonoBehaviour
             );
         }
 
+        // Alle Gas-Stufen sofort deaktivieren.
         if (gasStages != null)
         {
             foreach (GameObject gas in gasStages)
@@ -206,6 +218,27 @@ public class GasMagicHole : MonoBehaviour
                     gas.SetActive(false);
                 }
             }
+        }
+
+        // Gesamtes Missionsobjekt entfernen.
+        if (missionObject != null)
+        {
+            Destroy(
+                missionObject,
+                missionObjectDestroyDelay
+            );
+        }
+        else
+        {
+            Debug.LogWarning(
+                "GasMagicHole: Kein Mission Object zugewiesen. " +
+                "Nur das aktuelle Gasloch wird entfernt."
+            );
+
+            Destroy(
+                gameObject,
+                missionObjectDestroyDelay
+            );
         }
     }
 }

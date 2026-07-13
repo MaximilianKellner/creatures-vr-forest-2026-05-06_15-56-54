@@ -1153,7 +1153,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 717708668}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 358637981425055526, guid: 8eb503696b886e04faff8fc0f480d473, type: 3}
       propertyPath: m_Name
@@ -1229,15 +1229,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3986179179329749341, guid: 8eb503696b886e04faff8fc0f480d473, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10.979007
+      value: -3.647523
       objectReference: {fileID: 0}
     - target: {fileID: 3986179179329749341, guid: 8eb503696b886e04faff8fc0f480d473, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.40164423
+      value: -2.2019758
       objectReference: {fileID: 0}
     - target: {fileID: 3986179179329749341, guid: 8eb503696b886e04faff8fc0f480d473, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.7997131
+      value: 123.09417
       objectReference: {fileID: 0}
     - target: {fileID: 3986179179329749341, guid: 8eb503696b886e04faff8fc0f480d473, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1315,11 +1315,6 @@ PrefabInstance:
 --- !u!1 &29858705 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 358637981425055526, guid: 8eb503696b886e04faff8fc0f480d473, type: 3}
-  m_PrefabInstance: {fileID: 29858704}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &29858706 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3986179179329749341, guid: 8eb503696b886e04faff8fc0f480d473, type: 3}
   m_PrefabInstance: {fileID: 29858704}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &30993415
@@ -6052,7 +6047,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 717708668}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5586974675011609263, guid: 354b6251e950209409c75ab984acf000, type: 3}
       propertyPath: looping
@@ -6136,15 +6131,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7909250533478703700, guid: 354b6251e950209409c75ab984acf000, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.124449
+      value: -7.502081
       objectReference: {fileID: 0}
     - target: {fileID: 7909250533478703700, guid: 354b6251e950209409c75ab984acf000, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.40099025
+      value: -2.2026298
       objectReference: {fileID: 0}
     - target: {fileID: 7909250533478703700, guid: 354b6251e950209409c75ab984acf000, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.273361
+      value: 122.62052
       objectReference: {fileID: 0}
     - target: {fileID: 7909250533478703700, guid: 354b6251e950209409c75ab984acf000, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6182,11 +6177,6 @@ PrefabInstance:
 --- !u!1 &147970018 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7053385775836331393, guid: 354b6251e950209409c75ab984acf000, type: 3}
-  m_PrefabInstance: {fileID: 147970017}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &147970019 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7909250533478703700, guid: 354b6251e950209409c75ab984acf000, type: 3}
   m_PrefabInstance: {fileID: 147970017}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &149787380
@@ -16451,7 +16441,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &457034047
 Transform:
   m_ObjectHideFlags: 0
@@ -23505,8 +23495,6 @@ Transform:
   m_Children:
   - {fileID: 2134346063}
   - {fileID: 1244758143}
-  - {fileID: 29858706}
-  - {fileID: 147970019}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &719761801
@@ -31798,6 +31786,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3fa87134051f94ebcb9f1f84568a55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GasMagicHole
+  missionObject: {fileID: 717708667}
+  missionObjectDestroyDelay: 0.5
   startVerzoegerung: 10
   gasContainer: {fileID: 1778483860}
   zeitProPhase: 2
@@ -41351,11 +41341,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1171385476}
   m_CullTransparentMesh: 1
---- !u!1 &1172042966 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 534235959699800636, guid: e09087862ae9ef440b48f77e0650e77b, type: 3}
-  m_PrefabInstance: {fileID: 1542466118}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1174947030
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44426,8 +44411,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GasMagicHoleYellow
   playerHealth: {fileID: 4912719440939054673, guid: 4bb8f74f8170091449aedafe306d5d40, type: 3}
+  missionObject: {fileID: 1160122904}
+  missionObjectDestroyDelay: 0.5
   gasParticleObject: {fileID: 1039889310}
-  deathZoneGas2: {fileID: 1172042966}
+  deathZoneGas2: {fileID: 1160122904}
   gasCausesDamage: 0
   schadenProTick: 0.2
   schadenIntervall: 1
@@ -75998,5 +75985,7 @@ SceneRoots:
   - {fileID: 1619598971}
   - {fileID: 375764077}
   - {fileID: 857497556}
+  - {fileID: 29858704}
+  - {fileID: 147970017}
   - {fileID: 717708668}
   - {fileID: 1160122905}
