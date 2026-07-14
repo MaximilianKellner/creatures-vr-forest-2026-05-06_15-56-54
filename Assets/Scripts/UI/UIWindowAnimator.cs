@@ -24,6 +24,7 @@ public class UIWindowAnimator : MonoBehaviour
 
     [Header("Auto")]
     [SerializeField] private bool playOnEnable = true;
+    [SerializeField] private bool useVrComfortMode = true;
 
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
@@ -57,6 +58,8 @@ public class UIWindowAnimator : MonoBehaviour
 
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
+
+        ApplyComfortSettings();
 
         shownPosition = rectTransform.anchoredPosition;
         shownScale = rectTransform.localScale;
@@ -158,5 +161,15 @@ public class UIWindowAnimator : MonoBehaviour
 
         if (disableAfter)
             gameObject.SetActive(false);
+    }
+
+    private void ApplyComfortSettings()
+    {
+        if (!useVrComfortMode || !VRUIRuntimeSupport.IsLikelyVrScene())
+            return;
+
+        moveDistance = Mathf.Min(moveDistance, 60f);
+        duration = Mathf.Clamp(duration, 0.2f, 0.35f);
+        hiddenScale = Vector3.Max(hiddenScale, new Vector3(0.95f, 0.95f, 1f));
     }
 }

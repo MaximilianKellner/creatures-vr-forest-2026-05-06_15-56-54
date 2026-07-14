@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Locomotion.Gravity;
 
@@ -8,10 +9,11 @@ public class XRCharacterControllerGravity : MonoBehaviour
     [SerializeField] float gravity = -9.81f;
     [SerializeField] float terminalVelocity = -30f;
     [SerializeField] float groundedStickVelocity = -1f;
-    [SerializeField] LayerMask groundLayers = 1;
+    [SerializeField] LayerMask groundLayers = ~0;
     [SerializeField] float groundCheckDistance = 20f;
     [SerializeField] float groundSnapDistance = 2f;
     [SerializeField] float groundSkin = 0.03f;
+    [SerializeField] float minimumGroundNormalY = 0.35f;
 
     CharacterController characterController;
     float verticalVelocity;
@@ -42,7 +44,7 @@ public class XRCharacterControllerGravity : MonoBehaviour
         Vector3 origin = new Vector3(bounds.center.x, bounds.max.y + 0.25f, bounds.center.z);
         float castRadius = Mathf.Max(0.05f, characterController.radius * 0.8f);
 
-        if (!Physics.SphereCast(origin, castRadius, Vector3.down, out RaycastHit hit, groundCheckDistance, groundLayers, QueryTriggerInteraction.Ignore))
+        if (!TryFindGround(origin, castRadius, out RaycastHit hit))
             return false;
 
         float currentBottom = bounds.min.y;
@@ -56,6 +58,34 @@ public class XRCharacterControllerGravity : MonoBehaviour
             characterController.Move(Vector3.up * deltaY);
 
         return true;
+    }
+
+    bool TryFindGround(Vector3 origin, float castRadius, out RaycastHit groundHit)
+    {
+        RaycastHit[] hits = Physics.SphereCastAll(
+            origin,
+            castRadius,
+            Vector3.down,
+            groundCheckDistance,
+            groundLayers,
+            QueryTriggerInteraction.Ignore);
+
+        Array.Sort(hits, (left, right) => left.distance.CompareTo(right.distance));
+
+        foreach (RaycastHit hit in hits)
+        {
+            if (hit.collider == null || hit.collider.transform.IsChildOf(transform))
+                continue;
+
+            if (hit.normal.y < minimumGroundNormalY)
+                continue;
+
+            groundHit = hit;
+            return true;
+        }
+
+        groundHit = default;
+        return false;
     }
 
     bool HasActiveXriGravityProvider()

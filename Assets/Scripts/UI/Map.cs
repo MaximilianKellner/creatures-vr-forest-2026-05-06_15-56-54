@@ -9,6 +9,8 @@ public class Map : MonoBehaviour
 
     private void Start()
     {
+        XRVisualRuntimeAdapter.EnsureSceneVisuals();
+
         // Map am Anfang direkt verstecken
         if (mapContainer != null)
         {
@@ -25,6 +27,24 @@ public class Map : MonoBehaviour
             isMap = true;
             Debug.Log("Map wurde freigeschaltet!");
         }
+    }
+
+    public void HideMap()
+    {
+        if (mapContainer == null)
+            return;
+
+        mapContainer.SetActive(false);
+        isMap = false;
+    }
+
+    public void ToggleMap()
+    {
+        if (mapContainer == null)
+            return;
+
+        isMap = !isMap;
+        mapContainer.SetActive(isMap);
     }
 }
 

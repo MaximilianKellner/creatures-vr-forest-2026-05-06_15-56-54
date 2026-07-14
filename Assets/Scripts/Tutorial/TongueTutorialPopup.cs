@@ -12,13 +12,19 @@ public class TutorialPopup : MonoBehaviour
     [SerializeField] private float pulseSpeed = 4f;       
     [SerializeField] private float sizeDeviation = 0.15f;  
     [SerializeField] private float alphaDeviation = 0.25f; 
+    [SerializeField] private bool useVrComfortPulse = true;
 
     private Vector3 originalScale;
     private Color originalColor;
     private bool isPulsing = false;
+    private float runtimePulseSpeed;
+    private float runtimeSizeDeviation;
+    private float runtimeAlphaDeviation;
 
     private void Awake()
     {
+        ConfigureComfortPulse();
+
         if (tutorialImageObject != null)
         {
             uiImage = tutorialImageObject.GetComponent<Image>();
@@ -43,17 +49,17 @@ public class TutorialPopup : MonoBehaviour
     {
         if (isPulsing && tutorialImageObject != null)
         {
-            float wave = Mathf.Sin(Time.time * pulseSpeed);
+            float wave = Mathf.Sin(Time.unscaledTime * runtimePulseSpeed);
 
             // 1. GRÖSSE
-            float scaleFactor = 1f + (wave * sizeDeviation);
+            float scaleFactor = 1f + (wave * runtimeSizeDeviation);
             tutorialImageObject.transform.localScale = originalScale * scaleFactor;
 
             // 2. HELLIGKEIT
             if (uiImage != null)
             {
                 Color newColor = originalColor;
-                newColor.a = Mathf.Clamp01(originalColor.a - (alphaDeviation * 0.5f) + (wave * alphaDeviation * 0.5f));
+                newColor.a = Mathf.Clamp01(originalColor.a - (runtimeAlphaDeviation * 0.5f) + (wave * runtimeAlphaDeviation * 0.5f));
                 uiImage.color = newColor;
             }
         }
@@ -71,5 +77,19 @@ public class TutorialPopup : MonoBehaviour
             tutorialImageObject.transform.localScale = originalScale;
             if (uiImage != null) uiImage.color = originalColor;
         }
+    }
+
+    private void ConfigureComfortPulse()
+    {
+        runtimePulseSpeed = pulseSpeed;
+        runtimeSizeDeviation = sizeDeviation;
+        runtimeAlphaDeviation = alphaDeviation;
+
+        if (!useVrComfortPulse || !VRUIRuntimeSupport.IsLikelyVrScene())
+            return;
+
+        runtimePulseSpeed = Mathf.Min(runtimePulseSpeed, 2f);
+        runtimeSizeDeviation = Mathf.Min(runtimeSizeDeviation, 0.06f);
+        runtimeAlphaDeviation = Mathf.Min(runtimeAlphaDeviation, 0.12f);
     }
 }

@@ -22,6 +22,7 @@ public class PlayerAbilityUI : MonoBehaviour
 
     private void Awake()
     {
+        ResolveUpgradeSystem();
         slotDictionary = new Dictionary<PreyGivesUpgrade, AbilitySlot>();
 
         foreach (AbilitySlot slot in slots)
@@ -42,6 +43,8 @@ public class PlayerAbilityUI : MonoBehaviour
 
     private void OnEnable()
     {
+        ResolveUpgradeSystem();
+
         if (upgradeSystem != null)
             upgradeSystem.OnUpgradeUnlocked += HandleUpgradeUnlocked;
     }
@@ -54,6 +57,7 @@ public class PlayerAbilityUI : MonoBehaviour
 
     private void Start()
     {
+        ResolveUpgradeSystem();
         RefreshUnlocks();
     }
 
@@ -64,6 +68,8 @@ public class PlayerAbilityUI : MonoBehaviour
 
     public void RefreshUnlocks()
     {
+        ResolveUpgradeSystem();
+
         foreach (AbilitySlot slot in slots)
         {
             if (slot == null || slot.cooldownOverlay == null)
@@ -82,6 +88,8 @@ public class PlayerAbilityUI : MonoBehaviour
 
     public void SetAbilityState(PreyGivesUpgrade ability, bool active, float cooldownProgress)
     {
+        ResolveUpgradeSystem();
+
         if (slotDictionary == null)
             return;
 
@@ -105,5 +113,24 @@ public class PlayerAbilityUI : MonoBehaviour
     public void SetReady(PreyGivesUpgrade ability)
     {
         SetAbilityState(ability, false, 0f);
+    }
+
+    private void ResolveUpgradeSystem()
+    {
+        if (upgradeSystem != null && VRUIRuntimeSupport.IsLikelyVrPlayer(upgradeSystem.transform))
+            return;
+
+        UpgradeSystem bestUpgradeSystem = VRUIRuntimeSupport.FindBestUpgradeSystem();
+
+        if (bestUpgradeSystem == null || bestUpgradeSystem == upgradeSystem)
+            return;
+
+        if (isActiveAndEnabled && upgradeSystem != null)
+            upgradeSystem.OnUpgradeUnlocked -= HandleUpgradeUnlocked;
+
+        upgradeSystem = bestUpgradeSystem;
+
+        if (isActiveAndEnabled)
+            upgradeSystem.OnUpgradeUnlocked += HandleUpgradeUnlocked;
     }
 }

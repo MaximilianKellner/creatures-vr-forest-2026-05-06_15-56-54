@@ -14,15 +14,23 @@ public class HidePlayerHUDForMenu : MonoBehaviour
 
     private void Update()
     {
+        if (playerHUD == null)
+            return;
+
         bool menuOpen =
-            pauseMenu.activeSelf ||
-            gameOverScreen.activeSelf ||
-            winScreen.activeSelf ||
-            creditsScreen.activeSelf ||
-            leaveCaveScreen.activeSelf;
+            IsOpen(pauseMenu) ||
+            IsOpen(gameOverScreen) ||
+            IsOpen(winScreen) ||
+            IsOpen(creditsScreen) ||
+            IsOpen(leaveCaveScreen);
 
         playerHUD.alpha = menuOpen ? 0f : 1f;
         playerHUD.blocksRaycasts = !menuOpen;
         playerHUD.interactable = !menuOpen;
+    }
+
+    private bool IsOpen(GameObject target)
+    {
+        return target != null && target.activeInHierarchy;
     }
 }

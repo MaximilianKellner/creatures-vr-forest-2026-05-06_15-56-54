@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [DisallowMultipleComponent]
@@ -18,6 +19,14 @@ public class XRCharacterControllerSafety : MonoBehaviour
     [SerializeField] private bool makePlayerBodyColliderTrigger = true;
     [SerializeField] private string playerBodyName = "PlayerBody";
 
+    [Header("Spawn Grounding")]
+    [SerializeField] private bool snapToGroundOnStart = true;
+    [SerializeField] private LayerMask groundLayers = ~0;
+    [SerializeField] private float groundProbeUp = 12f;
+    [SerializeField] private float groundProbeDown = 60f;
+    [SerializeField] private float groundSkin = 0.03f;
+    [SerializeField] private float minimumGroundNormalY = 0.35f;
+
     private void Awake()
     {
         ApplySafetySettings();
@@ -31,6 +40,9 @@ public class XRCharacterControllerSafety : MonoBehaviour
     private void Start()
     {
         ApplySafetySettings();
+
+        if (snapToGroundOnStart)
+            SnapToGround();
     }
 
     public void ApplySafetySettings()
@@ -104,5 +116,77 @@ public class XRCharacterControllerSafety : MonoBehaviour
             center.y = capsuleCollider.height * 0.5f;
             capsuleCollider.center = center;
         }
+    }
+
+    private void SnapToGround()
+    {
+        if (characterController == null)
+            return;
+
+        Bounds bounds = characterController.bounds;
+        Vector3 origin = new Vector3(
+            bounds.center.x,
+            transform.position.y + groundProbeUp,
+            bounds.center.z);
+        float radius = Mathf.Max(0.05f, characterController.radius * 0.8f);
+        float distance = groundProbeUp + groundProbeDown;
+
+        if (!TryFindGround(origin, radius, distance, out RaycastHit hit))
+            return;
+
+        float currentBottom = GetCharacterControllerBottom();
+        float targetBottom = hit.point.y + groundSkin;
+        float deltaY = targetBottom - currentBottom;
+
+        if (Mathf.Abs(deltaY) < 0.001f)
+            return;
+
+        bool wasEnabled = characterController.enabled;
+
+        if (wasEnabled)
+            characterController.enabled = false;
+
+        transform.position += Vector3.up * deltaY;
+
+        if (wasEnabled)
+            characterController.enabled = true;
+    }
+
+    private bool TryFindGround(
+        Vector3 origin,
+        float radius,
+        float distance,
+        out RaycastHit groundHit)
+    {
+        RaycastHit[] hits = Physics.SphereCastAll(
+            origin,
+            radius,
+            Vector3.down,
+            distance,
+            groundLayers,
+            QueryTriggerInteraction.Ignore);
+
+        Array.Sort(hits, (left, right) => left.distance.CompareTo(right.distance));
+
+        foreach (RaycastHit hit in hits)
+        {
+            if (hit.collider == null || hit.collider.transform.IsChildOf(transform))
+                continue;
+
+            if (hit.normal.y < minimumGroundNormalY)
+                continue;
+
+            groundHit = hit;
+            return true;
+        }
+
+        groundHit = default;
+        return false;
+    }
+
+    private float GetCharacterControllerBottom()
+    {
+        float scaledHalfHeight = characterController.height * 0.5f * Mathf.Abs(transform.lossyScale.y);
+        return transform.TransformPoint(characterController.center).y - scaledHalfHeight;
     }
 }
