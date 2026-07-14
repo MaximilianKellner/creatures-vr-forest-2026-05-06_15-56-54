@@ -31,6 +31,7 @@ public class PlayerEnemy : MonoBehaviour
 
     [Header("Tutorial")]
     [SerializeField] private TutorialManager tutorialManager;
+    [SerializeField] private bool onlyShowTutorialOnce = true;
 
     [TextArea(4, 8)]
     [SerializeField] private string enemyTutorialText =
@@ -136,6 +137,19 @@ public class PlayerEnemy : MonoBehaviour
                     enemyTutorialText,
                     enemyTutorialDuration
                 );
+            }
+
+            if (!enemyTutorialShown || !onlyShowTutorialOnce)
+            {
+                enemyTutorialShown = true;
+
+                if (tutorialManager != null)
+                {
+                    tutorialManager.ShowTutorial(
+                        enemyTutorialText,
+                        enemyTutorialDuration
+                    );
+                }
             }
         }
 
