@@ -38,4 +38,17 @@ public class SceneLoader : MonoBehaviour
             SceneManager.LoadScene("cave-scene");
         }
     }
+
+    public void QuitGame()
+    {
+        Time.timeScale = 1f;
+
+        Debug.Log("Spiel wird beendet...");
+
+        Application.Quit();
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+    }
 }
