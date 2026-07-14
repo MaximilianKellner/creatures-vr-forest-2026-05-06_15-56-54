@@ -7,6 +7,7 @@ public class XRJumpFallback : MonoBehaviour
     [Header("References")]
     [SerializeField] private CharacterController characterController;
     [SerializeField] private UpgradeSystem upgradeSystem;
+    [SerializeField] private XRCharacterControllerGravity gravityController;
     [SerializeField] private InputActionReference jumpAction;
 
     [Header("Jump")]
@@ -14,6 +15,8 @@ public class XRJumpFallback : MonoBehaviour
     [SerializeField] private float jumpBonusPerLevel = 0.2f;
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private float jumpCooldown = 0.15f;
+    [SerializeField, Range(0.1f, 1f)] private float triggerPressPoint = 0.5f;
+    [SerializeField] private bool allowLegacyButtonJumpFallback;
 
     [Header("Ground Check")]
     [SerializeField] private LayerMask groundLayers = ~0;
@@ -68,15 +71,38 @@ public class XRJumpFallback : MonoBehaviour
         if (upgradeSystem == null)
             upgradeSystem = GetComponentInParent<UpgradeSystem>() ??
                             GetComponentInChildren<UpgradeSystem>();
+
+        if (gravityController == null)
+            gravityController = GetComponent<XRCharacterControllerGravity>() ??
+                                GetComponentInChildren<XRCharacterControllerGravity>(true);
     }
 
     private void CreateFallbackJumpAction()
     {
         fallbackJumpAction = new InputAction(
             "XR Jump Fallback",
-            InputActionType.Button);
-        fallbackJumpAction.AddBinding("<XRController>{RightHand}/{PrimaryButton}");
-        fallbackJumpAction.AddBinding("<XRController>{RightHand}/{SecondaryButton}");
+            InputActionType.Button,
+            interactions: $"Press(pressPoint={triggerPressPoint})");
+
+        fallbackJumpAction.AddBinding("<XRController>{LeftHand}/{TriggerButton}");
+        fallbackJumpAction.AddBinding("<XRController>{LeftHand}/{Trigger}");
+        fallbackJumpAction.AddBinding("<XRController>{LeftHand}/triggerPressed");
+        fallbackJumpAction.AddBinding("<XRController>{LeftHand}/trigger");
+        fallbackJumpAction.AddBinding("<OculusTouchController>{LeftHand}/triggerPressed");
+        fallbackJumpAction.AddBinding("<ViveController>{LeftHand}/triggerPressed");
+        fallbackJumpAction.AddBinding("<KHRSimpleController>{LeftHand}/select");
+        fallbackJumpAction.AddBinding("<HandInteraction>{LeftHand}/pointerActivated");
+        fallbackJumpAction.AddBinding("<HoloLensHand>{LeftHand}/selectPressed");
+
+        if (allowLegacyButtonJumpFallback)
+        {
+            fallbackJumpAction.AddBinding("<XRController>{LeftHand}/{PrimaryButton}");
+            fallbackJumpAction.AddBinding("<XRController>{LeftHand}/{SecondaryButton}");
+            fallbackJumpAction.AddBinding("<XRController>{RightHand}/{PrimaryButton}");
+            fallbackJumpAction.AddBinding("<XRController>{RightHand}/{SecondaryButton}");
+        }
+
+        fallbackJumpAction.AddBinding("<Gamepad>/buttonSouth");
         fallbackJumpAction.AddBinding("<Keyboard>/space");
     }
 
@@ -96,13 +122,26 @@ public class XRJumpFallback : MonoBehaviour
         if (Time.time < nextJumpTime)
             return false;
 
-        return IsGrounded();
+        return gravityController != null && gravityController.enabled
+            ? gravityController.IsGrounded()
+            : IsGrounded();
     }
 
     private void StartJump()
     {
         float height = GetCurrentJumpHeight();
-        verticalVelocity = Mathf.Sqrt(height * -2f * gravity);
+        float jumpVelocity = Mathf.Sqrt(height * -2f * gravity);
+
+        if (gravityController != null && gravityController.enabled)
+        {
+            gravityController.AddJumpVelocity(jumpVelocity);
+            verticalVelocity = 0f;
+        }
+        else
+        {
+            verticalVelocity = jumpVelocity;
+        }
+
         nextJumpTime = Time.time + jumpCooldown;
     }
 
@@ -117,14 +156,25 @@ public class XRJumpFallback : MonoBehaviour
 
     private void ApplyJumpMotion()
     {
-        if (verticalVelocity <= 0f)
+        if (gravityController != null && gravityController.enabled)
+            return;
+
+        if (IsGrounded() && verticalVelocity < 0f)
+            verticalVelocity = -1f;
+
+        verticalVelocity += gravity * Time.deltaTime;
+
+        if (verticalVelocity <= 0f && IsGrounded())
         {
-            verticalVelocity = 0f;
+            verticalVelocity = -1f;
             return;
         }
 
-        characterController.Move(Vector3.up * verticalVelocity * Time.deltaTime);
-        verticalVelocity += gravity * Time.deltaTime;
+        CollisionFlags flags =
+            characterController.Move(Vector3.up * verticalVelocity * Time.deltaTime);
+
+        if ((flags & CollisionFlags.Above) != 0 && verticalVelocity > 0f)
+            verticalVelocity = 0f;
     }
 
     private bool IsGrounded()

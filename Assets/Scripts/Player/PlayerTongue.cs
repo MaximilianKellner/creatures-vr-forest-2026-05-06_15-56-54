@@ -15,12 +15,13 @@ public class PlayerTongue : MonoBehaviour
     [SerializeField, Min(0f)] private float aimDownOffset = 0.1f;
 
     [Header("Settings")]
-    [SerializeField] private float speed = 20f;
+    [SerializeField] private float speed = 45f;
     [SerializeField] private float maxDistance = 20f;
+    [SerializeField, Min(0f)] private float hitRadius = 0.15f;
     [SerializeField] private LayerMask collisionMask;
 
     [Header("Upgrade")]
-    [SerializeField] private float tongueSpeedBonus = 10f;
+    [SerializeField] private float tongueSpeedBonus = 15f;
 
     private UpgradeSystem upgradeSystem;
     private bool isBusy;
@@ -121,6 +122,7 @@ public class PlayerTongue : MonoBehaviour
         }
 
         Prey hitPrey = null;
+        Throwable3 hitThrowable = null; // Umgestellt auf Throwable3
         bool hitObstacle = false;
 
         // Zunge ausfahren
@@ -133,13 +135,10 @@ public class PlayerTongue : MonoBehaviour
             Vector3 direction = pos - start;
             float rayDistance = direction.magnitude;
 
-            if (rayDistance > 0.001f && Physics.Raycast(
-                start,
-                direction.normalized,
-                out RaycastHit hit,
-                rayDistance,
-                collisionMask,
-                QueryTriggerInteraction.Collide))
+            if(tongueTip != null) tongueTip.position = pos;
+
+            if (rayDistance > 0.001f &&
+                TryTongueHit(start, direction.normalized, rayDistance, out RaycastHit hit))
             {
                 Prey prey =
                     hit.collider.GetComponentInParent<Prey>() ??
@@ -152,8 +151,22 @@ public class PlayerTongue : MonoBehaviour
                     distance = Mathf.Max(Vector3.Distance(start, targetPos), 0.01f);
                     break;
                 }
+                // Fall 2: Dein werfbares Objekt (Throwable3) getroffen
                 else
                 {
+                    Throwable3 throwable =
+                        hit.collider.GetComponentInParent<Throwable3>() ??
+                        hit.collider.GetComponentInChildren<Throwable3>();
+
+                    if (throwable != null)
+                    {
+                        hitThrowable = throwable;
+                        hitObstacle = true;
+                        targetPos = hit.point;
+                        break;
+                    }
+
+                    // Fall 3: Normale Wand getroffen
                     hitObstacle = true;
                     targetPos = hit.point;
                     distance = Mathf.Max(Vector3.Distance(start, targetPos), 0.01f);
@@ -167,10 +180,19 @@ public class PlayerTongue : MonoBehaviour
             yield return null;
         }
 
-        // Beute an Zunge befestigen
+        // Objekte an der Spitze befestigen
         if (!hitObstacle && hitPrey != null)
         {
             hitPrey.AttachToTongue(attachTarget);
+        }
+        else if (hitThrowable != null)
+        {
+            Transform throwableParent = tongueTip != null ? tongueTip : attachTarget;
+            if (throwableParent != null)
+                hitThrowable.transform.SetParent(throwableParent);
+
+            if (hitThrowable.TryGetComponent(out Rigidbody throwableRb))
+                throwableRb.isKinematic = true;
         }
 
         // Zunge zurückziehen
@@ -183,6 +205,8 @@ public class PlayerTongue : MonoBehaviour
             start = GetShotStart(shotAimSource, visualOrigin);
             Vector3 pos = Vector3.Lerp(start, targetPos, backT);
 
+            if(tongueTip != null) tongueTip.position = pos;
+
             lineRenderer.SetPosition(0, start);
             lineRenderer.SetPosition(1, pos);
 
@@ -192,9 +216,14 @@ public class PlayerTongue : MonoBehaviour
         lineRenderer.positionCount = 0;
         lineRenderer.enabled = false;
 
+        // Endstation: Essen oder Halten
         if (hitPrey != null)
         {
             hitPrey.AllowEat();
+        }
+        else if (hitThrowable != null)
+        {
+            hitThrowable.VonZungeGefangen(); // Zündet fehlerfrei Throwable3!
         }
 
         isBusy = false;
@@ -241,6 +270,33 @@ public class PlayerTongue : MonoBehaviour
     private Vector3 GetAimLocalOffset()
     {
         return Vector3.forward * aimForwardOffset + Vector3.down * aimDownOffset;
+    }
+
+    private bool TryTongueHit(
+        Vector3 start,
+        Vector3 direction,
+        float distance,
+        out RaycastHit hit)
+    {
+        if (hitRadius > 0f)
+        {
+            return Physics.SphereCast(
+                start,
+                hitRadius,
+                direction,
+                out hit,
+                distance,
+                collisionMask,
+                QueryTriggerInteraction.Collide);
+        }
+
+        return Physics.Raycast(
+            start,
+            direction,
+            out hit,
+            distance,
+            collisionMask,
+            QueryTriggerInteraction.Collide);
     }
 
     private float GetTongueSpeed()

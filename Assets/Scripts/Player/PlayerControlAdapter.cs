@@ -11,6 +11,7 @@ public class PlayerControlAdapter : MonoBehaviour
     [Header("XR Locomotion")]
     [SerializeField] private LocomotionProvider[] locomotionProviders;
     [SerializeField] private XRJumpFallback[] jumpFallbacks;
+    [SerializeField] private XRControllerMoveFallback[] moveFallbacks;
 
     [Header("Optional Extra Controls")]
     [SerializeField] private Behaviour[] movementBehaviours;
@@ -33,6 +34,7 @@ public class PlayerControlAdapter : MonoBehaviour
             enabled,
             ShouldDisableBuiltInJumpProviders());
         SetBehavioursEnabled(jumpFallbacks, enabled);
+        SetBehavioursEnabled(moveFallbacks, enabled);
         SetBehavioursEnabled(movementBehaviours, enabled);
     }
 
@@ -81,6 +83,9 @@ public class PlayerControlAdapter : MonoBehaviour
 
         if (jumpFallbacks == null || jumpFallbacks.Length == 0)
             jumpFallbacks = GetComponentsInChildren<XRJumpFallback>(true);
+
+        if (moveFallbacks == null || moveFallbacks.Length == 0)
+            moveFallbacks = GetComponentsInChildren<XRControllerMoveFallback>(true);
     }
 
     private bool ShouldDisableBuiltInJumpProviders()

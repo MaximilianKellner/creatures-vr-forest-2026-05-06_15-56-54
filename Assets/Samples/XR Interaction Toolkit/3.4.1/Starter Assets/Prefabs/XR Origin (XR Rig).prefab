@@ -1109,6 +1109,7 @@ GameObject:
   - component: {fileID: 6358110668915235339}
   - component: {fileID: 5582822668527480630}
   - component: {fileID: 7911546640463231600}
+  - component: {fileID: 9182736450011223344}
   m_Layer: 6
   m_Name: XR Origin (XR Rig)
   m_TagString: Player
@@ -1268,12 +1269,13 @@ MonoBehaviour:
   useAimSourceAsTongueOrigin: 1
   aimForwardOffset: 0.25
   aimDownOffset: 0.1
-  speed: 30
+  speed: 45
   maxDistance: 20
+  hitRadius: 0.15
   collisionMask:
     serializedVersion: 2
     m_Bits: 128
-  tongueSpeedBonus: 10
+  tongueSpeedBonus: 15
 --- !u!114 &327774064763356681
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1286,8 +1288,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c600b4f2da7ed814c82961573221d834, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
-  maxHealth: 100
-  currentHealth: 100
+  maxHealth: 150
+  currentHealth: 150
 --- !u!114 &1810609252443964318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1299,7 +1301,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d9debeb5f35c20740a769c9228ceb138, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EcholocationSense
+  m_EditorClassIdentifier: Assembly-CSharp::SonarSense
   needsUpgrade: 1
   key: 16
   playerPosition: {fileID: 1717954561962503726}
@@ -1429,6 +1431,33 @@ MonoBehaviour:
   groundSnapDistance: 2
   groundSkin: 0.03
   minimumGroundNormalY: 0.35
+--- !u!114 &9182736450011223344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1717954561962503725}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fff247f60bbf433f8d71494679d0e029, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::XRJumpFallback
+  characterController: {fileID: 6232745470614056090}
+  upgradeSystem: {fileID: 6358110668915235339}
+  gravityController: {fileID: 7911546640463231600}
+  jumpAction: {fileID: 0}
+  jumpHeight: 1.25
+  jumpBonusPerLevel: 0.2
+  gravity: -9.81
+  jumpCooldown: 0.15
+  triggerPressPoint: 0.5
+  allowLegacyButtonJumpFallback: 0
+  groundLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  groundCheckDistance: 0.12
+  disableBuiltInJumpProvider: 1
 --- !u!1 &1787516059220952802
 GameObject:
   m_ObjectHideFlags: 0
@@ -2378,6 +2407,7 @@ MonoBehaviour:
   rightTouchpadAxis: {fileID: 6821295210636506782, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   rightTouchpadClick: {fileID: -6865938462613591226, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   directionThreshold: 0.45
+  activateAbilityOnDirection: 1
   up:
     ability: 1
   right:

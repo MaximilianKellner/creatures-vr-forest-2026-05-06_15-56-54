@@ -28,14 +28,41 @@ public class XRCharacterControllerGravity : MonoBehaviour
 
     void Update()
     {
-        if (TrySnapToGround())
+        if (verticalVelocity <= 0f && TrySnapToGround())
         {
             verticalVelocity = groundedStickVelocity;
             return;
         }
 
         verticalVelocity = Mathf.Max(verticalVelocity + gravity * Time.deltaTime, terminalVelocity);
-        characterController.Move(Vector3.up * verticalVelocity * Time.deltaTime);
+        CollisionFlags flags = characterController.Move(Vector3.up * verticalVelocity * Time.deltaTime);
+
+        if ((flags & CollisionFlags.Above) != 0 && verticalVelocity > 0f)
+            verticalVelocity = 0f;
+    }
+
+    public void AddJumpVelocity(float velocity)
+    {
+        verticalVelocity = Mathf.Max(verticalVelocity, velocity);
+    }
+
+    public bool IsGrounded()
+    {
+        if (characterController == null)
+            return false;
+
+        if (characterController.isGrounded)
+            return true;
+
+        Bounds bounds = characterController.bounds;
+        Vector3 origin = new Vector3(bounds.center.x, bounds.max.y + 0.25f, bounds.center.z);
+        float castRadius = Mathf.Max(0.05f, characterController.radius * 0.8f);
+
+        if (!TryFindGround(origin, castRadius, out RaycastHit hit))
+            return false;
+
+        float deltaY = hit.point.y + groundSkin - bounds.min.y;
+        return deltaY >= -groundSnapDistance && deltaY <= groundSnapDistance;
     }
 
     bool TrySnapToGround()

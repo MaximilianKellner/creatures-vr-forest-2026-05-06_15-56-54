@@ -52,12 +52,7 @@ public class ScentSense : MonoBehaviour
 
     private void Awake()
     {
-        upgradeSystem =
-            GetComponentInParent<UpgradeSystem>() ??
-            GetComponentInChildren<UpgradeSystem>();
-
-        if (playerPosition == null)
-            playerPosition = transform;
+        ResolveRuntimeReferences();
     }
 
     private void Update()
@@ -73,6 +68,8 @@ public class ScentSense : MonoBehaviour
 
     public void TryUseScentSense()
     {
+        ResolveRuntimeReferences();
+
         if (isActive || isOnCooldown)
         {
             Debug.Log("Geruchssinn ist noch im Cooldown.");
@@ -158,6 +155,8 @@ public class ScentSense : MonoBehaviour
 
     private void CreateAllScentPaths(float progress)
     {
+        ResolveRuntimeReferences();
+
         Collider[] hits = Physics.OverlapSphere(
             playerPosition.position,
             searchRadius,
@@ -191,6 +190,13 @@ public class ScentSense : MonoBehaviour
         Vector3 targetPosition = target.transform.position;
 
         if (!NavMesh.SamplePosition(
+                startPosition,
+                out NavMeshHit startHit,
+                navMeshSampleDistance,
+                NavMesh.AllAreas))
+            return;
+
+        if (!NavMesh.SamplePosition(
                 targetPosition,
                 out NavMeshHit navHit,
                 navMeshSampleDistance,
@@ -200,7 +206,7 @@ public class ScentSense : MonoBehaviour
         NavMeshPath path = new NavMeshPath();
 
         bool pathFound = NavMesh.CalculatePath(
-            startPosition,
+            startHit.position,
             navHit.position,
             NavMesh.AllAreas,
             path
@@ -375,4 +381,30 @@ public class ScentSense : MonoBehaviour
 
     public bool IsActive => isActive;
     public bool IsOnCooldown => isOnCooldown;
+
+    private void ResolveRuntimeReferences()
+    {
+        if (upgradeSystem == null ||
+            !VRUIRuntimeSupport.IsLikelyVrPlayer(upgradeSystem.transform))
+        {
+            upgradeSystem =
+                VRUIRuntimeSupport.FindBestUpgradeSystem() ??
+                GetComponentInParent<UpgradeSystem>() ??
+                GetComponentInChildren<UpgradeSystem>(true);
+        }
+
+        if (abilityUI == null)
+            abilityUI = VRUIRuntimeSupport.FindBestPlayerAbilityUI();
+
+        if (VRUIRuntimeSupport.IsLikelyVrScene())
+        {
+            Transform body = VRUIRuntimeSupport.FindBestPlayerBodyTransform();
+            if (body != null)
+                playerPosition = body;
+        }
+        else if (playerPosition == null)
+        {
+            playerPosition = transform;
+        }
+    }
 }

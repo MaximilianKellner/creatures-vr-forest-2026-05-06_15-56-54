@@ -25,6 +25,7 @@ public class VRAbilityProvider : MonoBehaviour
     [SerializeField] private InputActionReference rightTouchpadAxis;
     [SerializeField] private InputActionReference rightTouchpadClick;
     [SerializeField, Range(0.1f, 1f)] private float directionThreshold = 0.45f;
+    [SerializeField] private bool activateAbilityOnDirection = true;
 
     [Header("Right Touchpad Mapping")]
     [SerializeField] private TouchpadAbilitySlot up = new TouchpadAbilitySlot();
@@ -47,30 +48,38 @@ public class VRAbilityProvider : MonoBehaviour
     private InputAction fallbackAxisAction;
     private InputAction fallbackClickAction;
     private bool usingFallbackClickAction;
+    private bool directionInputArmed = true;
 
     private void Awake()
     {
+        ResolveReferences();
+        CreateFallbackActions();
+    }
+
+    private void ResolveReferences()
+    {
         upgradeSystem =
-            GetComponentInParent<UpgradeSystem>() ??
-            GetComponentInChildren<UpgradeSystem>();
+            upgradeSystem != null && VRUIRuntimeSupport.IsLikelyVrPlayer(upgradeSystem.transform)
+                ? upgradeSystem
+                : VRUIRuntimeSupport.FindBestUpgradeSystem() ??
+                  GetComponentInParent<UpgradeSystem>() ??
+                  GetComponentInChildren<UpgradeSystem>(true);
 
         if (nightVision == null)
             nightVision = GetComponentInParent<NightVision>() ??
-                          GetComponentInChildren<NightVision>();
+                          GetComponentInChildren<NightVision>(true);
 
         if (sonarSense == null)
             sonarSense = GetComponentInParent<SonarSense>() ??
-                         GetComponentInChildren<SonarSense>();
+                         GetComponentInChildren<SonarSense>(true);
 
         if (scentSense == null)
             scentSense = GetComponentInParent<ScentSense>() ??
-                         GetComponentInChildren<ScentSense>();
+                         GetComponentInChildren<ScentSense>(true);
 
         if (hearingSense == null)
             hearingSense = GetComponentInParent<HearingSense>() ??
-                           GetComponentInChildren<HearingSense>();
-
-        CreateFallbackActions();
+                           GetComponentInChildren<HearingSense>(true);
     }
 
     private void OnEnable()
@@ -104,6 +113,7 @@ public class VRAbilityProvider : MonoBehaviour
     private void Update()
     {
         UpdateJumpProviderState();
+        UpdateDirectionalAbilityInput();
     }
 
     private void OnRightTouchpadClicked(InputAction.CallbackContext context)
@@ -112,8 +122,28 @@ public class VRAbilityProvider : MonoBehaviour
         if (axis.sqrMagnitude < directionThreshold * directionThreshold)
             return;
 
-        TouchpadAbilitySlot slot = GetSlot(axis);
-        UseAbility(slot.Ability);
+        UseAbility(GetAbility(axis));
+        directionInputArmed = false;
+    }
+
+    private void UpdateDirectionalAbilityInput()
+    {
+        if (!activateAbilityOnDirection)
+            return;
+
+        Vector2 axis = ReadAbilityAxis();
+        if (axis.sqrMagnitude < directionThreshold * directionThreshold)
+        {
+            directionInputArmed = true;
+            return;
+        }
+
+        if (!directionInputArmed)
+            return;
+
+        directionInputArmed = false;
+
+        UseAbility(GetAbility(axis));
     }
 
     private Vector2 ReadAbilityAxis()
@@ -135,8 +165,23 @@ public class VRAbilityProvider : MonoBehaviour
         return axis.y > 0f ? up : down;
     }
 
+    private AbilityKind GetAbility(Vector2 axis)
+    {
+        TouchpadAbilitySlot slot = GetSlot(axis);
+
+        if (slot.Ability != AbilityKind.None)
+            return slot.Ability;
+
+        if (Mathf.Abs(axis.x) > Mathf.Abs(axis.y))
+            return axis.x > 0f ? AbilityKind.Sonar : AbilityKind.Scent;
+
+        return axis.y > 0f ? AbilityKind.NightVision : AbilityKind.Hearing;
+    }
+
     private void UseAbility(AbilityKind ability)
     {
+        ResolveReferences();
+
         switch (ability)
         {
             case AbilityKind.NightVision:

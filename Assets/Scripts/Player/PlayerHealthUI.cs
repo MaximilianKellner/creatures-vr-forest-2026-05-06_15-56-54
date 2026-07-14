@@ -20,6 +20,8 @@ public class PlayerHealthUI : MonoBehaviour
 
     private void Start()
     {
+        ResolvePlayerHealth();
+
         if (gameOverScreen != null)
             gameOverScreen.SetActive(false);
 
@@ -99,5 +101,23 @@ public class PlayerHealthUI : MonoBehaviour
             playerHealth.OnHealthChanged -= OnHealthChanged;
             playerHealth.OnDeath -= ShowGameOverScreen;
         }
+    }
+
+    private void ResolvePlayerHealth()
+    {
+        PlayerHealth bestPlayerHealth =
+            VRUIRuntimeSupport.FindBestPlayerHealth();
+
+        if (bestPlayerHealth == null ||
+            bestPlayerHealth == playerHealth)
+            return;
+
+        if (playerHealth != null)
+        {
+            playerHealth.OnHealthChanged -= OnHealthChanged;
+            playerHealth.OnDeath -= ShowGameOverScreen;
+        }
+
+        playerHealth = bestPlayerHealth;
     }
 }

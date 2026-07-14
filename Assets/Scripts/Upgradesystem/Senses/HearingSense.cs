@@ -32,9 +32,7 @@ public class HearingSense : MonoBehaviour
 
     private void Awake()
     {
-        upgradeSystem =
-            GetComponentInParent<UpgradeSystem>() ??
-            GetComponentInChildren<UpgradeSystem>();
+        ResolveRuntimeReferences();
 
         SetVolume(normalVolume);
     }
@@ -55,6 +53,8 @@ public class HearingSense : MonoBehaviour
 
     public void TryUseHearing()
     {
+        ResolveRuntimeReferences();
+
         if (isActive || isOnCooldown)
         {
             Debug.Log("Hörsinn ist noch im Cooldown.");
@@ -134,4 +134,19 @@ public class HearingSense : MonoBehaviour
 
     public bool IsActive => isActive;
     public bool IsOnCooldown => isOnCooldown;
+
+    private void ResolveRuntimeReferences()
+    {
+        if (upgradeSystem == null ||
+            !VRUIRuntimeSupport.IsLikelyVrPlayer(upgradeSystem.transform))
+        {
+            upgradeSystem =
+                VRUIRuntimeSupport.FindBestUpgradeSystem() ??
+                GetComponentInParent<UpgradeSystem>() ??
+                GetComponentInChildren<UpgradeSystem>(true);
+        }
+
+        if (abilityUI == null)
+            abilityUI = VRUIRuntimeSupport.FindBestPlayerAbilityUI();
+    }
 }

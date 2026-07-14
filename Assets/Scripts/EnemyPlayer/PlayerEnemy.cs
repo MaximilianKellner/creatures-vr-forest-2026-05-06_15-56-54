@@ -29,7 +29,18 @@ public class PlayerEnemy : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioSource enemyAlertSound;
 
+    [Header("Tutorial")]
+    [SerializeField] private TutorialManager tutorialManager;
+
+    [TextArea(4, 8)]
+    [SerializeField] private string enemyTutorialText =
+        "Halte dich von diesem Monster fern!\n\n" +
+        "Du kannst ihm nichts anhaben. Vermeide es und bring dich in Sicherheit.";
+
+    [SerializeField] private float enemyTutorialDuration = 7f;
+
     private bool isChasing;
+    private bool enemyTutorialShown;
 
     private NavMeshAgent agent;
     private int currentWaypointIndex;
@@ -60,7 +71,8 @@ public class PlayerEnemy : MonoBehaviour
         if (player == null || agent == null)
             return;
 
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        float distanceToPlayer =
+            Vector3.Distance(transform.position, player.position);
 
         if (distanceToPlayer <= detectionRange)
         {
@@ -78,7 +90,7 @@ public class PlayerEnemy : MonoBehaviour
         {
             isChasing = false;
         }
-        
+
         if (isAttacking)
             return;
 
@@ -88,9 +100,12 @@ public class PlayerEnemy : MonoBehaviour
         if (patrolPath == null || patrolPath.Count == 0)
             return;
 
-        if (!agent.pathPending && agent.remainingDistance <= waypointReachedDistance)
+        if (!agent.pathPending &&
+            agent.remainingDistance <= waypointReachedDistance)
         {
-            currentWaypointIndex = patrolPath.GetNextIndex(currentWaypointIndex);
+            currentWaypointIndex =
+                patrolPath.GetNextIndex(currentWaypointIndex);
+
             GoToCurrentWaypoint();
         }
     }
@@ -103,7 +118,25 @@ public class PlayerEnemy : MonoBehaviour
         if (!isChasing)
         {
             isChasing = true;
-            enemyAlertSound.PlayOneShot(enemyAlertSound.clip);
+
+            if (enemyAlertSound != null &&
+                enemyAlertSound.clip != null)
+            {
+                enemyAlertSound.PlayOneShot(
+                    enemyAlertSound.clip
+                );
+            }
+
+            if (!enemyTutorialShown &&
+                tutorialManager != null)
+            {
+                enemyTutorialShown = true;
+
+                tutorialManager.ShowTutorial(
+                    enemyTutorialText,
+                    enemyTutorialDuration
+                );
+            }
         }
 
         agent.speed = chaseSpeed;
@@ -119,7 +152,8 @@ public class PlayerEnemy : MonoBehaviour
             LookAtPlayer();
         }
 
-        if (distanceToPlayer <= attackRange && Time.time >= nextAttackTime)
+        if (distanceToPlayer <= attackRange &&
+            Time.time >= nextAttackTime)
         {
             StartCoroutine(TongueAttack());
         }
@@ -130,15 +164,20 @@ public class PlayerEnemy : MonoBehaviour
         if (patrolPath == null || patrolPath.Count == 0)
             return;
 
-        Transform waypoint = patrolPath.GetWaypoint(currentWaypointIndex);
+        Transform waypoint =
+            patrolPath.GetWaypoint(currentWaypointIndex);
 
         if (waypoint != null)
+        {
             agent.SetDestination(waypoint.position);
+        }
     }
 
     private void LookAtPlayer()
     {
-        Vector3 direction = player.position - transform.position;
+        Vector3 direction =
+            player.position - transform.position;
+
         direction.y = 0f;
 
         if (direction.sqrMagnitude <= 0.01f)
@@ -159,7 +198,9 @@ public class PlayerEnemy : MonoBehaviour
         agent.ResetPath();
         LookAtPlayer();
 
-        if (tongueLine == null || tongueOrigin == null || tongueTip == null)
+        if (tongueLine == null ||
+            tongueOrigin == null ||
+            tongueTip == null)
         {
             isAttacking = false;
             yield break;
@@ -179,9 +220,12 @@ public class PlayerEnemy : MonoBehaviour
         tongueLine.positionCount = 2;
 
         Vector3 startPos = tongueOrigin.position;
-        Vector3 targetPos = targetHealth.transform.position + Vector3.up * 1f;
+        Vector3 targetPos =
+            targetHealth.transform.position +
+            Vector3.up * 1f;
 
-        float distance = Vector3.Distance(startPos, targetPos);
+        float distance =
+            Vector3.Distance(startPos, targetPos);
 
         if (distance <= 0.01f)
         {
@@ -196,15 +240,32 @@ public class PlayerEnemy : MonoBehaviour
 
         while (t < 1f)
         {
-            t += Time.deltaTime * tongueSpeed / distance;
+            t += Time.deltaTime *
+                 tongueSpeed /
+                 distance;
 
-            Vector3 currentPos = Vector3.Lerp(startPos, targetPos, t);
+            Vector3 currentPos =
+                Vector3.Lerp(
+                    startPos,
+                    targetPos,
+                    t
+                );
 
-            tongueLine.SetPosition(0, tongueOrigin.position);
-            tongueLine.SetPosition(1, currentPos);
+            tongueLine.SetPosition(
+                0,
+                tongueOrigin.position
+            );
 
-            Vector3 rayDirection = currentPos - tongueOrigin.position;
-            float rayDistance = rayDirection.magnitude;
+            tongueLine.SetPosition(
+                1,
+                currentPos
+            );
+
+            Vector3 rayDirection =
+                currentPos - tongueOrigin.position;
+
+            float rayDistance =
+                rayDirection.magnitude;
 
             if (rayDistance > 0.01f)
             {
@@ -216,10 +277,13 @@ public class PlayerEnemy : MonoBehaviour
                     attackMask))
                 {
                     PlayerHealth hitHealth =
-                        hit.collider.GetComponentInParent<PlayerHealth>() ??
-                        hit.collider.GetComponentInChildren<PlayerHealth>();
+                        hit.collider
+                            .GetComponentInParent<PlayerHealth>() ??
+                        hit.collider
+                            .GetComponentInChildren<PlayerHealth>();
 
-                    if (hitHealth == targetHealth && !damageApplied)
+                    if (hitHealth == targetHealth &&
+                        !damageApplied)
                     {
                         hitHealth.TakeDamage(damage);
                         damageApplied = true;
@@ -235,12 +299,26 @@ public class PlayerEnemy : MonoBehaviour
 
         while (backT > 0f)
         {
-            backT -= Time.deltaTime * tongueSpeed / distance;
+            backT -= Time.deltaTime *
+                     tongueSpeed /
+                     distance;
 
-            Vector3 currentPos = Vector3.Lerp(startPos, targetPos, backT);
+            Vector3 currentPos =
+                Vector3.Lerp(
+                    startPos,
+                    targetPos,
+                    backT
+                );
 
-            tongueLine.SetPosition(0, tongueOrigin.position);
-            tongueLine.SetPosition(1, currentPos);
+            tongueLine.SetPosition(
+                0,
+                tongueOrigin.position
+            );
+
+            tongueLine.SetPosition(
+                1,
+                currentPos
+            );
 
             yield return null;
         }

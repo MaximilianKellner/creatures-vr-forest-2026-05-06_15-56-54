@@ -22,16 +22,16 @@ public class GroundPrey : Prey
 
         if (playerTarget == null)
         {
-            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            Transform bestPlayer = VRUIRuntimeSupport.FindBestPlayerTransform();
 
-            if (playerObj != null)
+            if (bestPlayer != null)
             {
-                playerTarget = playerObj.transform;
+                playerTarget = bestPlayer;
                 Debug.Log($"{name}: Player gefunden.");
             }
             else
             {
-                Debug.LogError($"{name}: Kein Objekt mit Tag 'Player' gefunden!");
+                Debug.LogError($"{name}: Kein XR Origin/Player gefunden!");
             }
         }
     }

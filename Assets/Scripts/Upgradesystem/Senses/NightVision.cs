@@ -27,9 +27,7 @@ public class NightVision : MonoBehaviour
 
     private void Awake()
     {
-        upgradeSystem =
-            GetComponentInParent<UpgradeSystem>() ??
-            GetComponentInChildren<UpgradeSystem>();
+        ResolveRuntimeReferences();
 
         if (nightVisionVolume != null)
             nightVisionVolume.weight = 0f;
@@ -46,6 +44,8 @@ public class NightVision : MonoBehaviour
 
     public void TryUseNightVision()
     {
+        ResolveRuntimeReferences();
+
         if (isActive || isOnCooldown)
             return;
 
@@ -118,6 +118,28 @@ public class NightVision : MonoBehaviour
         abilityUI?.SetReady(PreyGivesUpgrade.NightVision);
 
         Debug.Log("Nachtsicht wieder bereit.");
+    }
+
+    private void ResolveRuntimeReferences()
+    {
+        if (upgradeSystem == null ||
+            !VRUIRuntimeSupport.IsLikelyVrPlayer(upgradeSystem.transform))
+        {
+            upgradeSystem =
+                VRUIRuntimeSupport.FindBestUpgradeSystem() ??
+                GetComponentInParent<UpgradeSystem>() ??
+                GetComponentInChildren<UpgradeSystem>(true);
+        }
+
+        if (abilityUI == null)
+            abilityUI = VRUIRuntimeSupport.FindBestPlayerAbilityUI();
+
+        if (nightVisionVolume == null)
+            nightVisionVolume =
+                VRUIRuntimeSupport.FindVolumeByName(
+                    "NightVision",
+                    "Night Vision",
+                    "Nachtsicht");
     }
 
     public bool IsActive => isActive;

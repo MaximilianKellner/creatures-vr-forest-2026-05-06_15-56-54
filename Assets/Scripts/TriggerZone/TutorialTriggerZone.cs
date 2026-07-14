@@ -16,7 +16,7 @@ public class TutorialTriggerZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("Player"))
+        if (!VRUIRuntimeSupport.IsPlayerCollider(other))
             return;
 
         if (onlyOnce && hasTriggered)

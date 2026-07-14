@@ -4,8 +4,8 @@ using System;
 public class PlayerHealth : MonoBehaviour
 {
     [Header("Health")]
-    [SerializeField] private int maxHealth;
-    [SerializeField] private int currentHealth;
+    [SerializeField] private int maxHealth = 150;
+    [SerializeField] private int currentHealth = 150;
 
     private int baseMaxHealth;
     private int appliedMaxHealthBonus;

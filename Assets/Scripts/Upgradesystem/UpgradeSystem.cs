@@ -23,6 +23,8 @@ public class UpgradeSystem : MonoBehaviour
 
     private void Awake()
     {
+        ResolveUiReferences();
+
         if (autoInstallVrAdapters)
             InstallVrAdapters();
     }
@@ -60,6 +62,8 @@ public class UpgradeSystem : MonoBehaviour
 
     private void ShowTutorialForUpgrade(PreyGivesUpgrade upgrade)
     {
+        ResolveUiReferences();
+
         bool showVrText = ShouldShowVrTutorialText();
 
         switch (upgrade)
@@ -67,7 +71,7 @@ public class UpgradeSystem : MonoBehaviour
             case PreyGivesUpgrade.NightVision:
                 tutorialManager.ShowTutorial(
                     showVrText
-                        ? "Rechtes Touchpad nach oben druecken, um die Nachtsicht zu aktivieren."
+                        ? "Rechten Stick oder Touchpad nach oben bewegen, um die Nachtsicht zu aktivieren."
                         : "Druecke [N], um die Nachtsicht zu aktivieren.",
                     6f);
                 break;
@@ -75,15 +79,15 @@ public class UpgradeSystem : MonoBehaviour
             case PreyGivesUpgrade.ScentSense:
                 tutorialManager.ShowTutorial(
                     showVrText
-                        ? "Rechtes Touchpad nach links druecken, um den Geruchssinn zu aktivieren."
-                        : "Druecke [G], um den Geruchssinn zu aktivieren.",
-                    6f);
+                        ? "Geruchssinn freigeschaltet!\n\nRechten Stick oder Touchpad nach links bewegen, um ihn zu aktivieren.\n\nFarben:\n- Rot = Gefahr\n- Blau = Beute mit Upgrades\n- Lila = normale Beute"
+                        : "Du hast den Geruchssinn freigeschaltet!\n\nDruecke [G], um ihn zu aktivieren.\n\nFarben:\n- Rot = Gefahr\n- Blau = Beute mit Upgrades\n- Lila = normale Beute",
+                    10f);
                 break;
 
             case PreyGivesUpgrade.SonarSense:
                 tutorialManager.ShowTutorial(
                     showVrText
-                        ? "Rechtes Touchpad nach rechts druecken, um den Sonarsinn zu aktivieren."
+                        ? "Rechten Stick oder Touchpad nach rechts bewegen, um den Sonarsinn zu aktivieren."
                         : "Druecke [B], um den Sonarsinn zu aktivieren.",
                     6f);
                 break;
@@ -91,7 +95,7 @@ public class UpgradeSystem : MonoBehaviour
             case PreyGivesUpgrade.HearingSense:
                 tutorialManager.ShowTutorial(
                     showVrText
-                        ? "Rechtes Touchpad nach unten druecken, um den Hoersinn zu aktivieren."
+                        ? "Rechten Stick oder Touchpad nach unten bewegen, um den Hoersinn zu aktivieren."
                         : "Druecke [H], um den Hoersinn zu aktivieren.",
                     6f);
                 break;
@@ -131,6 +135,43 @@ public class UpgradeSystem : MonoBehaviour
             health.ApplyMaxHealthBonus(level * healthBonusPerLevel);
     }
 
+    private void ResolveUiReferences()
+    {
+        if (upgradeNotificationUI == null)
+        {
+            upgradeNotificationUI =
+                FindBestSceneComponent<UpgradeNotificationUI>();
+        }
+
+        if (tutorialManager == null)
+        {
+            tutorialManager =
+                FindBestSceneComponent<TutorialManager>();
+        }
+    }
+
+    private static T FindBestSceneComponent<T>() where T : Component
+    {
+        T[] components =
+            FindObjectsByType<T>(FindObjectsInactive.Include);
+
+        T first = null;
+
+        foreach (T component in components)
+        {
+            if (component == null)
+                continue;
+
+            if (first == null)
+                first = component;
+
+            if (component.gameObject.activeInHierarchy)
+                return component;
+        }
+
+        return first;
+    }
+
     private void InstallVrAdapters()
     {
         if (GetComponent<PlayerControlAdapter>() == null &&
@@ -145,6 +186,12 @@ public class UpgradeSystem : MonoBehaviour
             gameObject.AddComponent<XRUpgradeLocomotionAdapter>();
         }
 
+        if (GetComponent<XRControllerMoveFallback>() == null &&
+            GetComponentInChildren<XRControllerMoveFallback>(true) == null)
+        {
+            gameObject.AddComponent<XRControllerMoveFallback>();
+        }
+
         if (GetComponent<XRJumpFallback>() == null &&
             GetComponentInChildren<XRJumpFallback>(true) == null)
         {
@@ -155,6 +202,12 @@ public class UpgradeSystem : MonoBehaviour
             GetComponentInChildren<XRCharacterControllerSafety>(true) == null)
         {
             gameObject.AddComponent<XRCharacterControllerSafety>();
+        }
+
+        if (GetComponent<XRPlayerBodyTrigger>() == null &&
+            GetComponentInChildren<XRPlayerBodyTrigger>(true) == null)
+        {
+            gameObject.AddComponent<XRPlayerBodyTrigger>();
         }
     }
 

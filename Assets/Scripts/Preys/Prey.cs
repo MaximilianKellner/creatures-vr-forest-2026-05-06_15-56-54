@@ -206,8 +206,6 @@ public abstract class Prey : MonoBehaviour
 
     private bool IsPlayerCollider(Collider other)
     {
-        return other.CompareTag("Player") ||
-               other.GetComponentInParent<PlayerHealth>() != null ||
-               other.GetComponentInParent<UpgradeSystem>() != null;
+        return VRUIRuntimeSupport.IsPlayerCollider(other);
     }
 }

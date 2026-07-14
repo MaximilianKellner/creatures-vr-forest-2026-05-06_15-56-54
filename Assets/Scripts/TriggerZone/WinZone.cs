@@ -59,7 +59,7 @@ public class WinZone : MonoBehaviour
         if (hasTriggered)
             return;
 
-        if (!other.CompareTag("Player"))
+        if (!VRUIRuntimeSupport.IsPlayerCollider(other))
             return;
 
         hasTriggered = true;

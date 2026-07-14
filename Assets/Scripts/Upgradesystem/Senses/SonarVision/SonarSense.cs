@@ -41,12 +41,7 @@ public class SonarSense : MonoBehaviour
 
     private void Awake()
     {
-        upgradeSystem =
-            GetComponentInParent<UpgradeSystem>() ??
-            GetComponentInChildren<UpgradeSystem>();
-
-        if (playerPosition == null)
-            playerPosition = transform;
+        ResolveRuntimeReferences();
 
         if (sonarVolume != null)
             sonarVolume.weight = 0f;
@@ -63,6 +58,8 @@ public class SonarSense : MonoBehaviour
 
     public void TryUseSonar()
     {
+        ResolveRuntimeReferences();
+
         if (isActive || isOnCooldown)
             return;
 
@@ -131,6 +128,8 @@ public class SonarSense : MonoBehaviour
 
     private void SpawnWave()
     {
+        ResolveRuntimeReferences();
+
         if (wavePrefab == null || playerPosition == null)
             return;
 
@@ -152,6 +151,8 @@ public class SonarSense : MonoBehaviour
 
     private void RevealTargets()
     {
+        ResolveRuntimeReferences();
+
         Collider[] hits = Physics.OverlapSphere(
             playerPosition.position,
             sonarRadius,
@@ -173,6 +174,8 @@ public class SonarSense : MonoBehaviour
 
     private void StartVolumeEffect()
     {
+        ResolveRuntimeReferences();
+
         if (sonarVolume == null)
             return;
 
@@ -213,4 +216,33 @@ public class SonarSense : MonoBehaviour
 
     public bool IsActive => isActive;
     public bool IsOnCooldown => isOnCooldown;
+
+    private void ResolveRuntimeReferences()
+    {
+        if (upgradeSystem == null ||
+            !VRUIRuntimeSupport.IsLikelyVrPlayer(upgradeSystem.transform))
+        {
+            upgradeSystem =
+                VRUIRuntimeSupport.FindBestUpgradeSystem() ??
+                GetComponentInParent<UpgradeSystem>() ??
+                GetComponentInChildren<UpgradeSystem>(true);
+        }
+
+        if (abilityUI == null)
+            abilityUI = VRUIRuntimeSupport.FindBestPlayerAbilityUI();
+
+        if (VRUIRuntimeSupport.IsLikelyVrScene())
+        {
+            Transform body = VRUIRuntimeSupport.FindBestPlayerBodyTransform();
+            if (body != null)
+                playerPosition = body;
+        }
+        else if (playerPosition == null)
+        {
+            playerPosition = transform;
+        }
+
+        if (sonarVolume == null)
+            sonarVolume = VRUIRuntimeSupport.FindVolumeByName("Sonar");
+    }
 }
