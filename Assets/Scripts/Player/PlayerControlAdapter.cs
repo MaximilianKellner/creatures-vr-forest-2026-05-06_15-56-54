@@ -129,7 +129,8 @@ public class PlayerControlAdapter : MonoBehaviour
 
             if (provider is GravityProvider)
             {
-                provider.enabled = true;
+                // XRJumpFallback owns vertical motion, so XRI gravity must not pull the same rig down.
+                provider.enabled = !disableBuiltInJumpProviders;
                 continue;
             }
 

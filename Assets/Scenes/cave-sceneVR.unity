@@ -27966,15 +27966,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2558544677041596459, guid: e9d16f7e2548d2f40b71afe1ee81eae8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 20.687496
+      value: 6.94
       objectReference: {fileID: 0}
     - target: {fileID: 2558544677041596459, guid: e9d16f7e2548d2f40b71afe1ee81eae8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.821
+      value: -5.33
       objectReference: {fileID: 0}
     - target: {fileID: 2558544677041596459, guid: e9d16f7e2548d2f40b71afe1ee81eae8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -60.825775
+      value: -18.5
       objectReference: {fileID: 0}
     - target: {fileID: 2558544677041596459, guid: e9d16f7e2548d2f40b71afe1ee81eae8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -58117,6 +58117,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1767192439, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 503
+      objectReference: {fileID: 0}
     - target: {fileID: 942810691211101373, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_InteractionManager
       value: 
@@ -58186,13 +58190,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1810609252443964318, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: abilityUI
+      value: 
+      objectReference: {fileID: 159865865}
+    - target: {fileID: 1810609252443964318, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: sonarSound
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 774408418}
     - target: {fileID: 1810609252443964318, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: sonarVolume
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 774408417}
     - target: {fileID: 2621926548290396620, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_Center.y
       value: 0
@@ -58201,14 +58209,22 @@ PrefabInstance:
       propertyPath: m_InteractionManager
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 4753674522493491698, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: abilityUI
+      value: 
+      objectReference: {fileID: 159865865}
     - target: {fileID: 5033801203051696737, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5582822668527480630, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: abilityUI
+      value: 
+      objectReference: {fileID: 159865865}
+    - target: {fileID: 5582822668527480630, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: ScentSound
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1703340920}
     - target: {fileID: 5935309891387827506, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -58217,6 +58233,18 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6245797438994040661, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: abilityUI
+      value: 
+      objectReference: {fileID: 159865865}
+    - target: {fileID: 6245797438994040661, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: nightVisionSound
+      value: 
+      objectReference: {fileID: 1685532704}
+    - target: {fileID: 6245797438994040661, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: nightVisionVolume
+      value: 
+      objectReference: {fileID: 1685532702}
     - target: {fileID: 6358110668915235339, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -58224,11 +58252,23 @@ PrefabInstance:
     - target: {fileID: 6358110668915235339, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: tutorialManager
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1465638074}
     - target: {fileID: 6358110668915235339, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
       propertyPath: upgradeNotificationUI
       value: 
+      objectReference: {fileID: 347980706}
+    - target: {fileID: 7719545521746381190, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: aimDownOffset
+      value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 7719545521746381190, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: aimForwardOffset
+      value: 0.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 9182736450011223344, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+      propertyPath: jumpAction
+      value: 
+      objectReference: {fileID: -3875704489234743591, guid: c348712bda248c246b8c49b3db54643f, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 5935309891387827506, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
@@ -68464,7 +68504,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f14d9f2a45cab04a91df1166b947001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MinimapDrawController
-  player: {fileID: 997954171}
+  player: {fileID: 1552476046}
   minimapCamera: {fileID: 1841610972}
   heightAbovePlayer: 10
   orthographicSize: 50

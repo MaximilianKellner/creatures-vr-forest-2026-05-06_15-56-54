@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/Scenes/cave-scene_Ervan.unity
     guid: e6ae79f4df60b7a4cb5e8d310f2fc239
   - enabled: 1
-    path: Assets/Scenes/cave-scene.unity
+    path: Assets/Scenes/cave-sceneVR.unity
     guid: fb110784be610d84a9ebdf67d9930239
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

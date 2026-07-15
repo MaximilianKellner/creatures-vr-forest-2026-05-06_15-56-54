@@ -11,12 +11,15 @@ public class XRCharacterControllerGravity : MonoBehaviour
     [SerializeField] float groundedStickVelocity = -1f;
     [SerializeField] LayerMask groundLayers = ~0;
     [SerializeField] float groundCheckDistance = 20f;
-    [SerializeField] float groundSnapDistance = 2f;
+    [SerializeField] float groundSnapDistance = 0.35f;
+    [SerializeField] float jumpGroundSnapLockout = 0.25f;
+    [SerializeField] float jumpLiftOffOffset = 0.03f;
     [SerializeField] float groundSkin = 0.03f;
     [SerializeField] float minimumGroundNormalY = 0.35f;
 
     CharacterController characterController;
     float verticalVelocity;
+    float suppressGroundSnapUntil;
 
     void Awake()
     {
@@ -28,7 +31,7 @@ public class XRCharacterControllerGravity : MonoBehaviour
 
     void Update()
     {
-        if (verticalVelocity <= 0f && TrySnapToGround())
+        if (CanSnapToGround() && TrySnapToGround())
         {
             verticalVelocity = groundedStickVelocity;
             return;
@@ -44,6 +47,10 @@ public class XRCharacterControllerGravity : MonoBehaviour
     public void AddJumpVelocity(float velocity)
     {
         verticalVelocity = Mathf.Max(verticalVelocity, velocity);
+        suppressGroundSnapUntil = Time.time + jumpGroundSnapLockout;
+
+        if (jumpLiftOffOffset > 0f && characterController != null && characterController.enabled)
+            characterController.Move(Vector3.up * jumpLiftOffOffset);
     }
 
     public bool IsGrounded()
@@ -63,6 +70,11 @@ public class XRCharacterControllerGravity : MonoBehaviour
 
         float deltaY = hit.point.y + groundSkin - bounds.min.y;
         return deltaY >= -groundSnapDistance && deltaY <= groundSnapDistance;
+    }
+
+    bool CanSnapToGround()
+    {
+        return verticalVelocity <= 0f && Time.time >= suppressGroundSnapUntil;
     }
 
     bool TrySnapToGround()
